@@ -189,7 +189,7 @@ export default function HomeScreen() {
               style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
               className="text-sm"
             >
-              Welcome back, Dance Student
+              Welcome back, Participant
             </Text>
             <Text
               style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
