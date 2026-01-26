@@ -60,6 +60,12 @@ export default function HomeScreen() {
               style={{ width: 80, height: 80, borderRadius: 40 }}
               contentFit="cover"
             />
+            <Text
+              style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.gold[300] }}
+              className="text-lg mt-3 text-center"
+            >
+              AFeeree Certification Program
+            </Text>
           </Animated.View>
 
           <Animated.View
