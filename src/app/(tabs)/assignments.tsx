@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, Modal } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, ScrollView, Pressable, Modal, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import {
@@ -26,6 +26,10 @@ import { colors } from '@/lib/theme';
 import { mockAssignments } from '@/lib/mockData';
 import type { Assignment } from '@/lib/types';
 
+const triggerHaptic = () => {
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+};
+
 const statusFilters = ['All', 'Pending', 'Submitted', 'Graded'] as const;
 
 export default function AssignmentsScreen() {
@@ -34,6 +38,23 @@ export default function AssignmentsScreen() {
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
   const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    triggerHaptic();
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1500);
+  }, []);
+
+  const navigateWithHaptic = (route: string) => {
+    triggerHaptic();
+    router.push(route as any);
+  };
+
+  const handleFilterPress = (filter: string) => {
+    Haptics.selectionAsync();
+    setSelectedFilter(filter);
+  };
 
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
@@ -97,12 +118,20 @@ export default function AssignmentsScreen() {
         className="flex-1"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary[500]}
+            colors={[colors.primary[500]]}
+          />
+        }
       >
         {/* Header */}
         <View style={{ paddingTop: insets.top + 16, paddingHorizontal: 24, paddingBottom: 16 }}>
           <Animated.View entering={FadeInDown.duration(600)} className="flex-row items-center">
             <Pressable
-              onPress={() => router.push('/(tabs)/')}
+              onPress={() => navigateWithHaptic('/(tabs)/')}
               className="mr-4 p-2 -ml-2"
             >
               <ArrowLeft size={24} color={colors.neutral[800]} />
@@ -136,7 +165,7 @@ export default function AssignmentsScreen() {
             {statusFilters.map((filter) => (
               <Pressable
                 key={filter}
-                onPress={() => setSelectedFilter(filter)}
+                onPress={() => handleFilterPress(filter)}
                 className="mr-2 px-4 py-2 rounded-full"
                 style={{
                   backgroundColor: selectedFilter === filter ? colors.primary[500] : 'white',

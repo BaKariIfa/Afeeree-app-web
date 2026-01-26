@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, Pressable, RefreshControl } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -15,18 +15,39 @@ import {
   ChevronRight,
   Mail,
   Calendar,
-  ArrowLeft
+  ArrowLeft,
+  Star,
+  Target,
+  Flame,
+  Trophy
 } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
+import * as Haptics from 'expo-haptics';
 
 import { colors } from '@/lib/theme';
 import { mockUser, mockModules, mockAssignments } from '@/lib/mockData';
 
+const triggerHaptic = () => {
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+};
+
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    triggerHaptic();
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1500);
+  };
+
+  const navigateWithHaptic = (route: string) => {
+    triggerHaptic();
+    router.push(route as any);
+  };
 
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
@@ -43,10 +64,70 @@ export default function ProfileScreen() {
   const completedAssignments = mockAssignments.filter(a => a.status === 'graded').length;
   const totalLessons = mockModules.reduce((acc, m) => acc + m.completedLessons, 0);
 
+  // Achievements data
+  const achievements = [
+    {
+      id: 1,
+      title: 'First Steps',
+      description: 'Complete your first lesson',
+      icon: <Star size={20} color={colors.gold[500]} />,
+      earned: totalLessons >= 1,
+      progress: Math.min(totalLessons, 1),
+      total: 1
+    },
+    {
+      id: 2,
+      title: 'Dedicated Learner',
+      description: 'Complete 10 lessons',
+      icon: <Target size={20} color={colors.primary[500]} />,
+      earned: totalLessons >= 10,
+      progress: Math.min(totalLessons, 10),
+      total: 10
+    },
+    {
+      id: 3,
+      title: 'Module Master',
+      description: 'Complete your first module',
+      icon: <Award size={20} color={colors.gold[600]} />,
+      earned: completedModules >= 1,
+      progress: Math.min(completedModules, 1),
+      total: 1
+    },
+    {
+      id: 4,
+      title: 'Assignment Ace',
+      description: 'Submit 5 assignments',
+      icon: <FileCheck size={20} color={colors.primary[500]} />,
+      earned: completedAssignments >= 5,
+      progress: Math.min(completedAssignments, 5),
+      total: 5
+    },
+    {
+      id: 5,
+      title: 'On Fire',
+      description: 'Study 7 days in a row',
+      icon: <Flame size={20} color="#FF6B6B" />,
+      earned: false,
+      progress: 3,
+      total: 7
+    },
+    {
+      id: 6,
+      title: 'Certification Ready',
+      description: 'Complete all requirements',
+      icon: <Trophy size={20} color={colors.gold[500]} />,
+      earned: false,
+      progress: mockUser.progress,
+      total: 100
+    },
+  ];
+
+  const earnedCount = achievements.filter(a => a.earned).length;
+
   const menuItems = [
-    { icon: <Settings size={22} color={colors.neutral[600]} />, label: 'Account Settings', onPress: () => {} },
-    { icon: <HelpCircle size={22} color={colors.neutral[600]} />, label: 'Help & Support', onPress: () => {} },
-    { icon: <LogOut size={22} color={colors.error} />, label: 'Sign Out', onPress: () => {}, isDestructive: true },
+    { icon: <Settings size={22} color={colors.neutral[600]} />, label: 'Account Settings', onPress: () => triggerHaptic() },
+    { icon: <HelpCircle size={22} color={colors.neutral[600]} />, label: 'Help & Support', onPress: () => triggerHaptic() },
+    { icon: <LogOut size={22} color={colors.error} />, label: 'Sign Out', onPress: () => triggerHaptic(), isDestructive: true },
   ];
 
   return (
@@ -55,6 +136,14 @@ export default function ProfileScreen() {
         className="flex-1"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary[500]}
+            colors={[colors.primary[500]]}
+          />
+        }
       >
         {/* Header with Profile */}
         <LinearGradient
@@ -64,7 +153,7 @@ export default function ProfileScreen() {
           {/* Back Button */}
           <Animated.View entering={FadeInDown.duration(600)}>
             <Pressable
-              onPress={() => router.push('/(tabs)/')}
+              onPress={() => navigateWithHaptic('/(tabs)/')}
               className="p-2 -ml-2 mb-2"
             >
               <ArrowLeft size={24} color="white" />
@@ -199,6 +288,86 @@ export default function ProfileScreen() {
             >
               Complete {100 - mockUser.progress}% more to achieve {mockUser.certificationLevel} certification
             </Text>
+          </View>
+        </Animated.View>
+
+        {/* Achievements Section */}
+        <Animated.View
+          entering={FadeInUp.duration(600).delay(250)}
+          className="px-6 mt-8"
+        >
+          <View className="flex-row justify-between items-center mb-4">
+            <Text
+              style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+              className="text-xl"
+            >
+              Achievements
+            </Text>
+            <View className="flex-row items-center">
+              <Trophy size={16} color={colors.gold[500]} />
+              <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.gold[600] }} className="text-sm ml-1">
+                {earnedCount}/{achievements.length}
+              </Text>
+            </View>
+          </View>
+
+          <View
+            className="rounded-2xl overflow-hidden"
+            style={{ backgroundColor: 'white', borderWidth: 1, borderColor: colors.neutral[200] }}
+          >
+            {achievements.map((achievement, index) => (
+              <View
+                key={achievement.id}
+                className="p-4 flex-row items-center"
+                style={{
+                  borderBottomWidth: index < achievements.length - 1 ? 1 : 0,
+                  borderBottomColor: colors.neutral[100],
+                  opacity: achievement.earned ? 1 : 0.6
+                }}
+              >
+                <View
+                  className="w-12 h-12 rounded-full items-center justify-center"
+                  style={{
+                    backgroundColor: achievement.earned ? colors.gold[100] : colors.neutral[100]
+                  }}
+                >
+                  {achievement.icon}
+                </View>
+                <View className="flex-1 ml-3">
+                  <View className="flex-row items-center">
+                    <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }} className="text-sm">
+                      {achievement.title}
+                    </Text>
+                    {achievement.earned && (
+                      <View className="ml-2 px-2 py-0.5 rounded-full" style={{ backgroundColor: colors.gold[500] }}>
+                        <Text style={{ fontFamily: 'DMSans_500Medium', color: 'white' }} className="text-xs">
+                          Earned
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                  <Text style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }} className="text-xs mt-0.5">
+                    {achievement.description}
+                  </Text>
+                  {!achievement.earned && (
+                    <View className="mt-2 flex-row items-center">
+                      <View className="flex-1 h-1.5 rounded-full overflow-hidden mr-2" style={{ backgroundColor: colors.neutral[200] }}>
+                        <View
+                          className="h-full rounded-full"
+                          style={{
+                            backgroundColor: colors.primary[400],
+                            width: `${(achievement.progress / achievement.total) * 100}%`
+                          }}
+                        />
+                      </View>
+                      <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[400] }} className="text-xs">
+                        {achievement.progress}/{achievement.total}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+            ))}
           </View>
         </Animated.View>
 

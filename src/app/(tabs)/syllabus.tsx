@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, ScrollView, Pressable, Linking, RefreshControl } from 'react-native';
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -7,10 +7,15 @@ import { BookOpen, Clock, Lock, ChevronRight, Play, FileText, ArrowLeft, Video }
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
+import * as Haptics from 'expo-haptics';
 
 import { colors } from '@/lib/theme';
 import { mockModules, resourceLinks, videoLinks } from '@/lib/mockData';
 import type { Module } from '@/lib/types';
+
+const triggerHaptic = () => {
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+};
 
 const categories = ['All', 'Technique', 'Theory', 'Teaching Practice', 'Research'] as const;
 
@@ -18,6 +23,18 @@ export default function SyllabusScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    triggerHaptic();
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1500);
+  }, []);
+
+  const navigateWithHaptic = (route: string) => {
+    triggerHaptic();
+    router.push(route as any);
+  };
 
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
@@ -40,13 +57,25 @@ export default function SyllabusScreen() {
   };
 
   const openSyllabusPDF = () => {
+    triggerHaptic();
     Linking.openURL(resourceLinks.syllabus);
   };
 
   const handleModulePress = (module: Module) => {
+    triggerHaptic();
     // Open the syllabus PDF at the specific page for this module
     const pageParam = module.pdfPage ? `#page=${module.pdfPage}` : '';
     Linking.openURL(resourceLinks.syllabus + pageParam);
+  };
+
+  const handleCategoryPress = (category: string) => {
+    Haptics.selectionAsync();
+    setSelectedCategory(category);
+  };
+
+  const openVideo = (url: string) => {
+    triggerHaptic();
+    Linking.openURL(url);
   };
 
   return (
@@ -55,12 +84,20 @@ export default function SyllabusScreen() {
         className="flex-1"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary[500]}
+            colors={[colors.primary[500]]}
+          />
+        }
       >
         {/* Header */}
         <View style={{ paddingTop: insets.top + 16, paddingHorizontal: 24, paddingBottom: 16 }}>
           <Animated.View entering={FadeInDown.duration(600)} className="flex-row items-center">
             <Pressable
-              onPress={() => router.push('/(tabs)/')}
+              onPress={() => navigateWithHaptic('/(tabs)/')}
               className="mr-4 p-2 -ml-2"
             >
               <ArrowLeft size={24} color={colors.neutral[800]} />
@@ -118,7 +155,7 @@ export default function SyllabusScreen() {
           </Text>
           <View className="flex-row gap-3">
             <Pressable
-              onPress={() => Linking.openURL(videoLinks.part1)}
+              onPress={() => openVideo(videoLinks.part1)}
               className="flex-1 flex-row items-center p-4 rounded-2xl"
               style={{ backgroundColor: colors.gold[500] }}
             >
@@ -140,7 +177,7 @@ export default function SyllabusScreen() {
               <Play size={18} color="white" fill="white" />
             </Pressable>
             <Pressable
-              onPress={() => Linking.openURL(videoLinks.part2)}
+              onPress={() => openVideo(videoLinks.part2)}
               className="flex-1 flex-row items-center p-4 rounded-2xl"
               style={{ backgroundColor: colors.gold[500] }}
             >
@@ -176,7 +213,7 @@ export default function SyllabusScreen() {
             {categories.map((category, index) => (
               <Pressable
                 key={category}
-                onPress={() => setSelectedCategory(category)}
+                onPress={() => handleCategoryPress(category)}
                 className="mr-2 px-4 py-2 rounded-full"
                 style={{
                   backgroundColor: selectedCategory === category ? colors.primary[500] : 'white',
