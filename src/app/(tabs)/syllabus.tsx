@@ -8,6 +8,7 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
 import * as Haptics from 'expo-haptics';
+import * as WebBrowser from 'expo-web-browser';
 
 import { colors } from '@/lib/theme';
 import { mockModules, resourceLinks, videoLinks } from '@/lib/mockData';
@@ -61,13 +62,12 @@ export default function SyllabusScreen() {
     Linking.openURL(resourceLinks.syllabus);
   };
 
-  const handleModulePress = (module: Module) => {
+  const handleModulePress = async (module: Module) => {
     triggerHaptic();
     // Open the specific PDF link for this module if available, otherwise use default syllabus
     const url = module.pdfLink ?? resourceLinks.syllabus;
     console.log('Opening URL:', url);
-    console.log('Module pdfLink:', module.pdfLink);
-    Linking.openURL(url);
+    await WebBrowser.openBrowserAsync(url);
   };
 
   const handleCategoryPress = (category: string) => {
