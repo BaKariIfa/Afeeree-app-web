@@ -154,30 +154,19 @@ export default function HomeScreen() {
 
         {/* Welcome Section - Simplified */}
         <Animated.View entering={FadeInDown.duration(600).delay(200)} className="px-6 mt-6">
-          <View className="flex-row justify-between items-center">
-            <View>
-              <Text
-                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
-                className="text-sm"
-              >
-                Welcome back
-              </Text>
-              <Text
-                style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
-                className="text-xl"
-              >
-                {mockUser.name}
-              </Text>
-            </View>
-            <View className="flex-row items-center">
-              <Text
-                style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[400] }}
-                className="text-xs mr-2"
-              >
-                {mockUser.certificationLevel}
-              </Text>
-              <Trophy size={20} color={colors.gold[500]} />
-            </View>
+          <View>
+            <Text
+              style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+              className="text-sm"
+            >
+              Welcome back
+            </Text>
+            <Text
+              style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+              className="text-xl"
+            >
+              {mockUser.name}
+            </Text>
           </View>
         </Animated.View>
 
