@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, RefreshControl } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -19,7 +19,9 @@ import {
   Star,
   Target,
   Flame,
-  Trophy
+  Trophy,
+  Crown,
+  Lock
 } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
@@ -28,6 +30,8 @@ import * as Haptics from 'expo-haptics';
 
 import { colors } from '@/lib/theme';
 import { mockUser, mockModules, mockAssignments } from '@/lib/mockData';
+import { hasEntitlement } from '@/lib/revenuecatClient';
+import { Paywall } from '@/components/Paywall';
 
 const triggerHaptic = () => {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -37,16 +41,40 @@ export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
+
+  useEffect(() => {
+    checkPremiumStatus();
+  }, []);
+
+  const checkPremiumStatus = async () => {
+    const result = await hasEntitlement('premium');
+    if (result.ok) {
+      setIsPremium(result.data);
+    }
+  };
 
   const onRefresh = () => {
     triggerHaptic();
     setRefreshing(true);
+    checkPremiumStatus();
     setTimeout(() => setRefreshing(false), 1500);
   };
 
   const navigateWithHaptic = (route: string) => {
     triggerHaptic();
     router.push(route as any);
+  };
+
+  const handleSettingsPress = () => {
+    triggerHaptic();
+    if (isPremium) {
+      // Navigate to settings (you can create a settings screen later)
+      console.log('Opening settings...');
+    } else {
+      setShowPaywall(true);
+    }
   };
 
   const [fontsLoaded] = useFonts({
@@ -125,7 +153,12 @@ export default function ProfileScreen() {
   const earnedCount = achievements.filter(a => a.earned).length;
 
   const menuItems = [
-    { icon: <Settings size={22} color={colors.neutral[600]} />, label: 'Account Settings', onPress: () => triggerHaptic() },
+    {
+      icon: <Settings size={22} color={colors.neutral[600]} />,
+      label: 'Account Settings',
+      onPress: handleSettingsPress,
+      isPremium: true
+    },
     { icon: <HelpCircle size={22} color={colors.neutral[600]} />, label: 'Help & Support', onPress: () => triggerHaptic() },
     { icon: <LogOut size={22} color={colors.error} />, label: 'Sign Out', onPress: () => triggerHaptic(), isDestructive: true },
   ];
@@ -448,7 +481,19 @@ export default function ProfileScreen() {
                 >
                   {item.label}
                 </Text>
-                <ChevronRight size={20} color={colors.neutral[400]} />
+                {item.isPremium && !isPremium && (
+                  <View className="flex-row items-center mr-2">
+                    <Crown size={14} color={colors.gold[500]} />
+                    <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.gold[500] }} className="text-xs ml-1">
+                      Premium
+                    </Text>
+                  </View>
+                )}
+                {item.isPremium && !isPremium ? (
+                  <Lock size={18} color={colors.neutral[400]} />
+                ) : (
+                  <ChevronRight size={20} color={colors.neutral[400]} />
+                )}
               </Pressable>
             ))}
           </View>
@@ -464,6 +509,13 @@ export default function ProfileScreen() {
           </Text>
         </Animated.View>
       </ScrollView>
+
+      {/* Paywall Modal */}
+      <Paywall
+        visible={showPaywall}
+        onClose={() => setShowPaywall(false)}
+        onPurchaseSuccess={checkPremiumStatus}
+      />
     </View>
   );
 }
