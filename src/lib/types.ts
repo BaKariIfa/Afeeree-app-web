@@ -8,6 +8,7 @@ export interface User {
   enrollmentDate: string;
   certificationLevel: 'Foundation' | 'Intermediate' | 'Advanced' | 'Master';
   progress: number; // 0-100
+  role: 'student' | 'instructor' | 'admin';
 }
 
 export interface Module {

@@ -47,6 +47,7 @@ export const mockUser: User = {
   enrollmentDate: '2024-01-15',
   certificationLevel: 'Foundation',
   progress: 35,
+  role: 'student',
 };
 
 // Use local image for all modules
