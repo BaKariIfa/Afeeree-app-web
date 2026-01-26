@@ -351,6 +351,111 @@ export default function HomeScreen() {
               ))}
           </Animated.View>
         )}
+
+        {/* Developer & Legacy Holder Biography */}
+        <Animated.View entering={FadeInDown.duration(600).delay(450)} className="px-6 mt-8 mb-4">
+          <Text
+            style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+            className="text-xl mb-4"
+          >
+            Developer & Legacy Holder
+          </Text>
+          <View
+            className="rounded-2xl overflow-hidden"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 4 }}
+          >
+            {/* Header with photo and name */}
+            <LinearGradient
+              colors={[colors.primary[500], colors.primary[600]]}
+              style={{ padding: 20, alignItems: 'center' }}
+            >
+              <View
+                className="rounded-full overflow-hidden"
+                style={{ width: 120, height: 120, borderWidth: 3, borderColor: colors.gold[400] }}
+              >
+                <Image
+                  source={{ uri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face' }}
+                  style={{ width: '100%', height: '100%' }}
+                  contentFit="cover"
+                />
+              </View>
+              <Text
+                style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.gold[300] }}
+                className="text-2xl mt-4 text-center"
+              >
+                BaKari Ifasegun Lindsay
+              </Text>
+              <Text
+                style={{ fontFamily: 'DMSans_500Medium', color: 'rgba(255,255,255,0.8)' }}
+                className="text-sm mt-1 text-center"
+              >
+                Dancer • Choreographer • Educator • Researcher
+              </Text>
+            </LinearGradient>
+
+            {/* Biography content */}
+            <View className="p-5">
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[700], lineHeight: 22 }}
+                className="text-sm"
+              >
+                Born in Trinidad, West Indies, BaKari Ifasegun Lindsay has honed his diverse talents over more than three decades as a dancer, choreographer, singer, musician, costume designer/maker, and researcher. His work is deeply rooted in African and Caribbean traditions while embracing contemporary performance practices.
+              </Text>
+
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[700], lineHeight: 22 }}
+                className="text-sm mt-4"
+              >
+                Trained at the Alvin Ailey American Dance Theatre and The School of Toronto Dance Theatre (on scholarship), BaKari further enriched his craft under the guidance of master teachers from the Caribbean and Africa. He holds a Master's Degree in Dance Ethnology, a Bachelor's in Education from York University, Canada, and a Craftsman Diploma in Style and Design.
+              </Text>
+
+              <View className="mt-4 p-4 rounded-xl" style={{ backgroundColor: colors.gold[50] }}>
+                <Text
+                  style={{ fontFamily: 'DMSans_600SemiBold', color: colors.primary[500] }}
+                  className="text-sm mb-2"
+                >
+                  A-Feeree – The Physical Language
+                </Text>
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600], lineHeight: 20 }}
+                  className="text-xs"
+                >
+                  His master's thesis led to the development of A-Feeree – The Physical Language, an innovative training method that underpins his approach to Africanist movement aesthetics.
+                </Text>
+              </View>
+
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[700], lineHeight: 22 }}
+                className="text-sm mt-4"
+              >
+                A co-founder of the Collective Of Black Artists (COBA), BaKari has performed with renowned companies such as the Danny Grossman Dance Company, Jubilation Dance Co., Toronto Dance Theatre, and Artcho Danse Repertoire. Notably, he was an original cast member of Disney's The Lion King and was nominated for a Dora Mavor Moore Award for his solo performance in Ancestral Calling.
+              </Text>
+
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[700], lineHeight: 22 }}
+                className="text-sm mt-4"
+              >
+                As a choreographer, he has created works for Les Enfants Dance Company, Entre Deux, The National Dance Company of Trinidad and Tobago, and COBA. His creative output includes choreographing dance films like "Rites," "Ase," and "Orisha Suite," and directing productions such as D'bi Young Anitafrika in "Esu Crossing the Middle Passage," which won a Dora Mavor Moore Award.
+              </Text>
+
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[700], lineHeight: 22 }}
+                className="text-sm mt-4"
+              >
+                BaKari has shared his expertise at institutions including Toronto Metropolitan University (formerly Ryerson University), York University, Humber College, and the Lester B. Pearson School for the Performing Arts. Currently, he serves as a vice-principal with the Toronto District School Board, where he passionately advocates for equity and arts education.
+              </Text>
+
+              <View className="mt-5 pt-4" style={{ borderTopWidth: 1, borderTopColor: colors.neutral[200] }}>
+                <Text
+                  style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.primary[500], fontStyle: 'italic', lineHeight: 24 }}
+                  className="text-base text-center"
+                >
+                  "By seamlessly merging tradition with innovation, BaKari Ifasegun Lindsay continues to redefine Africanist movement aesthetics on the global stage."
+                </Text>
+              </View>
+            </View>
+          </View>
+        </Animated.View>
       </ScrollView>
     </View>
   );
