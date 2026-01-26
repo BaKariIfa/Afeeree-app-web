@@ -451,6 +451,62 @@ export default function HomeScreen() {
           </View>
         </Animated.View>
       </ScrollView>
+
+      {/* Bottom Navigation Bar */}
+      <View
+        className="absolute bottom-0 left-0 right-0 flex-row justify-around items-center py-3"
+        style={{
+          backgroundColor: 'white',
+          paddingBottom: insets.bottom + 8,
+          borderTopWidth: 1,
+          borderTopColor: colors.neutral[200],
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 8,
+          elevation: 8,
+        }}
+      >
+        <Pressable
+          onPress={() => triggerHaptic()}
+          className="items-center py-2 px-4"
+        >
+          <Home size={24} color={colors.primary[500]} />
+          <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.primary[500] }} className="text-xs mt-1">
+            Home
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => navigateWithHaptic('/(tabs)/syllabus')}
+          className="items-center py-2 px-4"
+        >
+          <Library size={24} color={colors.neutral[400]} />
+          <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[400] }} className="text-xs mt-1">
+            Syllabus
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => navigateWithHaptic('/(tabs)/assignments')}
+          className="items-center py-2 px-4"
+        >
+          <FileText size={24} color={colors.neutral[400]} />
+          <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[400] }} className="text-xs mt-1">
+            Tasks
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => navigateWithHaptic('/(tabs)/profile')}
+          className="items-center py-2 px-4"
+        >
+          <User size={24} color={colors.neutral[400]} />
+          <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[400] }} className="text-xs mt-1">
+            Profile
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
