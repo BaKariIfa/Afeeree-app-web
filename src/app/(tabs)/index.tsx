@@ -55,17 +55,11 @@ export default function HomeScreen() {
             entering={FadeInDown.duration(600)}
             className="items-center mb-4"
           >
-            <View
-              style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: colors.gold[400], alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Text style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.primary[600], fontSize: 28 }}>A</Text>
-            </View>
-            <Text
-              style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.gold[300] }}
-              className="text-lg mt-3 text-center"
-            >
-              AFeeree Certification Program
-            </Text>
+            <Image
+              source={require('../../../public/image-1769399524.png')}
+              style={{ width: 100, height: 100, borderRadius: 50 }}
+              contentFit="cover"
+            />
           </Animated.View>
 
           <Animated.View
@@ -200,7 +194,7 @@ export default function HomeScreen() {
               onPress={() => router.push('/(tabs)/syllabus')}
             >
               <Image
-                source={{ uri: 'https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?w=800' }}
+                source={require('../../../public/image-1769399578.jpeg')}
                 style={{ width: '100%', height: 160 }}
                 contentFit="cover"
               />
