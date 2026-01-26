@@ -134,7 +134,7 @@ export default function SyllabusScreen() {
                   style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[100] }}
                   className="text-xs"
                 >
-                  Kata Demos
+                  Kata & Context
                 </Text>
               </View>
               <Play size={18} color="white" fill="white" />
@@ -156,7 +156,7 @@ export default function SyllabusScreen() {
                   style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[100] }}
                   className="text-xs"
                 >
-                  Kata Demos
+                  Kata & Context
                 </Text>
               </View>
               <Play size={18} color="white" fill="white" />
