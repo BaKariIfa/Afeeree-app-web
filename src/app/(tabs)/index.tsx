@@ -352,14 +352,8 @@ export default function HomeScreen() {
           </Animated.View>
         )}
 
-        {/* Developer & Legacy Holder Biography */}
+        {/* Biography */}
         <Animated.View entering={FadeInDown.duration(600).delay(450)} className="px-6 mt-8 mb-4">
-          <Text
-            style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
-            className="text-xl mb-4"
-          >
-            Director & Legacy Keeper
-          </Text>
           <View
             className="rounded-2xl overflow-hidden"
             style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 4 }}
@@ -386,14 +380,8 @@ export default function HomeScreen() {
                 BaKari IfaSegun Lindsay
               </Text>
               <Text
-                style={{ fontFamily: 'DMSans_500Medium', color: 'rgba(255,255,255,0.8)' }}
-                className="text-sm mt-1 text-center"
-              >
-                Dancer • Choreographer • Educator • Researcher
-              </Text>
-              <Text
                 style={{ fontFamily: 'DMSans_500Medium', color: colors.gold[400] }}
-                className="text-xs mt-2 text-center"
+                className="text-sm mt-2 text-center"
               >
                 Director & Legacy Keeper
               </Text>
