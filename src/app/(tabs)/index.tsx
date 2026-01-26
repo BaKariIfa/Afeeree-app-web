@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { BookOpen, Trophy, Clock, ChevronRight, Bell } from 'lucide-react-native';
+import { BookOpen, Trophy, Clock, ChevronRight, Bell, Home, FileText, User, Library } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
@@ -49,7 +49,7 @@ export default function HomeScreen() {
         <View style={{ position: 'relative' }}>
           <ImageBackground
             source={require('../../../public/image-1769399578.jpeg')}
-            style={{ paddingTop: insets.top + 16, paddingBottom: 80, paddingHorizontal: 24 }}
+            style={{ paddingTop: insets.top + 16, paddingBottom: 24, paddingHorizontal: 24 }}
           >
             <LinearGradient
               colors={['rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.7)']}
@@ -80,16 +80,16 @@ export default function HomeScreen() {
             {/* Logo */}
             <Animated.View
               entering={FadeInDown.duration(600).delay(100)}
-              className="items-center mt-4"
+              className="items-center mt-2"
             >
               <Image
                 source={require('../../../public/image-1769399524.png')}
-                style={{ width: 120, height: 120, borderRadius: 60 }}
+                style={{ width: 100, height: 100, borderRadius: 50 }}
                 contentFit="cover"
               />
               <Text
                 style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.gold[300] }}
-                className="text-xl mt-4 text-center"
+                className="text-lg mt-3 text-center"
               >
                 AFeeree Certification Program
               </Text>
@@ -103,52 +103,57 @@ export default function HomeScreen() {
           </ImageBackground>
         </View>
 
-        {/* Quick Stats - Moved up */}
+        {/* Menu Bar - Navigation Icons */}
         <Animated.View
-          entering={FadeInDown.duration(600).delay(200)}
-          className="flex-row px-6 -mt-10"
+          entering={FadeInDown.duration(600).delay(150)}
+          className="mx-6 -mt-5 rounded-2xl p-3"
+          style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12, elevation: 4 }}
         >
-          <View
-            className="flex-1 mr-3 p-4 rounded-2xl"
-            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
-          >
-            <View className="flex-row items-center">
+          <View className="flex-row justify-around items-center">
+            <Pressable
+              className="items-center py-2 px-4"
+              onPress={() => router.push('/(tabs)/')}
+            >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.primary[100] }}>
-                <BookOpen size={20} color={colors.primary[500]} />
+                <Home size={20} color={colors.primary[500]} />
               </View>
-              <View className="ml-3">
-                <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }} className="text-xl">
-                  {mockModules.filter(m => !m.isLocked).length}
-                </Text>
-                <Text style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }} className="text-xs">
-                  Active Modules
-                </Text>
-              </View>
-            </View>
-          </View>
+              <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.primary[500] }} className="text-xs mt-1">Home</Text>
+            </Pressable>
 
-          <View
-            className="flex-1 p-4 rounded-2xl"
-            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
-          >
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.gold[100] }}>
-                <Clock size={20} color={colors.gold[600]} />
+            <Pressable
+              className="items-center py-2 px-4"
+              onPress={() => router.push('/(tabs)/syllabus')}
+            >
+              <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
+                <BookOpen size={20} color={colors.neutral[500]} />
               </View>
-              <View className="ml-3">
-                <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }} className="text-xl">
-                  {pendingAssignments}
-                </Text>
-                <Text style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }} className="text-xs">
-                  Due Soon
-                </Text>
+              <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[500] }} className="text-xs mt-1">Syllabus</Text>
+            </Pressable>
+
+            <Pressable
+              className="items-center py-2 px-4"
+              onPress={() => router.push('/(tabs)/assignments')}
+            >
+              <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
+                <FileText size={20} color={colors.neutral[500]} />
               </View>
-            </View>
+              <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[500] }} className="text-xs mt-1">Tasks</Text>
+            </Pressable>
+
+            <Pressable
+              className="items-center py-2 px-4"
+              onPress={() => router.push('/(tabs)/two')}
+            >
+              <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
+                <Library size={20} color={colors.neutral[500]} />
+              </View>
+              <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[500] }} className="text-xs mt-1">Resources</Text>
+            </Pressable>
           </View>
         </Animated.View>
 
         {/* Welcome & Progress Section */}
-        <Animated.View entering={FadeInDown.duration(600).delay(250)} className="px-6 mt-6">
+        <Animated.View entering={FadeInDown.duration(600).delay(200)} className="px-6 mt-6">
           <View className="flex-row justify-between items-center mb-2">
             <View>
               <Text
@@ -206,7 +211,7 @@ export default function HomeScreen() {
 
         {/* Continue Learning Section */}
         {inProgressModule && (
-          <Animated.View entering={FadeInDown.duration(600).delay(300)} className="px-6 mt-6">
+          <Animated.View entering={FadeInDown.duration(600).delay(250)} className="px-6 mt-6">
             <Text
               style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
               className="text-xl mb-4"
@@ -266,9 +271,53 @@ export default function HomeScreen() {
           </Animated.View>
         )}
 
+        {/* Quick Stats - Moved to bottom */}
+        <Animated.View
+          entering={FadeInDown.duration(600).delay(300)}
+          className="flex-row px-6 mt-6"
+        >
+          <View
+            className="flex-1 mr-3 p-4 rounded-2xl"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
+          >
+            <View className="flex-row items-center">
+              <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.primary[100] }}>
+                <BookOpen size={20} color={colors.primary[500]} />
+              </View>
+              <View className="ml-3">
+                <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }} className="text-xl">
+                  {mockModules.filter(m => !m.isLocked).length}
+                </Text>
+                <Text style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }} className="text-xs">
+                  Active Modules
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <View
+            className="flex-1 p-4 rounded-2xl"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
+          >
+            <View className="flex-row items-center">
+              <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.gold[100] }}>
+                <Clock size={20} color={colors.gold[600]} />
+              </View>
+              <View className="ml-3">
+                <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }} className="text-xl">
+                  {pendingAssignments}
+                </Text>
+                <Text style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }} className="text-xs">
+                  Due Soon
+                </Text>
+              </View>
+            </View>
+          </View>
+        </Animated.View>
+
         {/* Upcoming Assignments */}
         {mockAssignments.length > 0 && (
-          <Animated.View entering={FadeInDown.duration(600).delay(400)} className="px-6 mt-6">
+          <Animated.View entering={FadeInDown.duration(600).delay(350)} className="px-6 mt-6">
             <View className="flex-row justify-between items-center mb-4">
               <Text
                 style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
@@ -296,7 +345,7 @@ export default function HomeScreen() {
               .map((assignment, index) => (
                 <Animated.View
                   key={assignment.id}
-                  entering={FadeInRight.duration(500).delay(450 + index * 100)}
+                  entering={FadeInRight.duration(500).delay(400 + index * 100)}
                 >
                   <Pressable
                     className="mb-3 p-4 rounded-xl flex-row items-center"
