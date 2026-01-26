@@ -37,7 +37,7 @@ export const Paywall: React.FC<PaywallProps> = ({
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
-  const [monthlyPackage, setMonthlyPackage] = useState<PurchasesPackage | null>(null);
+  const [lifetimePackage, setLifetimePackage] = useState<PurchasesPackage | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const [fontsLoaded] = useFonts({
@@ -65,10 +65,10 @@ export const Paywall: React.FC<PaywallProps> = ({
 
     const result = await getOfferings();
     if (result.ok && result.data.current) {
-      const monthly = result.data.current.availablePackages.find(
-        (pkg) => pkg.identifier === '$rc_monthly'
+      const lifetime = result.data.current.availablePackages.find(
+        (pkg) => pkg.identifier === '$rc_lifetime'
       );
-      setMonthlyPackage(monthly || null);
+      setLifetimePackage(lifetime || null);
     } else {
       setError('Unable to load subscription options.');
     }
@@ -76,13 +76,13 @@ export const Paywall: React.FC<PaywallProps> = ({
   };
 
   const handlePurchase = async () => {
-    if (!monthlyPackage) return;
+    if (!lifetimePackage) return;
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setPurchasing(true);
     setError(null);
 
-    const result = await purchasePackage(monthlyPackage);
+    const result = await purchasePackage(lifetimePackage);
     setPurchasing(false);
 
     if (result.ok) {
@@ -209,7 +209,7 @@ export const Paywall: React.FC<PaywallProps> = ({
         <Animated.View entering={FadeInUp.duration(500).delay(200)} className="px-6 pb-10">
           {loading ? (
             <ActivityIndicator size="large" color={colors.primary[500]} />
-          ) : monthlyPackage ? (
+          ) : lifetimePackage ? (
             <>
               {/* Price Card */}
               <View
@@ -223,21 +223,21 @@ export const Paywall: React.FC<PaywallProps> = ({
                       style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
                       className="text-lg ml-2"
                     >
-                      Monthly
+                      Lifetime Access
                     </Text>
                   </View>
                   <Text
                     style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.primary[500] }}
                     className="text-2xl"
                   >
-                    {monthlyPackage.product.priceString}
+                    {lifetimePackage.product.priceString}
                   </Text>
                 </View>
                 <Text
                   style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
                   className="text-sm mt-1"
                 >
-                  per month, cancel anytime
+                  one-time purchase, access forever
                 </Text>
               </View>
 
@@ -257,7 +257,7 @@ export const Paywall: React.FC<PaywallProps> = ({
                     style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
                     className="text-lg"
                   >
-                    Subscribe Now
+                    Purchase Now
                   </Text>
                 )}
               </Pressable>
