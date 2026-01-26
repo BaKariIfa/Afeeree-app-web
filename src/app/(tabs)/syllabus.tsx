@@ -67,7 +67,7 @@ export default function SyllabusScreen() {
     // Open the specific PDF link for this module if available, otherwise use default syllabus
     const url = module.pdfLink ?? resourceLinks.syllabus;
     console.log('Opening URL:', url);
-    await WebBrowser.openBrowserAsync(url);
+    Linking.openURL(url);
   };
 
   const handleCategoryPress = (category: string) => {
