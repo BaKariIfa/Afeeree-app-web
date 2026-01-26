@@ -391,6 +391,12 @@ export default function HomeScreen() {
               >
                 Dancer • Choreographer • Educator • Researcher
               </Text>
+              <Text
+                style={{ fontFamily: 'DMSans_500Medium', color: colors.gold[400] }}
+                className="text-xs mt-2 text-center"
+              >
+                Director & Legacy Keeper
+              </Text>
             </LinearGradient>
 
             {/* Biography content */}
