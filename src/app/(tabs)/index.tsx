@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, ScrollView, Pressable, ImageBackground } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, ScrollView, Pressable, ImageBackground, RefreshControl } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,13 +9,29 @@ import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
 import * as SplashScreen from 'expo-splash-screen';
+import * as Haptics from 'expo-haptics';
 
 import { colors } from '@/lib/theme';
 import { mockUser, mockModules, mockAssignments, mockNotifications } from '@/lib/mockData';
 
+// Helper function for haptic feedback on button press
+const triggerHaptic = () => {
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+};
+
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    triggerHaptic();
+    setRefreshing(true);
+    // Simulate a refresh - in a real app this would fetch new data
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1500);
+  }, []);
 
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
@@ -38,12 +54,26 @@ export default function HomeScreen() {
   const unreadNotifications = mockNotifications.filter(n => !n.read).length;
   const inProgressModule = mockModules.find(m => m.completedLessons > 0 && m.completedLessons < m.lessons);
 
+  // Navigation with haptic feedback
+  const navigateWithHaptic = (route: string) => {
+    triggerHaptic();
+    router.push(route as any);
+  };
+
   return (
     <View className="flex-1" style={{ backgroundColor: colors.cream[100] }}>
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary[500]}
+            colors={[colors.primary[500]]}
+          />
+        }
       >
         {/* Header with Background Image */}
         <View style={{ position: 'relative' }}>
@@ -63,7 +93,7 @@ export default function HomeScreen() {
             >
               <Pressable
                 className="relative p-2"
-                onPress={() => {}}
+                onPress={() => triggerHaptic()}
               >
                 <Bell size={24} color="white" />
                 {unreadNotifications > 0 && (
@@ -112,7 +142,7 @@ export default function HomeScreen() {
           <View className="flex-row justify-around items-center">
             <Pressable
               className="items-center py-2 px-4"
-              onPress={() => router.push('/(tabs)/')}
+              onPress={() => navigateWithHaptic('/(tabs)/')}
             >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.primary[100] }}>
                 <Home size={20} color={colors.primary[500]} />
@@ -122,7 +152,7 @@ export default function HomeScreen() {
 
             <Pressable
               className="items-center py-2 px-4"
-              onPress={() => router.push('/(tabs)/syllabus')}
+              onPress={() => navigateWithHaptic('/(tabs)/syllabus')}
             >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
                 <BookOpen size={20} color={colors.neutral[500]} />
@@ -132,7 +162,7 @@ export default function HomeScreen() {
 
             <Pressable
               className="items-center py-2 px-4"
-              onPress={() => router.push('/(tabs)/assignments')}
+              onPress={() => navigateWithHaptic('/(tabs)/assignments')}
             >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
                 <FileText size={20} color={colors.neutral[500]} />
@@ -142,7 +172,7 @@ export default function HomeScreen() {
 
             <Pressable
               className="items-center py-2 px-4"
-              onPress={() => router.push('/(tabs)/two')}
+              onPress={() => navigateWithHaptic('/(tabs)/two')}
             >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
                 <Library size={20} color={colors.neutral[500]} />
@@ -182,7 +212,7 @@ export default function HomeScreen() {
             <Pressable
               className="rounded-2xl overflow-hidden"
               style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 3 }}
-              onPress={() => router.push('/(tabs)/syllabus')}
+              onPress={() => navigateWithHaptic('/(tabs)/syllabus')}
             >
               <View className="p-4">
                 <View className="flex-row items-center mb-2">
@@ -244,7 +274,7 @@ export default function HomeScreen() {
               </Text>
               <Pressable
                 className="flex-row items-center"
-                onPress={() => router.push('/(tabs)/assignments')}
+                onPress={() => navigateWithHaptic('/(tabs)/assignments')}
               >
                 <Text
                   style={{ fontFamily: 'DMSans_500Medium', color: colors.primary[500] }}
@@ -267,7 +297,7 @@ export default function HomeScreen() {
                   <Pressable
                     className="mb-3 p-4 rounded-xl flex-row items-center"
                     style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 6, elevation: 2 }}
-                    onPress={() => router.push('/(tabs)/assignments')}
+                    onPress={() => navigateWithHaptic('/(tabs)/assignments')}
                   >
                     <View
                       className="w-12 h-12 rounded-xl items-center justify-center"
