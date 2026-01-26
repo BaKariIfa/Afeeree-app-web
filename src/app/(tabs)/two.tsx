@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FileText, BookOpen, Music, ExternalLink } from 'lucide-react-native';
+import { FileText, BookOpen, Music, ExternalLink, Globe, MapPin } from 'lucide-react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
@@ -25,12 +25,15 @@ export default function ResourcesScreen() {
   }
 
   const openNotationPDF = () => {
-    // Opens in Google Drive viewer - view only, no download
     Linking.openURL(resourceLinks.notationImages);
   };
 
   const openSyllabus = () => {
     Linking.openURL(resourceLinks.syllabus);
+  };
+
+  const openCulturalResearch = () => {
+    Linking.openURL(resourceLinks.culturalResearch);
   };
 
   return (
@@ -112,7 +115,7 @@ export default function ResourcesScreen() {
         {/* Syllabus Document */}
         <Animated.View entering={FadeInDown.duration(600).delay(150)} className="px-6">
           <Pressable
-            className="rounded-2xl p-4 flex-row items-center mb-6"
+            className="rounded-2xl p-4 flex-row items-center mb-4"
             style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
             onPress={openSyllabus}
           >
@@ -138,6 +141,85 @@ export default function ResourcesScreen() {
             </View>
             <ExternalLink size={20} color={colors.neutral[400]} />
           </Pressable>
+        </Animated.View>
+
+        {/* Cultural Context & Research Section */}
+        <Animated.View entering={FadeInDown.duration(600).delay(175)} className="px-6">
+          <Text
+            style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+            className="text-xl mb-2"
+          >
+            Cultural Context & Research
+          </Text>
+          <Text
+            style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600] }}
+            className="text-sm mb-4"
+          >
+            AFeeree is grounded in ethnographic research conducted across the African diaspora. This document explores the cultural foundations and research methodology behind the practice.
+          </Text>
+
+          <Pressable
+            className="rounded-2xl overflow-hidden mb-6"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 3 }}
+            onPress={openCulturalResearch}
+          >
+            <LinearGradient
+              colors={[colors.gold[500], colors.gold[700]]}
+              style={{ padding: 20, flexDirection: 'row', alignItems: 'center' }}
+            >
+              <View
+                className="w-14 h-14 rounded-xl items-center justify-center"
+                style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+              >
+                <Globe size={28} color="white" />
+              </View>
+              <View className="flex-1 ml-4">
+                <Text
+                  style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
+                  className="text-lg"
+                >
+                  Cultural Research Document
+                </Text>
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: 'rgba(255,255,255,0.8)' }}
+                  className="text-sm mt-1"
+                >
+                  Ethnographic foundations of AFeeree
+                </Text>
+              </View>
+              <ExternalLink size={24} color="white" />
+            </LinearGradient>
+          </Pressable>
+
+          {/* Research Locations */}
+          <View
+            className="rounded-2xl p-4 mb-6"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
+          >
+            <Text
+              style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+              className="text-base mb-3"
+            >
+              Research Locations
+            </Text>
+            {['Senegal', 'The Gambia', 'Trinidad and Tobago', 'Haiti', 'North America'].map((location, index) => (
+              <View key={location} className="flex-row items-center mb-2">
+                <MapPin size={16} color={colors.gold[600]} />
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600] }}
+                  className="text-sm ml-2"
+                >
+                  {location}
+                </Text>
+              </View>
+            ))}
+            <Text
+              style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+              className="text-xs mt-2 italic"
+            >
+              Under the mentorship of Griot Alassane Sarr
+            </Text>
+          </View>
         </Animated.View>
 
         {/* Seven Foundational Principles */}

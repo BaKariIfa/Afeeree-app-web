@@ -7,6 +7,7 @@ import type { User, Module, Assignment, Notification } from './types';
 export const resourceLinks = {
   notationImages: 'https://drive.google.com/file/d/1pq70_m7CfmQXsGW3qwstRpEaPriw2Buz/view?usp=drivesdk',
   syllabus: 'https://drive.google.com/file/d/1HX8JGOOEn-6WvXHC4PKOhfM3u551oClD/view?usp=drivesdk',
+  culturalResearch: 'https://drive.google.com/file/d/1SsZkzHSWkQygnpixWrVSmoALOJIWxw7w/view?usp=drivesdk',
 };
 
 // Seven Foundational Principles from Asante's African Culture Framework
