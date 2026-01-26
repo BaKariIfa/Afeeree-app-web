@@ -162,32 +162,6 @@ export const mockModules: Module[] = [
     isLocked: true,
     category: 'Theory',
   },
-  {
-    id: '10',
-    title: 'Teaching AFeeree Methodology',
-    description: 'Learn to teach using proper pedagogical approaches including prerequisites, safety guidelines, warm-up/cool-down, and class structure.',
-    notationRef: 'Teaching Guide, Pages 37-40',
-    pdfPage: 37,
-    localImage: danceClassImage,
-    duration: '5 weeks',
-    lessons: 12,
-    completedLessons: 0,
-    isLocked: true,
-    category: 'Teaching Practice',
-  },
-  {
-    id: '11',
-    title: 'Cultural Research & Context',
-    description: 'Ethnographic research from Senegal, The Gambia, Trinidad and Tobago, Haiti, and North American communities under Griot Alassane Sarr.',
-    notationRef: 'Research Section, Pages 41-45',
-    pdfPage: 41,
-    localImage: danceClassImage,
-    duration: '4 weeks',
-    lessons: 8,
-    completedLessons: 0,
-    isLocked: true,
-    category: 'Research',
-  },
 ];
 
 export const mockAssignments: Assignment[] = [
