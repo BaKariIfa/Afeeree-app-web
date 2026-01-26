@@ -42,8 +42,9 @@ export default function SyllabusScreen() {
   };
 
   const handleModulePress = (module: Module) => {
-    // Open the syllabus PDF when tapping any module
-    Linking.openURL(resourceLinks.syllabus);
+    // Open the syllabus PDF at the specific page for this module
+    const pageParam = module.pdfPage ? `#page=${module.pdfPage}` : '';
+    Linking.openURL(resourceLinks.syllabus + pageParam);
   };
 
   return (
@@ -157,7 +158,7 @@ export default function SyllabusScreen() {
                   <View className="relative">
                     <Image
                       source={module.localImage || { uri: module.imageUrl }}
-                      style={{ width: 110, height: 140 }}
+                      style={{ width: 110, height: 160 }}
                       contentFit="cover"
                     />
                     {module.isLocked ? (
@@ -183,11 +184,11 @@ export default function SyllabusScreen() {
                   </View>
 
                   {/* Module Info */}
-                  <View className="flex-1 p-4 justify-between">
+                  <View className="flex-1 p-3 justify-between">
                     <View>
-                      <View className="flex-row items-center mb-2">
+                      <View className="flex-row items-center mb-1">
                         <View
-                          className="px-2 py-1 rounded-full"
+                          className="px-2 py-0.5 rounded-full"
                           style={{ backgroundColor: colors.primary[100] }}
                         >
                           <Text
@@ -200,17 +201,32 @@ export default function SyllabusScreen() {
                       </View>
                       <Text
                         style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
-                        className="text-base"
-                        numberOfLines={2}
+                        className="text-sm"
+                        numberOfLines={1}
                       >
                         {module.title}
                       </Text>
+                      <Text
+                        style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                        className="text-xs mt-1"
+                        numberOfLines={2}
+                      >
+                        {module.description}
+                      </Text>
+                      {module.notationRef && (
+                        <Text
+                          style={{ fontFamily: 'DMSans_500Medium', color: colors.gold[600] }}
+                          className="text-xs mt-1"
+                        >
+                          {module.notationRef}
+                        </Text>
+                      )}
                     </View>
 
                     <View>
                       {/* Duration and Lessons */}
                       <View className="flex-row items-center mt-2">
-                        <Clock size={14} color={colors.neutral[400]} />
+                        <Clock size={12} color={colors.neutral[400]} />
                         <Text
                           style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
                           className="text-xs ml-1"
@@ -218,7 +234,7 @@ export default function SyllabusScreen() {
                           {module.duration}
                         </Text>
                         <View className="mx-2 w-1 h-1 rounded-full" style={{ backgroundColor: colors.neutral[300] }} />
-                        <BookOpen size={14} color={colors.neutral[400]} />
+                        <BookOpen size={12} color={colors.neutral[400]} />
                         <Text
                           style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
                           className="text-xs ml-1"
@@ -229,7 +245,7 @@ export default function SyllabusScreen() {
 
                       {/* Progress Bar */}
                       {!module.isLocked && (
-                        <View className="mt-3 flex-row items-center">
+                        <View className="mt-2 flex-row items-center">
                           <View className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: colors.neutral[200] }}>
                             <View
                               className="h-full rounded-full"
@@ -251,8 +267,8 @@ export default function SyllabusScreen() {
                   </View>
 
                   {/* Arrow */}
-                  <View className="justify-center pr-3">
-                    <ChevronRight size={20} color={module.isLocked ? colors.neutral[300] : colors.neutral[400]} />
+                  <View className="justify-center pr-2">
+                    <ChevronRight size={18} color={module.isLocked ? colors.neutral[300] : colors.neutral[400]} />
                   </View>
                 </View>
               </Pressable>
