@@ -65,6 +65,8 @@ export default function SyllabusScreen() {
     triggerHaptic();
     // Open the specific PDF link for this module if available, otherwise use default syllabus
     const url = module.pdfLink ?? resourceLinks.syllabus;
+    console.log('Opening URL:', url);
+    console.log('Module pdfLink:', module.pdfLink);
     Linking.openURL(url);
   };
 
