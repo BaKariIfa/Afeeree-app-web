@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BookOpen, Clock, Lock, ChevronRight, Play } from 'lucide-react-native';
+import { BookOpen, Clock, Lock, ChevronRight, Play, FileText } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
 
 import { colors } from '@/lib/theme';
-import { mockModules } from '@/lib/mockData';
+import { mockModules, resourceLinks } from '@/lib/mockData';
 import type { Module } from '@/lib/types';
 
 const categories = ['All', 'Technique', 'Theory', 'Teaching Practice', 'Research'] as const;
@@ -37,6 +37,15 @@ export default function SyllabusScreen() {
     return Math.round((module.completedLessons / module.lessons) * 100);
   };
 
+  const openSyllabusPDF = () => {
+    Linking.openURL(resourceLinks.syllabus);
+  };
+
+  const handleModulePress = (module: Module) => {
+    // Open the syllabus PDF when tapping any module
+    Linking.openURL(resourceLinks.syllabus);
+  };
+
   return (
     <View className="flex-1" style={{ backgroundColor: colors.cream[100] }}>
       <ScrollView
@@ -61,6 +70,32 @@ export default function SyllabusScreen() {
             </Text>
           </Animated.View>
         </View>
+
+        {/* View Full Syllabus Button */}
+        <Animated.View entering={FadeInDown.duration(600).delay(50)} className="px-6 mb-4">
+          <Pressable
+            onPress={openSyllabusPDF}
+            className="flex-row items-center p-4 rounded-2xl"
+            style={{ backgroundColor: colors.primary[500] }}
+          >
+            <FileText size={24} color="white" />
+            <View className="flex-1 ml-3">
+              <Text
+                style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
+                className="text-base"
+              >
+                View Full Syllabus PDF
+              </Text>
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
+                className="text-sm"
+              >
+                Complete curriculum by BaKari Ifasegun Lindsay
+              </Text>
+            </View>
+            <ChevronRight size={20} color="white" />
+          </Pressable>
+        </Animated.View>
 
         {/* Category Filter */}
         <Animated.View entering={FadeInDown.duration(600).delay(100)}>
@@ -114,6 +149,7 @@ export default function SyllabusScreen() {
                   elevation: 3,
                   opacity: module.isLocked ? 0.7 : 1,
                 }}
+                onPress={() => handleModulePress(module)}
                 disabled={module.isLocked}
               >
                 <View className="flex-row">
