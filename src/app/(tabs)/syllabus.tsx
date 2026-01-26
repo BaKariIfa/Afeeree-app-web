@@ -67,7 +67,11 @@ export default function SyllabusScreen() {
     // Open the specific PDF link for this module if available, otherwise use default syllabus
     const url = module.pdfLink ?? resourceLinks.syllabus;
     console.log('Opening URL:', url);
-    Linking.openURL(url);
+    // Use WebBrowser to force opening in Safari instead of Google Drive app
+    await WebBrowser.openBrowserAsync(url, {
+      dismissButtonStyle: 'close',
+      presentationStyle: WebBrowser.WebBrowserPresentationStyle.FULL_SCREEN,
+    });
   };
 
   const handleCategoryPress = (category: string) => {
