@@ -152,9 +152,9 @@ export default function HomeScreen() {
           </View>
         </Animated.View>
 
-        {/* Welcome & Progress Section */}
+        {/* Welcome Section - Simplified */}
         <Animated.View entering={FadeInDown.duration(600).delay(200)} className="px-6 mt-6">
-          <View className="flex-row justify-between items-center mb-2">
+          <View className="flex-row justify-between items-center">
             <View>
               <Text
                 style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
@@ -169,42 +169,14 @@ export default function HomeScreen() {
                 {mockUser.name}
               </Text>
             </View>
-            <View className="items-center">
-              <Trophy size={24} color={colors.gold[500]} />
-            </View>
-          </View>
-
-          {/* Progress Card */}
-          <View
-            className="mt-3 rounded-2xl p-4"
-            style={{ backgroundColor: colors.primary[500] }}
-          >
-            <View className="flex-row justify-between items-center">
-              <View>
-                <Text
-                  style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
-                  className="text-base"
-                >
-                  {mockUser.certificationLevel} Level
-                </Text>
-                <Text
-                  style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
-                  className="text-sm mt-1"
-                >
-                  {mockUser.progress}% Complete
-                </Text>
-              </View>
-            </View>
-
-            {/* Progress Bar */}
-            <View className="mt-3 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-              <View
-                className="h-full rounded-full"
-                style={{
-                  backgroundColor: colors.gold[400],
-                  width: `${mockUser.progress}%`
-                }}
-              />
+            <View className="flex-row items-center">
+              <Text
+                style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[400] }}
+                className="text-xs mr-2"
+              >
+                {mockUser.certificationLevel}
+              </Text>
+              <Trophy size={20} color={colors.gold[500]} />
             </View>
           </View>
         </Animated.View>
@@ -271,7 +243,7 @@ export default function HomeScreen() {
           </Animated.View>
         )}
 
-        {/* Quick Stats - Moved to bottom */}
+        {/* Quick Stats - At bottom */}
         <Animated.View
           entering={FadeInDown.duration(600).delay(300)}
           className="flex-row px-6 mt-6"
