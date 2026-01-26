@@ -55,7 +55,7 @@ export const mockModules: Module[] = [
     localImage: danceClassImage,
     duration: '4 weeks',
     lessons: 8,
-    completedLessons: 5,
+    completedLessons: 0,
     isLocked: false,
     category: 'Technique',
   },
@@ -68,7 +68,7 @@ export const mockModules: Module[] = [
     localImage: danceClassImage,
     duration: '3 weeks',
     lessons: 6,
-    completedLessons: 2,
+    completedLessons: 0,
     isLocked: false,
     category: 'Technique',
   },
@@ -108,7 +108,7 @@ export const mockModules: Module[] = [
     duration: '5 weeks',
     lessons: 12,
     completedLessons: 0,
-    isLocked: true,
+    isLocked: false,
     category: 'Technique',
   },
   {
@@ -121,7 +121,7 @@ export const mockModules: Module[] = [
     duration: '4 weeks',
     lessons: 10,
     completedLessons: 0,
-    isLocked: true,
+    isLocked: false,
     category: 'Technique',
   },
   {
@@ -134,7 +134,7 @@ export const mockModules: Module[] = [
     duration: '3 weeks',
     lessons: 6,
     completedLessons: 0,
-    isLocked: true,
+    isLocked: false,
     category: 'Technique',
   },
   {
@@ -147,7 +147,7 @@ export const mockModules: Module[] = [
     duration: '6 weeks',
     lessons: 15,
     completedLessons: 0,
-    isLocked: true,
+    isLocked: false,
     category: 'Technique',
   },
   {
@@ -160,7 +160,7 @@ export const mockModules: Module[] = [
     duration: '4 weeks',
     lessons: 7,
     completedLessons: 0,
-    isLocked: true,
+    isLocked: false,
     category: 'Theory',
   },
 ];
