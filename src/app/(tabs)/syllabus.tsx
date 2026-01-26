@@ -63,9 +63,9 @@ export default function SyllabusScreen() {
 
   const handleModulePress = (module: Module) => {
     triggerHaptic();
-    // Open the syllabus PDF at the specific page for this module
-    const pageParam = module.pdfPage ? `#page=${module.pdfPage}` : '';
-    Linking.openURL(resourceLinks.syllabus + pageParam);
+    // Open the specific PDF link for this module if available, otherwise use default syllabus
+    const url = module.pdfLink ?? resourceLinks.syllabus;
+    Linking.openURL(url);
   };
 
   const handleCategoryPress = (category: string) => {

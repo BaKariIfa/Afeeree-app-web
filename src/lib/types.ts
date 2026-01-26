@@ -19,6 +19,7 @@ export interface Module {
   localImage?: any;
   notationRef?: string;
   pdfPage?: number;
+  pdfLink?: string;
   duration: string;
   lessons: number;
   completedLessons: number;
