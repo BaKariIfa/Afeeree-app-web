@@ -55,11 +55,11 @@ export default function HomeScreen() {
             entering={FadeInDown.duration(600)}
             className="items-center mb-4"
           >
-            <Image
-              source={require('../../../public/image-1769387653.png')}
-              style={{ width: 80, height: 80, borderRadius: 40 }}
-              contentFit="cover"
-            />
+            <View
+              style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: colors.gold[400], alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Text style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.primary[600], fontSize: 28 }}>A</Text>
+            </View>
             <Text
               style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.gold[300] }}
               className="text-lg mt-3 text-center"
@@ -200,7 +200,7 @@ export default function HomeScreen() {
               onPress={() => router.push('/(tabs)/syllabus')}
             >
               <Image
-                source={require('../../../public/image-1769387903.jpeg')}
+                source={{ uri: 'https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?w=800' }}
                 style={{ width: '100%', height: 160 }}
                 contentFit="cover"
               />
