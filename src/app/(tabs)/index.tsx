@@ -50,8 +50,20 @@ export default function HomeScreen() {
           colors={[colors.primary[500], colors.primary[600]]}
           style={{ paddingTop: insets.top + 16, paddingBottom: 32, paddingHorizontal: 24 }}
         >
+          {/* Logo */}
           <Animated.View
             entering={FadeInDown.duration(600)}
+            className="items-center mb-4"
+          >
+            <Image
+              source={require('../../../public/image-1769387653.png')}
+              style={{ width: 80, height: 80, borderRadius: 40 }}
+              contentFit="cover"
+            />
+          </Animated.View>
+
+          <Animated.View
+            entering={FadeInDown.duration(600).delay(100)}
             className="flex-row justify-between items-start"
           >
             <View className="flex-1">
