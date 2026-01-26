@@ -358,7 +358,7 @@ export default function HomeScreen() {
             style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
             className="text-xl mb-4"
           >
-            Developer & Legacy Holder
+            Director & Legacy Keeper
           </Text>
           <View
             className="rounded-2xl overflow-hidden"
