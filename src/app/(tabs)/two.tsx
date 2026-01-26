@@ -3,13 +3,13 @@ import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FileText, BookOpen, Music, ExternalLink, Globe, MapPin, ArrowLeft } from 'lucide-react-native';
+import { FileText, BookOpen, Music, ExternalLink, Globe, MapPin, ArrowLeft, Play } from 'lucide-react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
 
 import { colors } from '@/lib/theme';
-import { resourceLinks, foundationalPrinciples, mandinkaTerms } from '@/lib/mockData';
+import { resourceLinks, videoLinks, foundationalPrinciples, mandinkaTerms } from '@/lib/mockData';
 
 export default function ResourcesScreen() {
   const insets = useSafeAreaInsets();
@@ -240,6 +240,39 @@ export default function ResourcesScreen() {
           >
             Seven Foundational Principles
           </Text>
+
+          {/* Key Principles Video */}
+          <Pressable
+            className="rounded-2xl overflow-hidden mb-4"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 3 }}
+            onPress={() => Linking.openURL(videoLinks.keyPrinciples)}
+          >
+            <LinearGradient
+              colors={[colors.primary[500], colors.primary[700]]}
+              style={{ padding: 16, flexDirection: 'row', alignItems: 'center' }}
+            >
+              <View
+                className="w-12 h-12 rounded-full items-center justify-center"
+                style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+              >
+                <Play size={24} color="white" fill="white" />
+              </View>
+              <View className="flex-1 ml-4">
+                <Text
+                  style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
+                  className="text-base"
+                >
+                  Watch Key Principles Video
+                </Text>
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: 'rgba(255,255,255,0.8)' }}
+                  className="text-sm mt-0.5"
+                >
+                  Video explanation of the foundational concepts
+                </Text>
+              </View>
+            </LinearGradient>
+          </Pressable>
 
           {foundationalPrinciples.map((principle, index) => (
             <Animated.View

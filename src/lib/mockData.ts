@@ -14,6 +14,7 @@ export const resourceLinks = {
 export const videoLinks = {
   part1: 'https://vimeo.com/455075353',
   part2: 'https://vimeo.com/455075798',
+  keyPrinciples: 'https://vimeo.com/771232190',
 };
 
 // Seven Foundational Principles from Asante's African Culture Framework
