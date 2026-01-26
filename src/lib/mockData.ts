@@ -19,8 +19,8 @@ export const kataLinks = {
   balaLapi: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABy8JWcZY',
   semboo: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABy8JWcZw',
   flatBacks: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABy8JWcaY',
-  barente: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk',
-  sevenPrinciples: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk',
+  barente: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABy8JWcac',
+  sevenPrinciples: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABy8JWcbQ',
 };
 
 // Video Demonstrations
