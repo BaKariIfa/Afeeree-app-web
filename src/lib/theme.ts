@@ -1,56 +1,63 @@
 // AFeeree Certification Program Theme
-// Elegant, warm colors inspired by dance and movement
+// Warm earthy colors inspired by the AFeeree logo
 
 export const colors = {
-  // Primary - Deep Burgundy/Wine
+  // Primary - Rich Chocolate Brown (from logo center)
   primary: {
-    50: '#FDF2F4',
-    100: '#FCE7EB',
-    200: '#F9CED7',
-    300: '#F4A6B7',
-    400: '#EC7A95',
-    500: '#8B2252', // Main brand color
-    600: '#7A1E48',
-    700: '#681A3E',
-    800: '#561633',
-    900: '#441229',
+    50: '#FDF8F6',
+    100: '#F5EBE6',
+    200: '#E8D5CB',
+    300: '#D4B8A5',
+    400: '#B8917A',
+    500: '#5C3D2E', // Main brand color - deep brown
+    600: '#4A3125',
+    700: '#3D281F',
+    800: '#2F1F18',
+    900: '#231712',
   },
 
-  // Accent - Warm Gold
+  // Accent - Golden Amber (from logo border)
   gold: {
-    50: '#FFFBF5',
-    100: '#FFF6E8',
-    200: '#FFEDD1',
-    300: '#FFE0B0',
-    400: '#FFCF80',
-    500: '#D4A574', // Main accent
-    600: '#C49460',
-    700: '#A67B4D',
-    800: '#886340',
-    900: '#6A4B33',
+    50: '#FFFBF0',
+    100: '#FFF5DC',
+    200: '#FFE9B8',
+    300: '#FFD98A',
+    400: '#E8B84A',
+    500: '#C9963C', // Main accent - golden amber
+    600: '#A87B30',
+    700: '#8A6428',
+    800: '#6D4F20',
+    900: '#503A18',
   },
 
-  // Background - Warm Cream
+  // Background - Warm Cream (from logo text)
   cream: {
     50: '#FFFDFB',
-    100: '#FFF8F0', // Main background
-    200: '#FFF1E3',
-    300: '#FFE8D1',
-    400: '#FFDFC0',
+    100: '#FFF9F2', // Main background
+    200: '#FFF3E8',
+    300: '#FFEBD8',
+    400: '#FFE2C8',
+  },
+
+  // Warm Brown tones (gradient from logo)
+  warmBrown: {
+    light: '#9B6B4A',
+    medium: '#7A4E35',
+    dark: '#5C3D2E',
   },
 
   // Neutrals
   neutral: {
-    50: '#FAFAFA',
-    100: '#F5F5F5',
-    200: '#E5E5E5',
-    300: '#D4D4D4',
-    400: '#A3A3A3',
-    500: '#737373',
-    600: '#525252',
-    700: '#404040',
-    800: '#262626',
-    900: '#171717',
+    50: '#FAFAF9',
+    100: '#F5F5F4',
+    200: '#E7E5E4',
+    300: '#D6D3D1',
+    400: '#A8A29E',
+    500: '#78716C',
+    600: '#57534E',
+    700: '#44403C',
+    800: '#292524',
+    900: '#1C1917',
   },
 
   // Semantic colors

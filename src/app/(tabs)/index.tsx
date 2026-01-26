@@ -182,7 +182,7 @@ export default function HomeScreen() {
               onPress={() => router.push('/(tabs)/syllabus')}
             >
               <Image
-                source={{ uri: inProgressModule.imageUrl }}
+                source={require('../../../public/image-1769387903.jpeg')}
                 style={{ width: '100%', height: 160 }}
                 contentFit="cover"
               />
