@@ -42,7 +42,7 @@ export const mandinkaTerms = [
 
 export const mockUser: User = {
   id: '1',
-  name: 'Dance Student',
+  name: 'Name',
   email: 'student@example.com',
   enrollmentDate: '2024-01-15',
   certificationLevel: 'Foundation',
