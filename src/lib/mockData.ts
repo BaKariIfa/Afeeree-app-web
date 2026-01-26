@@ -10,6 +10,12 @@ export const resourceLinks = {
   culturalResearch: 'https://drive.google.com/file/d/1SsZkzHSWkQygnpixWrVSmoALOJIWxw7w/view?usp=drivesdk',
 };
 
+// Video Demonstrations
+export const videoLinks = {
+  part1: 'https://vimeo.com/455075353',
+  part2: 'https://vimeo.com/455075798',
+};
+
 // Seven Foundational Principles from Asante's African Culture Framework
 export const foundationalPrinciples = [
   { name: 'Polyrhythm', description: 'Multiple distinct rhythms maintaining individual identity while creating unified expression' },

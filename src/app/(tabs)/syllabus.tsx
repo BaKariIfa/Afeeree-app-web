@@ -3,13 +3,13 @@ import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { BookOpen, Clock, Lock, ChevronRight, Play, FileText, ArrowLeft } from 'lucide-react-native';
+import { BookOpen, Clock, Lock, ChevronRight, Play, FileText, ArrowLeft, Video } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
 
 import { colors } from '@/lib/theme';
-import { mockModules, resourceLinks } from '@/lib/mockData';
+import { mockModules, resourceLinks, videoLinks } from '@/lib/mockData';
 import type { Module } from '@/lib/types';
 
 const categories = ['All', 'Technique', 'Theory', 'Teaching Practice', 'Research'] as const;
@@ -106,6 +106,62 @@ export default function SyllabusScreen() {
             </View>
             <ChevronRight size={20} color="white" />
           </Pressable>
+        </Animated.View>
+
+        {/* Video Demonstrations Section */}
+        <Animated.View entering={FadeInDown.duration(600).delay(75)} className="px-6 mb-4">
+          <Text
+            style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+            className="text-lg mb-3"
+          >
+            Video Demonstrations
+          </Text>
+          <View className="flex-row gap-3">
+            <Pressable
+              onPress={() => Linking.openURL(videoLinks.part1)}
+              className="flex-1 flex-row items-center p-4 rounded-2xl"
+              style={{ backgroundColor: colors.gold[500] }}
+            >
+              <Video size={22} color="white" />
+              <View className="flex-1 ml-3">
+                <Text
+                  style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
+                  className="text-sm"
+                >
+                  Part 1
+                </Text>
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[100] }}
+                  className="text-xs"
+                >
+                  Kata Demos
+                </Text>
+              </View>
+              <Play size={18} color="white" fill="white" />
+            </Pressable>
+            <Pressable
+              onPress={() => Linking.openURL(videoLinks.part2)}
+              className="flex-1 flex-row items-center p-4 rounded-2xl"
+              style={{ backgroundColor: colors.gold[500] }}
+            >
+              <Video size={22} color="white" />
+              <View className="flex-1 ml-3">
+                <Text
+                  style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
+                  className="text-sm"
+                >
+                  Part 2
+                </Text>
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[100] }}
+                  className="text-xs"
+                >
+                  Kata Demos
+                </Text>
+              </View>
+              <Play size={18} color="white" fill="white" />
+            </Pressable>
+          </View>
         </Animated.View>
 
         {/* Category Filter */}
@@ -296,13 +352,13 @@ export default function SyllabusScreen() {
             style={{ fontFamily: 'DMSans_600SemiBold', color: colors.gold[800] }}
             className="text-base"
           >
-            Complete modules to unlock more content
+            Review & Retention
           </Text>
           <Text
             style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[700] }}
             className="text-sm mt-1"
           >
-            Locked modules will become available as you progress through the certification program.
+            Use these modules and video demonstrations to review what you learned in-person.
           </Text>
         </Animated.View>
       </ScrollView>
