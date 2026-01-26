@@ -21,17 +21,22 @@ import {
   Flame,
   Trophy,
   Crown,
-  Lock
+  Lock,
+  Camera
 } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
 import * as Haptics from 'expo-haptics';
+import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { colors } from '@/lib/theme';
 import { mockUser, mockModules, mockAssignments } from '@/lib/mockData';
 import { hasEntitlement } from '@/lib/revenuecatClient';
 import { Paywall } from '@/components/Paywall';
+
+const PROFILE_IMAGE_KEY = 'user_profile_image';
 
 const triggerHaptic = () => {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -43,10 +48,55 @@ export default function ProfileScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
     checkPremiumStatus();
+    loadProfileImage();
   }, []);
+
+  const loadProfileImage = async () => {
+    try {
+      const savedImage = await AsyncStorage.getItem(PROFILE_IMAGE_KEY);
+      if (savedImage) {
+        setProfileImage(savedImage);
+      }
+    } catch (error) {
+      console.log('Error loading profile image:', error);
+    }
+  };
+
+  const saveProfileImage = async (uri: string) => {
+    try {
+      await AsyncStorage.setItem(PROFILE_IMAGE_KEY, uri);
+    } catch (error) {
+      console.log('Error saving profile image:', error);
+    }
+  };
+
+  const pickImage = async () => {
+    triggerHaptic();
+
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access media library was denied');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      const uri = result.assets[0].uri;
+      setProfileImage(uri);
+      saveProfileImage(uri);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+  };
 
   const checkPremiumStatus = async () => {
     const result = await hasEntitlement('premium');
@@ -193,13 +243,30 @@ export default function ProfileScreen() {
             </Pressable>
           </Animated.View>
           <Animated.View entering={FadeInDown.duration(600)} className="items-center">
-            {/* Avatar */}
-            <View
-              className="w-24 h-24 rounded-full items-center justify-center mb-4"
-              style={{ backgroundColor: 'rgba(255,255,255,0.2)', borderWidth: 3, borderColor: colors.gold[400] }}
-            >
-              <User size={40} color="white" />
-            </View>
+            {/* Avatar - Tappable to change photo */}
+            <Pressable onPress={pickImage} className="relative">
+              <View
+                className="w-24 h-24 rounded-full items-center justify-center overflow-hidden"
+                style={{ backgroundColor: 'rgba(255,255,255,0.2)', borderWidth: 3, borderColor: colors.gold[400] }}
+              >
+                {profileImage ? (
+                  <Image
+                    source={{ uri: profileImage }}
+                    style={{ width: '100%', height: '100%' }}
+                    contentFit="cover"
+                  />
+                ) : (
+                  <User size={40} color="white" />
+                )}
+              </View>
+              {/* Camera badge */}
+              <View
+                className="absolute bottom-0 right-0 w-8 h-8 rounded-full items-center justify-center"
+                style={{ backgroundColor: colors.gold[500], borderWidth: 2, borderColor: 'white' }}
+              >
+                <Camera size={14} color="white" />
+              </View>
+            </Pressable>
 
             <Text
               style={{ fontFamily: 'PlayfairDisplay_700Bold', color: 'white' }}
