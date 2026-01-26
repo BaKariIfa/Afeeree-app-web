@@ -14,7 +14,8 @@ export interface Module {
   id: string;
   title: string;
   description: string;
-  imageUrl: string;
+  imageUrl?: string;
+  localImage?: any;
   duration: string;
   lessons: number;
   completedLessons: number;

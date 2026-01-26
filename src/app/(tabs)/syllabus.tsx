@@ -120,7 +120,7 @@ export default function SyllabusScreen() {
                   {/* Module Image */}
                   <View className="relative">
                     <Image
-                      source={{ uri: module.imageUrl }}
+                      source={module.localImage || { uri: module.imageUrl }}
                       style={{ width: 110, height: 140 }}
                       contentFit="cover"
                     />
