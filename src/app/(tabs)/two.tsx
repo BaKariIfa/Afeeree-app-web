@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FileText, BookOpen, Music, ExternalLink, Globe, MapPin } from 'lucide-react-native';
+import { FileText, BookOpen, Music, ExternalLink, Globe, MapPin, ArrowLeft } from 'lucide-react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
@@ -12,6 +13,7 @@ import { resourceLinks, foundationalPrinciples, mandinkaTerms } from '@/lib/mock
 
 export default function ResourcesScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
@@ -42,19 +44,27 @@ export default function ResourcesScreen() {
         colors={[colors.primary[500], colors.primary[600]]}
         style={{ paddingTop: insets.top + 16, paddingBottom: 24, paddingHorizontal: 24 }}
       >
-        <Animated.View entering={FadeInDown.duration(600)}>
-          <Text
-            style={{ fontFamily: 'PlayfairDisplay_700Bold', color: 'white' }}
-            className="text-2xl"
+        <Animated.View entering={FadeInDown.duration(600)} className="flex-row items-center">
+          <Pressable
+            onPress={() => router.push('/(tabs)/')}
+            className="mr-4 p-2 -ml-2"
           >
-            Resources
-          </Text>
-          <Text
-            style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
-            className="text-sm mt-1"
-          >
-            AFeeree notation system and reference materials
-          </Text>
+            <ArrowLeft size={24} color="white" />
+          </Pressable>
+          <View>
+            <Text
+              style={{ fontFamily: 'PlayfairDisplay_700Bold', color: 'white' }}
+              className="text-2xl"
+            >
+              Resources
+            </Text>
+            <Text
+              style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
+              className="text-sm mt-1"
+            >
+              AFeeree notation system and reference materials
+            </Text>
+          </View>
         </Animated.View>
       </LinearGradient>
 

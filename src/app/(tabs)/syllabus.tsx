@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BookOpen, Clock, Lock, ChevronRight, Play, FileText } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import { BookOpen, Clock, Lock, ChevronRight, Play, FileText, ArrowLeft } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
@@ -15,6 +16,7 @@ const categories = ['All', 'Technique', 'Theory', 'Teaching Practice', 'Research
 
 export default function SyllabusScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
   const [fontsLoaded] = useFonts({
@@ -56,19 +58,27 @@ export default function SyllabusScreen() {
       >
         {/* Header */}
         <View style={{ paddingTop: insets.top + 16, paddingHorizontal: 24, paddingBottom: 16 }}>
-          <Animated.View entering={FadeInDown.duration(600)}>
-            <Text
-              style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
-              className="text-3xl"
+          <Animated.View entering={FadeInDown.duration(600)} className="flex-row items-center">
+            <Pressable
+              onPress={() => router.push('/(tabs)/')}
+              className="mr-4 p-2 -ml-2"
             >
-              Syllabus
-            </Text>
-            <Text
-              style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
-              className="text-base mt-2"
-            >
-              AFeeree Certification Curriculum
-            </Text>
+              <ArrowLeft size={24} color={colors.neutral[800]} />
+            </Pressable>
+            <View>
+              <Text
+                style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+                className="text-3xl"
+              >
+                Syllabus
+              </Text>
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                className="text-base mt-1"
+              >
+                AFeeree Certification Curriculum
+              </Text>
+            </View>
           </Animated.View>
         </View>
 

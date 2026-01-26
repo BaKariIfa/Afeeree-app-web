@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Pressable, Modal } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import {
   FileText,
   Video,
@@ -13,7 +14,8 @@ import {
   X,
   Upload,
   Camera,
-  File
+  File,
+  ArrowLeft
 } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp, FadeIn } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
@@ -28,6 +30,7 @@ const statusFilters = ['All', 'Pending', 'Submitted', 'Graded'] as const;
 
 export default function AssignmentsScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
   const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -97,19 +100,27 @@ export default function AssignmentsScreen() {
       >
         {/* Header */}
         <View style={{ paddingTop: insets.top + 16, paddingHorizontal: 24, paddingBottom: 16 }}>
-          <Animated.View entering={FadeInDown.duration(600)}>
-            <Text
-              style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
-              className="text-3xl"
+          <Animated.View entering={FadeInDown.duration(600)} className="flex-row items-center">
+            <Pressable
+              onPress={() => router.push('/(tabs)/')}
+              className="mr-4 p-2 -ml-2"
             >
-              Assignments
-            </Text>
-            <Text
-              style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
-              className="text-base mt-2"
-            >
-              Submit your work and track progress
-            </Text>
+              <ArrowLeft size={24} color={colors.neutral[800]} />
+            </Pressable>
+            <View>
+              <Text
+                style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+                className="text-3xl"
+              >
+                Assignments
+              </Text>
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                className="text-base mt-1"
+              >
+                Submit your work and track progress
+              </Text>
+            </View>
           </Animated.View>
         </View>
 

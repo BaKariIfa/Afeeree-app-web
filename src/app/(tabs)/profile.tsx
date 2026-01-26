@@ -3,6 +3,7 @@ import { View, Text, ScrollView, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import {
   User,
   Award,
@@ -13,7 +14,8 @@ import {
   LogOut,
   ChevronRight,
   Mail,
-  Calendar
+  Calendar,
+  ArrowLeft
 } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
@@ -24,6 +26,7 @@ import { mockUser, mockModules, mockAssignments } from '@/lib/mockData';
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
@@ -56,8 +59,17 @@ export default function ProfileScreen() {
         {/* Header with Profile */}
         <LinearGradient
           colors={[colors.primary[500], colors.primary[600]]}
-          style={{ paddingTop: insets.top + 20, paddingBottom: 60, paddingHorizontal: 24 }}
+          style={{ paddingTop: insets.top + 16, paddingBottom: 60, paddingHorizontal: 24 }}
         >
+          {/* Back Button */}
+          <Animated.View entering={FadeInDown.duration(600)}>
+            <Pressable
+              onPress={() => router.push('/(tabs)/')}
+              className="p-2 -ml-2 mb-2"
+            >
+              <ArrowLeft size={24} color="white" />
+            </Pressable>
+          </Animated.View>
           <Animated.View entering={FadeInDown.duration(600)} className="items-center">
             {/* Avatar */}
             <View
