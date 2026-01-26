@@ -383,7 +383,7 @@ export default function HomeScreen() {
                 style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.gold[300] }}
                 className="text-2xl mt-4 text-center"
               >
-                BaKari Ifasegun Lindsay
+                BaKari IfaSegun Lindsay
               </Text>
               <Text
                 style={{ fontFamily: 'DMSans_500Medium', color: 'rgba(255,255,255,0.8)' }}
@@ -399,7 +399,7 @@ export default function HomeScreen() {
                 style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[700], lineHeight: 22 }}
                 className="text-sm"
               >
-                Born in Trinidad, West Indies, BaKari Ifasegun Lindsay has honed his diverse talents over more than three decades as a dancer, choreographer, singer, musician, costume designer/maker, and researcher. His work is deeply rooted in African and Caribbean traditions while embracing contemporary performance practices.
+                Born in Trinidad, West Indies, BaKari IfaSegun Lindsay has honed his diverse talents over more than three decades as a dancer, choreographer, singer, musician, costume designer/maker, and researcher. His work is deeply rooted in African and Caribbean traditions while embracing contemporary performance practices.
               </Text>
 
               <Text
@@ -450,7 +450,7 @@ export default function HomeScreen() {
                   style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.primary[500], fontStyle: 'italic', lineHeight: 24 }}
                   className="text-base text-center"
                 >
-                  "By seamlessly merging tradition with innovation, BaKari Ifasegun Lindsay continues to redefine Africanist movement aesthetics on the global stage."
+                  "By seamlessly merging tradition with innovation, BaKari IfaSegun Lindsay continues to redefine Africanist movement aesthetics on the global stage."
                 </Text>
               </View>
             </View>
