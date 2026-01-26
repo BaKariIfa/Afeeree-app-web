@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { Home, BookOpen, FileText, User } from 'lucide-react-native';
+import { Home, BookOpen, FileText, User, Library } from 'lucide-react-native';
 import { colors } from '@/lib/theme';
 
 export default function TabLayout() {
@@ -80,7 +80,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="two"
         options={{
-          href: null,
+          title: 'Resources',
+          tabBarIcon: ({ color, focused }) => (
+            <Library
+              size={24}
+              color={color}
+              strokeWidth={focused ? 2.5 : 2}
+            />
+          ),
         }}
       />
     </Tabs>

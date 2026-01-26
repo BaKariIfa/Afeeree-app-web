@@ -1,11 +1,231 @@
-import { Text, View } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, Pressable, Linking } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
+import { FileText, BookOpen, Music, ExternalLink } from 'lucide-react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
+import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
 
+import { colors } from '@/lib/theme';
+import { resourceLinks, foundationalPrinciples, mandinkaTerms } from '@/lib/mockData';
 
-export default function TabTwoScreen() {
+export default function ResourcesScreen() {
+  const insets = useSafeAreaInsets();
+
+  const [fontsLoaded] = useFonts({
+    PlayfairDisplay_700Bold,
+    DMSans_400Regular,
+    DMSans_500Medium,
+    DMSans_600SemiBold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  const openNotationPDF = () => {
+    // Opens in Google Drive viewer - view only, no download
+    Linking.openURL(resourceLinks.notationImages);
+  };
+
+  const openSyllabus = () => {
+    Linking.openURL(resourceLinks.syllabus);
+  };
+
   return (
-    <View className="flex-1 items-center justify-center bg-white dark:bg-black">
-      <Text className="text-xl font-bold text-black dark:text-white">Your app will go here</Text>
-      <Text className="text-sm text-gray-500 mt-2 dark:text-gray-400">Build something amazing!</Text>
+    <View className="flex-1" style={{ backgroundColor: colors.cream[100] }}>
+      <LinearGradient
+        colors={[colors.primary[500], colors.primary[600]]}
+        style={{ paddingTop: insets.top + 16, paddingBottom: 24, paddingHorizontal: 24 }}
+      >
+        <Animated.View entering={FadeInDown.duration(600)}>
+          <Text
+            style={{ fontFamily: 'PlayfairDisplay_700Bold', color: 'white' }}
+            className="text-2xl"
+          >
+            Resources
+          </Text>
+          <Text
+            style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
+            className="text-sm mt-1"
+          >
+            AFeeree notation system and reference materials
+          </Text>
+        </Animated.View>
+      </LinearGradient>
+
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
+        {/* Notation System Section */}
+        <Animated.View entering={FadeInDown.duration(600).delay(100)} className="px-6 mt-6">
+          <Text
+            style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+            className="text-xl mb-2"
+          >
+            AFeeree Notation System
+          </Text>
+          <Text
+            style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600] }}
+            className="text-sm mb-4"
+          >
+            The AFeeree notation system is a visual language for documenting and communicating movement. Study these symbols to read and write AFeeree choreography.
+          </Text>
+
+          <Pressable
+            className="rounded-2xl overflow-hidden mb-4"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 3 }}
+            onPress={openNotationPDF}
+          >
+            <LinearGradient
+              colors={[colors.primary[400], colors.primary[600]]}
+              style={{ padding: 20, flexDirection: 'row', alignItems: 'center' }}
+            >
+              <View
+                className="w-14 h-14 rounded-xl items-center justify-center"
+                style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
+              >
+                <FileText size={28} color="white" />
+              </View>
+              <View className="flex-1 ml-4">
+                <Text
+                  style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
+                  className="text-lg"
+                >
+                  Word Pages Notation
+                </Text>
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
+                  className="text-sm mt-1"
+                >
+                  Tap to view the complete notation guide
+                </Text>
+              </View>
+              <ExternalLink size={24} color="white" />
+            </LinearGradient>
+          </Pressable>
+        </Animated.View>
+
+        {/* Syllabus Document */}
+        <Animated.View entering={FadeInDown.duration(600).delay(150)} className="px-6">
+          <Pressable
+            className="rounded-2xl p-4 flex-row items-center mb-6"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
+            onPress={openSyllabus}
+          >
+            <View
+              className="w-12 h-12 rounded-xl items-center justify-center"
+              style={{ backgroundColor: colors.gold[100] }}
+            >
+              <BookOpen size={24} color={colors.gold[600]} />
+            </View>
+            <View className="flex-1 ml-4">
+              <Text
+                style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+                className="text-base"
+              >
+                Course Syllabus
+              </Text>
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                className="text-sm"
+              >
+                Complete curriculum document
+              </Text>
+            </View>
+            <ExternalLink size={20} color={colors.neutral[400]} />
+          </Pressable>
+        </Animated.View>
+
+        {/* Seven Foundational Principles */}
+        <Animated.View entering={FadeInDown.duration(600).delay(200)} className="px-6">
+          <Text
+            style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+            className="text-xl mb-4"
+          >
+            Seven Foundational Principles
+          </Text>
+
+          {foundationalPrinciples.map((principle, index) => (
+            <Animated.View
+              key={principle.name}
+              entering={FadeInDown.duration(400).delay(250 + index * 50)}
+              className="rounded-xl p-4 mb-3"
+              style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 6, elevation: 2 }}
+            >
+              <View className="flex-row items-center">
+                <View
+                  className="w-8 h-8 rounded-full items-center justify-center"
+                  style={{ backgroundColor: colors.primary[100] }}
+                >
+                  <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.primary[500] }} className="text-sm">
+                    {index + 1}
+                  </Text>
+                </View>
+                <Text
+                  style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+                  className="text-base ml-3"
+                >
+                  {principle.name}
+                </Text>
+              </View>
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600] }}
+                className="text-sm mt-2 ml-11"
+              >
+                {principle.description}
+              </Text>
+            </Animated.View>
+          ))}
+        </Animated.View>
+
+        {/* Mandinka Terminology */}
+        <Animated.View entering={FadeInDown.duration(600).delay(300)} className="px-6 mt-6">
+          <Text
+            style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+            className="text-xl mb-4"
+          >
+            Mandinka Terminology
+          </Text>
+
+          <View
+            className="rounded-2xl overflow-hidden"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
+          >
+            {mandinkaTerms.map((item, index) => (
+              <View
+                key={item.term}
+                className={`flex-row items-center p-4 ${index < mandinkaTerms.length - 1 ? 'border-b' : ''}`}
+                style={{ borderColor: colors.neutral[100] }}
+              >
+                <View
+                  className="w-10 h-10 rounded-lg items-center justify-center"
+                  style={{ backgroundColor: colors.gold[100] }}
+                >
+                  <Music size={18} color={colors.gold[600]} />
+                </View>
+                <View className="ml-4">
+                  <Text
+                    style={{ fontFamily: 'DMSans_600SemiBold', color: colors.primary[600] }}
+                    className="text-base"
+                  >
+                    {item.term}
+                  </Text>
+                  <Text
+                    style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                    className="text-sm"
+                  >
+                    {item.meaning}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </Animated.View>
+      </ScrollView>
     </View>
   );
 }
