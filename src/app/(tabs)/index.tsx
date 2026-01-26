@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, ImageBackground } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -45,106 +45,68 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
       >
-        {/* Header */}
-        <LinearGradient
-          colors={[colors.primary[500], colors.primary[600]]}
-          style={{ paddingTop: insets.top + 16, paddingBottom: 32, paddingHorizontal: 24 }}
-        >
-          {/* Logo */}
-          <Animated.View
-            entering={FadeInDown.duration(600)}
-            className="items-center mb-4"
+        {/* Header with Background Image */}
+        <View style={{ position: 'relative' }}>
+          <ImageBackground
+            source={require('../../../public/image-1769399578.jpeg')}
+            style={{ paddingTop: insets.top + 16, paddingBottom: 80, paddingHorizontal: 24 }}
           >
-            <Image
-              source={require('../../../public/image-1769399524.png')}
-              style={{ width: 100, height: 100, borderRadius: 50 }}
-              contentFit="cover"
+            <LinearGradient
+              colors={['rgba(0,0,0,0.6)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.7)']}
+              style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
             />
-            <Text
-              style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.gold[300] }}
-              className="text-lg mt-3 text-center"
+
+            {/* Bell Icon */}
+            <Animated.View
+              entering={FadeInDown.duration(600)}
+              className="flex-row justify-end"
             >
-              AFeeree Certification Program
-            </Text>
-          </Animated.View>
+              <Pressable
+                className="relative p-2"
+                onPress={() => {}}
+              >
+                <Bell size={24} color="white" />
+                {unreadNotifications > 0 && (
+                  <View
+                    className="absolute top-1 right-1 w-4 h-4 rounded-full items-center justify-center"
+                    style={{ backgroundColor: colors.gold[500] }}
+                  >
+                    <Text className="text-[10px] text-white font-bold">{unreadNotifications}</Text>
+                  </View>
+                )}
+              </Pressable>
+            </Animated.View>
 
-          <Animated.View
-            entering={FadeInDown.duration(600).delay(100)}
-            className="flex-row justify-between items-start"
-          >
-            <View className="flex-1">
-              <Text
-                style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
-                className="text-sm"
-              >
-                Welcome back
-              </Text>
-              <Text
-                style={{ fontFamily: 'PlayfairDisplay_700Bold', color: 'white' }}
-                className="text-2xl mt-1"
-              >
-                {mockUser.name}
-              </Text>
-            </View>
-            <Pressable
-              className="relative p-2"
-              onPress={() => {}}
+            {/* Logo */}
+            <Animated.View
+              entering={FadeInDown.duration(600).delay(100)}
+              className="items-center mt-4"
             >
-              <Bell size={24} color="white" />
-              {unreadNotifications > 0 && (
-                <View
-                  className="absolute top-1 right-1 w-4 h-4 rounded-full items-center justify-center"
-                  style={{ backgroundColor: colors.gold[500] }}
-                >
-                  <Text className="text-[10px] text-white font-bold">{unreadNotifications}</Text>
-                </View>
-              )}
-            </Pressable>
-          </Animated.View>
-
-          {/* Progress Card */}
-          <Animated.View
-            entering={FadeInDown.duration(600).delay(100)}
-            className="mt-6 rounded-2xl p-5"
-            style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}
-          >
-            <View className="flex-row justify-between items-center">
-              <View>
-                <Text
-                  style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
-                  className="text-lg"
-                >
-                  {mockUser.certificationLevel} Level
-                </Text>
-                <Text
-                  style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
-                  className="text-sm mt-1"
-                >
-                  {mockUser.progress}% Complete
-                </Text>
-              </View>
-              <View className="items-center">
-                <Trophy size={28} color={colors.gold[400]} />
-              </View>
-            </View>
-
-            {/* Progress Bar */}
-            <View className="mt-4 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-              <View
-                className="h-full rounded-full"
-                style={{
-                  backgroundColor: colors.gold[400],
-                  width: `${mockUser.progress}%`
-                }}
+              <Image
+                source={require('../../../public/image-1769399524.png')}
+                style={{ width: 120, height: 120, borderRadius: 60 }}
+                contentFit="cover"
               />
-            </View>
-          </Animated.View>
-        </LinearGradient>
+              <Text
+                style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.gold[300] }}
+                className="text-xl mt-4 text-center"
+              >
+                AFeeree Certification Program
+              </Text>
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: 'rgba(255,255,255,0.8)' }}
+                className="text-sm mt-1 text-center"
+              >
+                The Physical Language
+              </Text>
+            </Animated.View>
+          </ImageBackground>
+        </View>
 
-        {/* Quick Stats */}
+        {/* Quick Stats - Moved up */}
         <Animated.View
           entering={FadeInDown.duration(600).delay(200)}
-          className="flex-row px-6 -mt-4"
+          className="flex-row px-6 -mt-10"
         >
           <View
             className="flex-1 mr-3 p-4 rounded-2xl"
@@ -185,9 +147,66 @@ export default function HomeScreen() {
           </View>
         </Animated.View>
 
+        {/* Welcome & Progress Section */}
+        <Animated.View entering={FadeInDown.duration(600).delay(250)} className="px-6 mt-6">
+          <View className="flex-row justify-between items-center mb-2">
+            <View>
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                className="text-sm"
+              >
+                Welcome back
+              </Text>
+              <Text
+                style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+                className="text-xl"
+              >
+                {mockUser.name}
+              </Text>
+            </View>
+            <View className="items-center">
+              <Trophy size={24} color={colors.gold[500]} />
+            </View>
+          </View>
+
+          {/* Progress Card */}
+          <View
+            className="mt-3 rounded-2xl p-4"
+            style={{ backgroundColor: colors.primary[500] }}
+          >
+            <View className="flex-row justify-between items-center">
+              <View>
+                <Text
+                  style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
+                  className="text-base"
+                >
+                  {mockUser.certificationLevel} Level
+                </Text>
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
+                  className="text-sm mt-1"
+                >
+                  {mockUser.progress}% Complete
+                </Text>
+              </View>
+            </View>
+
+            {/* Progress Bar */}
+            <View className="mt-3 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+              <View
+                className="h-full rounded-full"
+                style={{
+                  backgroundColor: colors.gold[400],
+                  width: `${mockUser.progress}%`
+                }}
+              />
+            </View>
+          </View>
+        </Animated.View>
+
         {/* Continue Learning Section */}
         {inProgressModule && (
-          <Animated.View entering={FadeInDown.duration(600).delay(300)} className="px-6 mt-8">
+          <Animated.View entering={FadeInDown.duration(600).delay(300)} className="px-6 mt-6">
             <Text
               style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
               className="text-xl mb-4"
@@ -199,11 +218,6 @@ export default function HomeScreen() {
               style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 3 }}
               onPress={() => router.push('/(tabs)/syllabus')}
             >
-              <Image
-                source={require('../../../public/image-1769399578.jpeg')}
-                style={{ width: '100%', height: 160 }}
-                contentFit="cover"
-              />
               <View className="p-4">
                 <View className="flex-row items-center mb-2">
                   <View
@@ -253,67 +267,69 @@ export default function HomeScreen() {
         )}
 
         {/* Upcoming Assignments */}
-        <Animated.View entering={FadeInDown.duration(600).delay(400)} className="px-6 mt-8">
-          <View className="flex-row justify-between items-center mb-4">
-            <Text
-              style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
-              className="text-xl"
-            >
-              Upcoming Assignments
-            </Text>
-            <Pressable
-              className="flex-row items-center"
-              onPress={() => router.push('/(tabs)/assignments')}
-            >
+        {mockAssignments.length > 0 && (
+          <Animated.View entering={FadeInDown.duration(600).delay(400)} className="px-6 mt-6">
+            <View className="flex-row justify-between items-center mb-4">
               <Text
-                style={{ fontFamily: 'DMSans_500Medium', color: colors.primary[500] }}
-                className="text-sm"
+                style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+                className="text-xl"
               >
-                See All
+                Upcoming Assignments
               </Text>
-              <ChevronRight size={16} color={colors.primary[500]} />
-            </Pressable>
-          </View>
-
-          {mockAssignments
-            .filter(a => a.status === 'pending')
-            .slice(0, 2)
-            .map((assignment, index) => (
-              <Animated.View
-                key={assignment.id}
-                entering={FadeInRight.duration(500).delay(450 + index * 100)}
+              <Pressable
+                className="flex-row items-center"
+                onPress={() => router.push('/(tabs)/assignments')}
               >
-                <Pressable
-                  className="mb-3 p-4 rounded-xl flex-row items-center"
-                  style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 6, elevation: 2 }}
-                  onPress={() => router.push('/(tabs)/assignments')}
+                <Text
+                  style={{ fontFamily: 'DMSans_500Medium', color: colors.primary[500] }}
+                  className="text-sm"
                 >
-                  <View
-                    className="w-12 h-12 rounded-xl items-center justify-center"
-                    style={{ backgroundColor: colors.gold[100] }}
+                  See All
+                </Text>
+                <ChevronRight size={16} color={colors.primary[500]} />
+              </Pressable>
+            </View>
+
+            {mockAssignments
+              .filter(a => a.status === 'pending')
+              .slice(0, 2)
+              .map((assignment, index) => (
+                <Animated.View
+                  key={assignment.id}
+                  entering={FadeInRight.duration(500).delay(450 + index * 100)}
+                >
+                  <Pressable
+                    className="mb-3 p-4 rounded-xl flex-row items-center"
+                    style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 6, elevation: 2 }}
+                    onPress={() => router.push('/(tabs)/assignments')}
                   >
-                    <Clock size={24} color={colors.gold[600]} />
-                  </View>
-                  <View className="flex-1 ml-4">
-                    <Text
-                      style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
-                      className="text-base"
-                      numberOfLines={1}
+                    <View
+                      className="w-12 h-12 rounded-xl items-center justify-center"
+                      style={{ backgroundColor: colors.gold[100] }}
                     >
-                      {assignment.title}
-                    </Text>
-                    <Text
-                      style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
-                      className="text-sm mt-0.5"
-                    >
-                      Due: {new Date(assignment.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </Text>
-                  </View>
-                  <ChevronRight size={20} color={colors.neutral[400]} />
-                </Pressable>
-              </Animated.View>
-            ))}
-        </Animated.View>
+                      <Clock size={24} color={colors.gold[600]} />
+                    </View>
+                    <View className="flex-1 ml-4">
+                      <Text
+                        style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+                        className="text-base"
+                        numberOfLines={1}
+                      >
+                        {assignment.title}
+                      </Text>
+                      <Text
+                        style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                        className="text-sm mt-0.5"
+                      >
+                        Due: {new Date(assignment.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      </Text>
+                    </View>
+                    <ChevronRight size={20} color={colors.neutral[400]} />
+                  </Pressable>
+                </Animated.View>
+              ))}
+          </Animated.View>
+        )}
       </ScrollView>
     </View>
   );
