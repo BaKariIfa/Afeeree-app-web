@@ -243,50 +243,6 @@ export default function HomeScreen() {
           </Animated.View>
         )}
 
-        {/* Quick Stats - At bottom */}
-        <Animated.View
-          entering={FadeInDown.duration(600).delay(300)}
-          className="flex-row px-6 mt-6"
-        >
-          <View
-            className="flex-1 mr-3 p-4 rounded-2xl"
-            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
-          >
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.primary[100] }}>
-                <BookOpen size={20} color={colors.primary[500]} />
-              </View>
-              <View className="ml-3">
-                <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }} className="text-xl">
-                  {mockModules.filter(m => !m.isLocked).length}
-                </Text>
-                <Text style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }} className="text-xs">
-                  Active Modules
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          <View
-            className="flex-1 p-4 rounded-2xl"
-            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
-          >
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.gold[100] }}>
-                <Clock size={20} color={colors.gold[600]} />
-              </View>
-              <View className="ml-3">
-                <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }} className="text-xl">
-                  {pendingAssignments}
-                </Text>
-                <Text style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }} className="text-xs">
-                  Due Soon
-                </Text>
-              </View>
-            </View>
-          </View>
-        </Animated.View>
-
         {/* Upcoming Assignments */}
         {mockAssignments.length > 0 && (
           <Animated.View entering={FadeInDown.duration(600).delay(350)} className="px-6 mt-6">
@@ -445,6 +401,31 @@ export default function HomeScreen() {
                   className="text-base text-center"
                 >
                   "By seamlessly merging tradition with innovation, BaKari IfaSegun Lindsay continues to redefine Africanist movement aesthetics on the global stage."
+                </Text>
+              </View>
+            </View>
+          </View>
+        </Animated.View>
+
+        {/* Due Soon Widget */}
+        <Animated.View
+          entering={FadeInDown.duration(600).delay(500)}
+          className="px-6 mt-6 mb-4"
+        >
+          <View
+            className="p-4 rounded-2xl"
+            style={{ backgroundColor: 'white', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 }}
+          >
+            <View className="flex-row items-center">
+              <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.gold[100] }}>
+                <Clock size={20} color={colors.gold[600]} />
+              </View>
+              <View className="ml-3">
+                <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }} className="text-xl">
+                  {pendingAssignments}
+                </Text>
+                <Text style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }} className="text-xs">
+                  Due Soon
                 </Text>
               </View>
             </View>
