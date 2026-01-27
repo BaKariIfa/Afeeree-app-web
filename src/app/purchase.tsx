@@ -11,6 +11,7 @@ import * as Clipboard from 'expo-clipboard';
 
 import { colors } from '@/lib/theme';
 import { logSquareConfig } from '@/lib/squareConfig';
+import { useAccessCodeStore } from '@/lib/accessCodeStore';
 
 type PaymentStep = 'details' | 'processing' | 'success';
 
@@ -24,6 +25,9 @@ export default function PurchaseScreen() {
   const [error, setError] = useState('');
   const [accessCode, setAccessCode] = useState('');
   const [copied, setCopied] = useState(false);
+
+  // Access code store to save generated codes
+  const generateCode = useAccessCodeStore(s => s.generateCode);
 
   // Program price
   const PROGRAM_PRICE = 600;
@@ -39,15 +43,6 @@ export default function PurchaseScreen() {
   const handleGoBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     router.back();
-  };
-
-  const generateAccessCode = (): string => {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let code = 'AF-';
-    for (let i = 0; i < 6; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return code;
   };
 
   const handlePurchase = async () => {
@@ -73,10 +68,10 @@ export default function PurchaseScreen() {
     // Simulate payment processing (in production, this would call Square API)
     await new Promise(resolve => setTimeout(resolve, 2500));
 
-    // Generate access code
-    const code = generateAccessCode();
+    // Generate access code and save it to the store
+    const code = await generateCode();
     setAccessCode(code);
-    console.log('Payment successful! Access code generated:', code);
+    console.log('Payment successful! Access code generated and saved:', code);
 
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     setStep('success');
