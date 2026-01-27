@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { Key, ShieldCheck, AlertCircle } from 'lucide-react-native';
+import { Key, ShieldCheck, AlertCircle, CreditCard } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp, useSharedValue, useAnimatedStyle, withSequence, withTiming } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
@@ -13,6 +13,7 @@ import * as Haptics from 'expo-haptics';
 import { colors } from '@/lib/theme';
 import { useUserStore } from '@/lib/userStore';
 import { useAccessCodeStore } from '@/lib/accessCodeStore';
+import { logSquareConfig } from '@/lib/squareConfig';
 
 export default function AccessCodeScreen() {
   const insets = useSafeAreaInsets();
@@ -25,6 +26,11 @@ export default function AccessCodeScreen() {
   const setAccess = useUserStore(s => s.setAccess);
   const isCodeValid = useAccessCodeStore(s => s.isCodeValid);
   const markCodeUsed = useAccessCodeStore(s => s.markCodeUsed);
+
+  // Check Square config on load
+  useEffect(() => {
+    logSquareConfig();
+  }, []);
 
   const shakeX = useSharedValue(0);
 
@@ -227,8 +233,24 @@ export default function AccessCodeScreen() {
                     style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600], lineHeight: 20 }}
                     className="text-sm text-center"
                   >
-                    Don't have an access code? Contact your program administrator or visit the AFeeree Certification website to enroll.
+                    Don't have an access code?
                   </Text>
+                  <Pressable
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                      router.push('/purchase');
+                    }}
+                    className="mt-3 py-3 rounded-xl flex-row items-center justify-center"
+                    style={{ backgroundColor: colors.gold[500] }}
+                  >
+                    <CreditCard size={18} color="white" />
+                    <Text
+                      style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
+                      className="text-sm ml-2"
+                    >
+                      Enroll Now — $600
+                    </Text>
+                  </Pressable>
                 </View>
               </Animated.View>
             </Animated.View>
