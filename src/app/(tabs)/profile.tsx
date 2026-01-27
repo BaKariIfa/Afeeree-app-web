@@ -26,7 +26,8 @@ import {
   Timer,
   Moon,
   Sun,
-  ShieldCheck
+  ShieldCheck,
+  CreditCard
 } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
@@ -41,6 +42,7 @@ import { useUserStore } from '@/lib/userStore';
 import { hasEntitlement } from '@/lib/revenuecatClient';
 import { Paywall } from '@/components/Paywall';
 import { AdminPanel } from '@/components/AdminPanel';
+import { logSquareConfig } from '@/lib/squareConfig';
 
 const PROFILE_IMAGE_KEY = 'user_profile_image';
 
@@ -227,7 +229,24 @@ export default function ProfileScreen() {
 
   const earnedCount = achievements.filter(a => a.earned).length;
 
+  const testSquareConnection = () => {
+    triggerHaptic();
+    const config = logSquareConfig();
+    if (config.isConfigured) {
+      router.push('/purchase');
+    } else {
+      console.log('Square not configured - check ENV tab');
+    }
+  };
+
   const menuItems = [
+    {
+      icon: <CreditCard size={22} color={colors.success} />,
+      label: 'Test Square Payment',
+      sublabel: 'Verify payment connection',
+      onPress: testSquareConnection,
+      isTest: true
+    },
     {
       icon: <ShieldCheck size={22} color={colors.gold[600]} />,
       label: 'Admin Panel',
