@@ -380,8 +380,8 @@ export default function HomeScreen() {
 
               <View className="mt-4 p-4 rounded-xl" style={{ backgroundColor: colors.gold[50] }}>
                 <Text
-                  style={{ fontFamily: 'DMSans_600SemiBold', color: colors.primary[500] }}
-                  className="text-sm mb-2"
+                  style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.primary[500], fontStyle: 'italic', lineHeight: 24 }}
+                  className="text-base mb-2"
                 >
                   A-Feeree – The Physical Language
                 </Text>
