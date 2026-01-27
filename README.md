@@ -164,6 +164,67 @@ src/
     └── cn.ts                # Tailwind class merge utility
 ```
 
+## Web Distribution & Square Payments
+
+This app supports web deployment with Square payment integration for self-managed distribution.
+
+### New Web Pages
+- **Landing Page** (`/landing`) - Marketing page for web visitors
+- **Purchase Page** (`/purchase`) - Square payment integration with automatic access code generation
+- **Access Code Page** (`/access-code`) - Where users enter their code after payment
+
+### Setting Up Square Payments
+
+1. **Create a Square Developer Account** at https://developer.squareup.com
+2. **Create an Application** in the Square Developer Dashboard
+3. **Get your credentials:**
+   - Application ID (Sandbox for testing, Production for live)
+   - Location ID (from your Square account)
+4. **Add environment variables:**
+   - `EXPO_PUBLIC_SQUARE_APP_ID` - Your Square Application ID
+   - `EXPO_PUBLIC_SQUARE_LOCATION_ID` - Your Square Location ID
+
+### Deploying to Your IONOS Domain
+
+**Step 1: Export for Web**
+```bash
+npx expo export --platform web
+```
+
+**Step 2: Upload to IONOS**
+1. Log in to your IONOS account
+2. Go to Hosting > File Manager (or use FTP)
+3. Navigate to your website's root directory (usually `htdocs` or `public_html`)
+4. Upload the entire contents of the `dist` folder
+
+**Step 3: Configure routing (important!)**
+Create a `.htaccess` file in your website root with:
+```apache
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+```
+
+### Payment Flow
+1. Visitor lands on your website (landing page)
+2. Clicks "Enroll Now" → goes to purchase page
+3. Enters name/email, pays via Square
+4. Receives access code automatically
+5. Enters code to access the full program
+
+### Customizing Price
+Edit the `PROGRAM_PRICE` constant in `src/app/purchase.web.tsx` (currently set to $299).
+
+### Important URLs
+- `yourdomain.com/` → Landing page
+- `yourdomain.com/purchase` → Payment page
+- `yourdomain.com/access-code` → Access code entry
+
 ## Future Enhancements
 
 - Backend integration for real data
