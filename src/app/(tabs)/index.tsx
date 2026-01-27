@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, ScrollView, Pressable, ImageBackground, RefreshControl } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -12,7 +12,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Haptics from 'expo-haptics';
 
 import { colors } from '@/lib/theme';
-import { mockUser, mockModules, mockAssignments, mockNotifications } from '@/lib/mockData';
+import { mockModules, mockAssignments, mockNotifications } from '@/lib/mockData';
+import { useUserStore } from '@/lib/userStore';
 
 // Helper function for haptic feedback on button press
 const triggerHaptic = () => {
@@ -23,15 +24,34 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const userName = useUserStore(s => s.name);
+  const isOnboarded = useUserStore(s => s.isOnboarded);
+  const loadUserData = useUserStore(s => s.loadUserData);
+
+  useEffect(() => {
+    const checkOnboarding = async () => {
+      await loadUserData();
+      setIsLoading(false);
+    };
+    checkOnboarding();
+  }, [loadUserData]);
+
+  useEffect(() => {
+    if (!isLoading && !isOnboarded) {
+      router.replace('/onboarding');
+    }
+  }, [isLoading, isOnboarded, router]);
 
   const onRefresh = useCallback(() => {
     triggerHaptic();
     setRefreshing(true);
-    // Simulate a refresh - in a real app this would fetch new data
+    loadUserData();
     setTimeout(() => {
       setRefreshing(false);
     }, 1500);
-  }, []);
+  }, [loadUserData]);
 
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
@@ -40,13 +60,13 @@ export default function HomeScreen() {
     DMSans_600SemiBold,
   });
 
-  React.useEffect(() => {
-    if (fontsLoaded) {
+  useEffect(() => {
+    if (fontsLoaded && !isLoading) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, isLoading]);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || isLoading) {
     return null;
   }
 
@@ -195,7 +215,7 @@ export default function HomeScreen() {
               style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
               className="text-xl"
             >
-              {mockUser.name}
+              {userName || 'Participant'}
             </Text>
           </View>
         </Animated.View>

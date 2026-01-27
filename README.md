@@ -14,6 +14,12 @@ A mobile app for dancers and teachers participating in the AFeeree Dance Certifi
 - Pull-to-refresh functionality
 - Haptic feedback on all interactions
 
+### Onboarding
+- Beautiful two-step welcome flow for new users
+- Collects name and email
+- Sets enrollment date automatically
+- Animated transitions between steps
+
 ### Syllabus
 - Browse all certification modules
 - Filter by category (Technique, Theory, Teaching Practice, Research)
@@ -21,7 +27,17 @@ A mobile app for dancers and teachers participating in the AFeeree Dance Certifi
 - Locked/unlocked module states
 - Video demonstration links
 - View full syllabus PDF
+- **Mandinka Terms** - Vocabulary reference with pronunciation
+- **Practice Timer** - Track your practice sessions
 - Pull-to-refresh and haptic feedback
+
+### Module Detail
+- View full module description and notation references
+- **Mark lessons as complete** with persistent progress tracking
+- **Notes feature** - Take personal notes for each module
+- **Confetti celebration** when completing all lessons
+- View PDF resources
+- Progress bar showing completion status
 
 ### Assignments
 - View all assignments with status filters
@@ -32,8 +48,10 @@ A mobile app for dancers and teachers participating in the AFeeree Dance Certifi
 - Pull-to-refresh and haptic feedback
 
 ### Profile
-- View certification progress
-- Account information
+- View certification progress based on completed lessons
+- Account information (name, email, enrollment date)
+- Upload/change profile photo
+- **Dark mode toggle** - Switch between light and dark themes
 - Achievement stats (lessons completed, modules finished, assignments graded)
 - **Achievements system** with progress tracking:
   - First Steps - Complete your first lesson
@@ -58,8 +76,9 @@ A mobile app for dancers and teachers participating in the AFeeree Dance Certifi
 - **Pull-to-Refresh**: Swipe down on any screen to refresh content
 - **Micro-interactions**: Button press animations with scale effects
 - **Smooth Animations**: Fade-in and slide animations throughout
-- **Celebration Component**: Confetti animation for completing milestones
+- **Confetti Celebration**: Animated confetti when completing a module
 - **Skeleton Loading**: Placeholder UI while content loads
+- **Persistent State**: All progress saved locally with Zustand & AsyncStorage
 
 ## Tech Stack
 
@@ -68,8 +87,11 @@ A mobile app for dancers and teachers participating in the AFeeree Dance Certifi
 - React Native Reanimated for animations
 - Expo Haptics for tactile feedback
 - Expo Router for navigation
+- Zustand for state management
+- AsyncStorage for data persistence
 - Lucide icons
 - Playfair Display & DM Sans fonts
+- RevenueCat for payments (Premium features)
 
 ## Color Palette
 
@@ -89,15 +111,20 @@ src/
 │   │   ├── assignments.tsx  # Assignment management
 │   │   ├── profile.tsx      # User profile
 │   │   └── feedback.tsx     # Two-way feedback messaging
+│   ├── onboarding.tsx       # New user onboarding flow
+│   ├── module/[id].tsx      # Module detail with lessons
 │   └── _layout.tsx          # Root layout
 ├── components/
 │   ├── HapticButton.tsx     # Reusable button with haptics & animations
 │   ├── Skeleton.tsx         # Loading skeleton components
-│   └── Celebration.tsx      # Confetti celebration animation
+│   ├── ConfettiCelebration.tsx # Confetti celebration animation
+│   ├── PracticeTimer.tsx    # Practice session timer
+│   └── MandinkaTerms.tsx    # Mandinka vocabulary modal
 └── lib/
     ├── theme.ts             # Color palette and styling constants
     ├── types.ts             # TypeScript interfaces
-    ├── mockData.ts          # Sample data for development
+    ├── mockData.ts          # Course data and resources
+    ├── userStore.ts         # Zustand store for user state
     └── cn.ts                # Tailwind class merge utility
 ```
 
@@ -109,5 +136,4 @@ src/
 - Offline content caching
 - Certificate generation upon completion
 - Daily practice reminders
-- Lesson bookmarking
-- Dark mode support
+- Audio pronunciation for Mandinka terms (upload files via SOUNDS tab)

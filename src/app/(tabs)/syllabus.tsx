@@ -3,16 +3,18 @@ import { View, Text, ScrollView, Pressable, Linking, RefreshControl } from 'reac
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { BookOpen, Clock, Lock, ChevronRight, Play, FileText, ArrowLeft, Video } from 'lucide-react-native';
+import { BookOpen, Clock, Lock, ChevronRight, Play, FileText, ArrowLeft, Video, Timer, BookOpenText } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
 import * as Haptics from 'expo-haptics';
-import * as WebBrowser from 'expo-web-browser';
 
 import { colors } from '@/lib/theme';
 import { mockModules, resourceLinks, videoLinks } from '@/lib/mockData';
+import { useUserStore } from '@/lib/userStore';
 import type { Module } from '@/lib/types';
+import PracticeTimer from '@/components/PracticeTimer';
+import MandinkaTerms from '@/components/MandinkaTerms';
 
 const triggerHaptic = () => {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -25,6 +27,10 @@ export default function SyllabusScreen() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [refreshing, setRefreshing] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+
+  const completedLessons = useUserStore(s => s.completedLessons);
 
   const onRefresh = useCallback(() => {
     triggerHaptic();
@@ -53,8 +59,13 @@ export default function SyllabusScreen() {
     : mockModules.filter(m => m.category === selectedCategory);
 
   const getProgressPercentage = (module: Module) => {
+    const completed = completedLessons.filter(l => l.startsWith(`${module.id}-`)).length;
     if (module.lessons === 0) return 0;
-    return Math.round((module.completedLessons / module.lessons) * 100);
+    return Math.round((completed / module.lessons) * 100);
+  };
+
+  const getCompletedLessons = (module: Module) => {
+    return completedLessons.filter(l => l.startsWith(`${module.id}-`)).length;
   };
 
   const openSyllabusPDF = () => {
@@ -62,13 +73,9 @@ export default function SyllabusScreen() {
     Linking.openURL(resourceLinks.syllabus);
   };
 
-  const handleModulePress = async (module: Module) => {
+  const handleModulePress = (module: Module) => {
     triggerHaptic();
-    // Open the specific PDF link for this module if available, otherwise use default syllabus
-    const url = module.pdfLink ?? resourceLinks.syllabus;
-    console.log('Opening URL:', url);
-    // Use Linking.openURL to open in Safari/Chrome which handles Google Drive disco parameter
-    await Linking.openURL(url);
+    router.push(`/module/${module.id}` as any);
   };
 
   const handleCategoryPress = (category: string) => {
@@ -83,6 +90,9 @@ export default function SyllabusScreen() {
 
   return (
     <View className="flex-1" style={{ backgroundColor: colors.cream[100] }}>
+      <PracticeTimer visible={showTimer} onClose={() => setShowTimer(false)} />
+      <MandinkaTerms visible={showTerms} onClose={() => setShowTerms(false)} />
+
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
@@ -98,27 +108,39 @@ export default function SyllabusScreen() {
       >
         {/* Header */}
         <View style={{ paddingTop: insets.top + 16, paddingHorizontal: 24, paddingBottom: 16 }}>
-          <Animated.View entering={FadeInDown.duration(600)} className="flex-row items-center">
-            <Pressable
-              onPress={() => navigateWithHaptic('/(tabs)/')}
-              className="mr-4 p-2 -ml-2"
-            >
-              <ArrowLeft size={24} color={colors.neutral[800]} />
-            </Pressable>
-            <View>
-              <Text
-                style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
-                className="text-3xl"
+          <Animated.View entering={FadeInDown.duration(600)} className="flex-row items-center justify-between">
+            <View className="flex-row items-center">
+              <Pressable
+                onPress={() => navigateWithHaptic('/(tabs)/')}
+                className="mr-4 p-2 -ml-2"
               >
-                Syllabus
-              </Text>
-              <Text
-                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
-                className="text-base mt-1"
-              >
-                AFeeree Certification Curriculum
-              </Text>
+                <ArrowLeft size={24} color={colors.neutral[800]} />
+              </Pressable>
+              <View>
+                <Text
+                  style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.neutral[800] }}
+                  className="text-3xl"
+                >
+                  Syllabus
+                </Text>
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                  className="text-base mt-1"
+                >
+                  AFeeree Certification Curriculum
+                </Text>
+              </View>
             </View>
+            <Pressable
+              onPress={() => {
+                triggerHaptic();
+                setShowTimer(true);
+              }}
+              className="w-12 h-12 rounded-full items-center justify-center"
+              style={{ backgroundColor: colors.gold[500] }}
+            >
+              <Timer size={24} color="white" />
+            </Pressable>
           </Animated.View>
         </View>
 
@@ -202,6 +224,40 @@ export default function SyllabusScreen() {
               <Play size={18} color="white" fill="white" />
             </Pressable>
           </View>
+        </Animated.View>
+
+        {/* Mandinka Terms Button */}
+        <Animated.View entering={FadeInDown.duration(600).delay(85)} className="px-6 mb-4">
+          <Pressable
+            onPress={() => {
+              triggerHaptic();
+              setShowTerms(true);
+            }}
+            className="flex-row items-center p-4 rounded-2xl"
+            style={{ backgroundColor: 'white', borderWidth: 1, borderColor: colors.neutral[200] }}
+          >
+            <View
+              className="w-10 h-10 rounded-full items-center justify-center"
+              style={{ backgroundColor: colors.gold[100] }}
+            >
+              <BookOpenText size={20} color={colors.gold[600]} />
+            </View>
+            <View className="flex-1 ml-3">
+              <Text
+                style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+                className="text-base"
+              >
+                Mandinka Terms
+              </Text>
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                className="text-sm"
+              >
+                Key vocabulary with pronunciation
+              </Text>
+            </View>
+            <ChevronRight size={20} color={colors.neutral[400]} />
+          </Pressable>
         </Animated.View>
 
         {/* Category Filter */}

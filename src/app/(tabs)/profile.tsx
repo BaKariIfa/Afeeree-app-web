@@ -22,7 +22,10 @@ import {
   Trophy,
   Crown,
   Lock,
-  Camera
+  Camera,
+  Timer,
+  Moon,
+  Sun
 } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
@@ -32,7 +35,8 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { colors } from '@/lib/theme';
-import { mockUser, mockModules, mockAssignments } from '@/lib/mockData';
+import { mockModules, mockAssignments } from '@/lib/mockData';
+import { useUserStore } from '@/lib/userStore';
 import { hasEntitlement } from '@/lib/revenuecatClient';
 import { Paywall } from '@/components/Paywall';
 
@@ -49,6 +53,15 @@ export default function ProfileScreen() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  // User store values
+  const userName = useUserStore(s => s.name);
+  const userEmail = useUserStore(s => s.email);
+  const enrollmentDate = useUserStore(s => s.enrollmentDate);
+  const completedLessons = useUserStore(s => s.completedLessons);
+  const practiceTime = useUserStore(s => s.practiceTime);
+  const darkMode = useUserStore(s => s.darkMode);
+  const toggleDarkMode = useUserStore(s => s.toggleDarkMode);
 
   useEffect(() => {
     checkPremiumStatus();
@@ -138,9 +151,18 @@ export default function ProfileScreen() {
     return null;
   }
 
-  const completedModules = mockModules.filter(m => m.completedLessons === m.lessons && m.lessons > 0).length;
+  // Calculate progress from user store
+  const totalLessonsInCourse = mockModules.reduce((acc, m) => acc + m.lessons, 0);
+  const totalLessons = completedLessons.length;
+  const userProgress = totalLessonsInCourse > 0 ? Math.round((totalLessons / totalLessonsInCourse) * 100) : 0;
+
+  // Calculate completed modules from user store
+  const completedModules = mockModules.filter(m => {
+    const moduleLessons = completedLessons.filter(l => l.startsWith(`${m.id}-`)).length;
+    return moduleLessons === m.lessons && m.lessons > 0;
+  }).length;
+
   const completedAssignments = mockAssignments.filter(a => a.status === 'graded').length;
-  const totalLessons = mockModules.reduce((acc, m) => acc + m.completedLessons, 0);
 
   // Achievements data
   const achievements = [
@@ -195,7 +217,7 @@ export default function ProfileScreen() {
       description: 'Complete all requirements',
       icon: <Trophy size={20} color={colors.gold[500]} />,
       earned: false,
-      progress: mockUser.progress,
+      progress: userProgress,
       total: 100
     },
   ];
@@ -203,6 +225,15 @@ export default function ProfileScreen() {
   const earnedCount = achievements.filter(a => a.earned).length;
 
   const menuItems = [
+    {
+      icon: darkMode ? <Sun size={22} color={colors.gold[500]} /> : <Moon size={22} color={colors.neutral[600]} />,
+      label: darkMode ? 'Light Mode' : 'Dark Mode',
+      onPress: () => {
+        triggerHaptic();
+        toggleDarkMode();
+      },
+      isToggle: true
+    },
     {
       icon: <Settings size={22} color={colors.neutral[600]} />,
       label: 'Account Settings',
@@ -272,7 +303,7 @@ export default function ProfileScreen() {
               style={{ fontFamily: 'PlayfairDisplay_700Bold', color: 'white' }}
               className="text-2xl"
             >
-              {mockUser.name}
+              {userName || 'Student'}
             </Text>
 
             <View
@@ -283,7 +314,7 @@ export default function ProfileScreen() {
                 style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
                 className="text-sm"
               >
-                {mockUser.certificationLevel} Certification
+                Foundation Certification
               </Text>
             </View>
           </Animated.View>
@@ -370,7 +401,7 @@ export default function ProfileScreen() {
                 Overall Progress
               </Text>
               <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.primary[500] }} className="text-base">
-                {mockUser.progress}%
+                {userProgress}%
               </Text>
             </View>
             <View className="h-3 rounded-full overflow-hidden" style={{ backgroundColor: colors.neutral[200] }}>
@@ -378,7 +409,7 @@ export default function ProfileScreen() {
                 className="h-full rounded-full"
                 style={{
                   backgroundColor: colors.primary[500],
-                  width: `${mockUser.progress}%`
+                  width: `${userProgress}%`
                 }}
               />
             </View>
@@ -386,7 +417,7 @@ export default function ProfileScreen() {
               style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
               className="text-sm mt-3"
             >
-              Complete {100 - mockUser.progress}% more to achieve {mockUser.certificationLevel} certification
+              Complete {100 - userProgress}% more to achieve Foundation certification
             </Text>
           </View>
         </Animated.View>
@@ -496,7 +527,7 @@ export default function ProfileScreen() {
                   Email
                 </Text>
                 <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[800] }} className="text-base">
-                  {mockUser.email}
+                  {userEmail || 'Not set'}
                 </Text>
               </View>
             </View>
@@ -510,7 +541,7 @@ export default function ProfileScreen() {
                   Enrolled Since
                 </Text>
                 <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[800] }} className="text-base">
-                  {new Date(mockUser.enrollmentDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  {enrollmentDate ? new Date(enrollmentDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Recently'}
                 </Text>
               </View>
             </View>
