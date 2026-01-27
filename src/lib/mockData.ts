@@ -12,7 +12,7 @@ export const resourceLinks = {
 
 // Individual Kata page links
 export const kataLinks = {
-  kunindi: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABx461S9I',
+  kunindi: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/edit?disco=AAABx461S9I',
   torsoDevelopment: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABy8JWcZE',
   footRhythms: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABy8JWcZQ',
   traditionalSquats: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABy8JWcZU',
@@ -73,7 +73,7 @@ export const mockModules: Module[] = [
     description: 'Opening positions and foundational torso work. Prepares the body through culturally-informed movement principles for African and African Diasporic dance.',
     notationRef: 'KATA 1-2, Pages 10-12',
     pdfPage: 10,
-    pdfLink: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/view?usp=drivesdk&disco=AAABx461S9I',
+    pdfLink: 'https://drive.google.com/file/d/1KmXAtqxPeYkKLJiTN4Z3t-f-X4QZQ2Kv/edit?disco=AAABx461S9I',
     localImage: danceClassImage,
     duration: '4 weeks',
     lessons: 8,
