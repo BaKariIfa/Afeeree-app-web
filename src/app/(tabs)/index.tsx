@@ -381,13 +381,13 @@ export default function HomeScreen() {
               <View className="mt-4 p-4 rounded-xl" style={{ backgroundColor: colors.gold[50] }}>
                 <Text
                   style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.primary[500], fontStyle: 'italic', lineHeight: 24 }}
-                  className="text-base mb-2"
+                  className="text-base text-center"
                 >
                   A-Feeree – The Physical Language
                 </Text>
                 <Text
                   style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600], lineHeight: 20 }}
-                  className="text-xs"
+                  className="text-xs text-center mt-2"
                 >
                   His master's thesis led to the development of A-Feeree – The Physical Language, an innovative training method that underpins his approach to Africanist movement aesthetics.
                 </Text>
@@ -414,7 +414,7 @@ export default function HomeScreen() {
                 BaKari has shared his expertise at institutions including Toronto Metropolitan University (formerly Ryerson University), York University, Humber College, and the Lester B. Pearson School for the Performing Arts. Currently, he serves as a vice-principal with the Toronto District School Board, where he passionately advocates for equity and arts education.
               </Text>
 
-              <View className="mt-5 pt-4" style={{ borderTopWidth: 1, borderTopColor: colors.neutral[200] }}>
+              <View className="mt-4 p-4 rounded-xl" style={{ backgroundColor: colors.gold[50] }}>
                 <Text
                   style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.primary[500], fontStyle: 'italic', lineHeight: 24 }}
                   className="text-base text-center"
