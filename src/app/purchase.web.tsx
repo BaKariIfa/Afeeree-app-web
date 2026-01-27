@@ -35,8 +35,8 @@ export default function PurchaseScreen() {
   const [squareLoaded, setSquareLoaded] = useState(false);
   const [card, setCard] = useState<any>(null);
 
-  // Program price - you can change this
-  const PROGRAM_PRICE = 299;
+  // Program price
+  const PROGRAM_PRICE = 600;
   const PROGRAM_NAME = 'AFeeree Certification Program';
 
   const [fontsLoaded] = useFonts({
@@ -395,7 +395,6 @@ export default function PurchaseScreen() {
                   </View>
                 </View>
 
-                {/* Price Display */}
                 <View
                   style={{
                     backgroundColor: colors.gold[50],
@@ -405,15 +404,27 @@ export default function PurchaseScreen() {
                   }}
                 >
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text
-                      style={{
-                        fontFamily: 'DMSans_500Medium',
-                        color: colors.neutral[600],
-                        fontSize: 14,
-                      }}
-                    >
-                      {PROGRAM_NAME}
-                    </Text>
+                    <View style={{ flex: 1 }}>
+                      <Text
+                        style={{
+                          fontFamily: 'DMSans_500Medium',
+                          color: colors.neutral[600],
+                          fontSize: 14,
+                        }}
+                      >
+                        {PROGRAM_NAME}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'DMSans_400Regular',
+                          color: colors.neutral[500],
+                          fontSize: 12,
+                          marginTop: 4,
+                        }}
+                      >
+                        Includes in-class sessions & app access
+                      </Text>
+                    </View>
                     <Text
                       style={{
                         fontFamily: 'DMSans_600SemiBold',

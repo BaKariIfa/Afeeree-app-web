@@ -425,7 +425,7 @@ export default function LandingPage() {
           }}
         >
           <Text style={{ fontFamily: 'DMSans_600SemiBold', color: colors.primary[800], fontSize: 18 }}>
-            Enroll Now — $299
+            Enroll Now — $600
           </Text>
           <ArrowRight size={22} color={colors.primary[800]} style={{ marginLeft: 10 }} />
         </Pressable>

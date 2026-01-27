@@ -218,7 +218,7 @@ Create a `.htaccess` file in your website root with:
 5. Enters code to access the full program
 
 ### Customizing Price
-Edit the `PROGRAM_PRICE` constant in `src/app/purchase.web.tsx` (currently set to $299).
+Edit the `PROGRAM_PRICE` constant in `src/app/purchase.web.tsx` (currently set to $600).
 
 ### Important URLs
 - `yourdomain.com/` → Landing page
