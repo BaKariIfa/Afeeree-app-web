@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Pressable, TextInput, Linking } from 'react-nat
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, BookOpen, Clock, Check, FileText, StickyNote, Play, ChevronRight } from 'lucide-react-native';
+import { ArrowLeft, BookOpen, Clock, Check, FileText, StickyNote, Lock, Crown } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
@@ -12,7 +12,12 @@ import * as Haptics from 'expo-haptics';
 import { colors } from '@/lib/theme';
 import { mockModules } from '@/lib/mockData';
 import { useUserStore } from '@/lib/userStore';
+import { hasEntitlement } from '@/lib/revenuecatClient';
 import ConfettiCelebration from '@/components/ConfettiCelebration';
+import { Paywall } from '@/components/Paywall';
+
+// Free users can complete limited lessons per module
+const FREE_LESSON_LIMIT = 3;
 
 const triggerHaptic = () => {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -26,6 +31,8 @@ export default function ModuleDetailScreen() {
   const [showNotes, setShowNotes] = useState(false);
   const [noteText, setNoteText] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
 
   const completedLessons = useUserStore(s => s.completedLessons);
   const notes = useUserStore(s => s.notes);
@@ -42,10 +49,21 @@ export default function ModuleDetailScreen() {
   });
 
   useEffect(() => {
+    checkPremiumStatus();
+  }, []);
+
+  useEffect(() => {
     if (module && notes[module.id]) {
       setNoteText(notes[module.id]);
     }
   }, [module, notes]);
+
+  const checkPremiumStatus = async () => {
+    const result = await hasEntitlement('premium');
+    if (result.ok) {
+      setIsPremium(result.data);
+    }
+  };
 
   if (!fontsLoaded || !module) {
     return null;
@@ -61,6 +79,13 @@ export default function ModuleDetailScreen() {
 
   const handleLessonToggle = (lessonIndex: number) => {
     triggerHaptic();
+
+    // Check if free user is trying to complete beyond limit
+    if (!isPremium && lessonIndex >= FREE_LESSON_LIMIT) {
+      setShowPaywall(true);
+      return;
+    }
+
     if (!isLessonComplete(lessonIndex)) {
       markLessonComplete(module.id, lessonIndex);
 
@@ -71,6 +96,15 @@ export default function ModuleDetailScreen() {
         setShowConfetti(true);
       }
     }
+  };
+
+  const handleNotesPress = () => {
+    triggerHaptic();
+    if (!isPremium) {
+      setShowPaywall(true);
+      return;
+    }
+    setShowNotes(true);
   };
 
   const handleSaveNote = () => {
@@ -244,33 +278,51 @@ export default function ModuleDetailScreen() {
             </Pressable>
 
             <Pressable
-              onPress={() => {
-                triggerHaptic();
-                setShowNotes(true);
-              }}
+              onPress={handleNotesPress}
               className="flex-1 flex-row items-center justify-center py-4 rounded-xl ml-2"
-              style={{ backgroundColor: colors.gold[500] }}
+              style={{ backgroundColor: isPremium ? colors.gold[500] : colors.neutral[400] }}
             >
-              <StickyNote size={20} color="white" />
+              {isPremium ? (
+                <StickyNote size={20} color="white" />
+              ) : (
+                <Lock size={20} color="white" />
+              )}
               <Text
                 style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
                 className="text-base ml-2"
               >
                 Notes
               </Text>
+              {!isPremium && (
+                <View className="flex-row items-center ml-2 px-2 py-0.5 rounded-full" style={{ backgroundColor: colors.gold[500] }}>
+                  <Crown size={10} color="white" />
+                </View>
+              )}
             </Pressable>
           </Animated.View>
 
           {/* Lessons List */}
           <Animated.View entering={FadeInUp.duration(500).delay(200)} className="mt-6">
-            <Text
-              style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
-              className="text-lg mb-4"
-            >
-              Lessons
-            </Text>
+            <View className="flex-row items-center justify-between mb-4">
+              <Text
+                style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+                className="text-lg"
+              >
+                Lessons
+              </Text>
+              {!isPremium && (
+                <Text
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                  className="text-sm"
+                >
+                  {FREE_LESSON_LIMIT} free
+                </Text>
+              )}
+            </View>
 
-            {Array.from({ length: lessonCount }, (_, i) => (
+            {Array.from({ length: lessonCount }, (_, i) => {
+              const isLocked = !isPremium && i >= FREE_LESSON_LIMIT;
+              return (
               <Pressable
                 key={i}
                 onPress={() => handleLessonToggle(i)}
@@ -278,17 +330,20 @@ export default function ModuleDetailScreen() {
                 style={{
                   backgroundColor: 'white',
                   borderWidth: 1,
-                  borderColor: isLessonComplete(i) ? colors.success : colors.neutral[200],
+                  borderColor: isLessonComplete(i) ? colors.success : isLocked ? colors.neutral[300] : colors.neutral[200],
+                  opacity: isLocked ? 0.7 : 1,
                 }}
               >
                 <View
                   className="w-8 h-8 rounded-full items-center justify-center"
                   style={{
-                    backgroundColor: isLessonComplete(i) ? colors.success : colors.neutral[100],
+                    backgroundColor: isLessonComplete(i) ? colors.success : isLocked ? colors.neutral[200] : colors.neutral[100],
                   }}
                 >
                   {isLessonComplete(i) ? (
                     <Check size={18} color="white" />
+                  ) : isLocked ? (
+                    <Lock size={14} color={colors.neutral[400]} />
                   ) : (
                     <Text
                       style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[500] }}
@@ -301,22 +356,33 @@ export default function ModuleDetailScreen() {
                 <Text
                   style={{
                     fontFamily: 'DMSans_500Medium',
-                    color: isLessonComplete(i) ? colors.success : colors.neutral[700],
+                    color: isLessonComplete(i) ? colors.success : isLocked ? colors.neutral[400] : colors.neutral[700],
                   }}
                   className="flex-1 ml-3 text-base"
                 >
                   Lesson {i + 1}
                 </Text>
-                {isLessonComplete(i) && (
+                {isLessonComplete(i) ? (
                   <Text
                     style={{ fontFamily: 'DMSans_400Regular', color: colors.success }}
                     className="text-sm"
                   >
                     Completed
                   </Text>
-                )}
+                ) : isLocked ? (
+                  <View className="flex-row items-center px-2 py-0.5 rounded-full" style={{ backgroundColor: colors.gold[100] }}>
+                    <Crown size={12} color={colors.gold[600]} />
+                    <Text
+                      style={{ fontFamily: 'DMSans_500Medium', color: colors.gold[600] }}
+                      className="text-xs ml-1"
+                    >
+                      Premium
+                    </Text>
+                  </View>
+                ) : null}
               </Pressable>
-            ))}
+            );
+            })}
           </Animated.View>
         </View>
       </ScrollView>
@@ -369,6 +435,13 @@ export default function ModuleDetailScreen() {
           </Animated.View>
         </View>
       )}
+
+      {/* Paywall Modal */}
+      <Paywall
+        visible={showPaywall}
+        onClose={() => setShowPaywall(false)}
+        onPurchaseSuccess={checkPremiumStatus}
+      />
     </View>
   );
 }
