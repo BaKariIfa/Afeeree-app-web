@@ -2,6 +2,28 @@
 
 A mobile app for dancers and teachers participating in the AFeeree Dance Certification Program. This app supports in-class sessions, allows participants to submit assignments, and track their certification progress.
 
+## Access Control
+
+This app uses an **access code system** instead of app store payments. Users must enter a valid access code to use the app.
+
+### How it works:
+1. Participants receive an access code from the program administrator
+2. They enter the code on the access screen when first opening the app
+3. Once verified, they can complete onboarding and use all app features
+
+### Managing Access Codes:
+Access codes are defined in `src/lib/userStore.ts` in the `VALID_ACCESS_CODES` object:
+- Set expiration to `null` for codes that never expire
+- Set a date string like `'2025-12-31'` for codes that expire
+
+**Current valid codes:**
+- `AFEEREE2024`
+- `PROGRAM2024`
+- `CERTIFICATION`
+- `BAKARI2024`
+
+To add new codes, edit the `VALID_ACCESS_CODES` object in `src/lib/userStore.ts`.
+
 ## Features
 
 ### Home Dashboard
@@ -19,6 +41,12 @@ A mobile app for dancers and teachers participating in the AFeeree Dance Certifi
 - Collects name and email
 - Sets enrollment date automatically
 - Animated transitions between steps
+
+### Access Code Screen
+- Secure entry point for program participants
+- Validates access codes against approved list
+- Shake animation and haptic feedback on invalid codes
+- Redirects to onboarding after successful verification
 
 ### Syllabus
 - Browse all certification modules
@@ -111,6 +139,7 @@ src/
 │   │   ├── assignments.tsx  # Assignment management
 │   │   ├── profile.tsx      # User profile
 │   │   └── feedback.tsx     # Two-way feedback messaging
+│   ├── access-code.tsx      # Access code entry screen
 │   ├── onboarding.tsx       # New user onboarding flow
 │   ├── module/[id].tsx      # Module detail with lessons
 │   └── _layout.tsx          # Root layout

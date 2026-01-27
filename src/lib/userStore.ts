@@ -1,11 +1,34 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Valid access codes - you can add/remove codes here
+// Format: CODE -> expiration date (null = never expires)
+const VALID_ACCESS_CODES: Record<string, string | null> = {
+  'AFEEREE2024': null, // Never expires
+  'PROGRAM2024': null,
+  'CERTIFICATION': null,
+  'BAKARI2024': null,
+  // Add more codes as needed
+};
+
+export const isValidAccessCode = (code: string): boolean => {
+  const upperCode = code.toUpperCase().trim();
+  const expiration = VALID_ACCESS_CODES[upperCode];
+
+  if (expiration === undefined) return false;
+  if (expiration === null) return true;
+
+  // Check if not expired
+  return new Date() < new Date(expiration);
+};
+
 interface UserState {
   name: string;
   email: string;
   enrollmentDate: string;
   isOnboarded: boolean;
+  hasAccess: boolean; // NEW: tracks if user has valid access
+  accessCode: string; // NEW: the code they used
   completedLessons: string[];
   moduleProgress: Record<string, number>;
   notes: Record<string, string>;
@@ -15,11 +38,13 @@ interface UserState {
   // Actions
   setUser: (name: string, email: string) => void;
   setOnboarded: (value: boolean) => void;
+  setAccess: (hasAccess: boolean, code: string) => void; // NEW
   markLessonComplete: (moduleId: string, lessonIndex: number) => void;
   saveNote: (moduleId: string, note: string) => void;
   addPracticeTime: (seconds: number) => void;
   toggleDarkMode: () => void;
   loadUserData: () => Promise<void>;
+  logout: () => Promise<void>; // NEW: allows user to logout
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
@@ -27,6 +52,8 @@ export const useUserStore = create<UserState>((set, get) => ({
   email: '',
   enrollmentDate: '',
   isOnboarded: false,
+  hasAccess: false,
+  accessCode: '',
   completedLessons: [],
   moduleProgress: {},
   notes: {},
@@ -42,6 +69,41 @@ export const useUserStore = create<UserState>((set, get) => ({
   setOnboarded: (value) => {
     set({ isOnboarded: value });
     AsyncStorage.setItem('onboardingComplete', value ? 'true' : 'false');
+  },
+
+  setAccess: (hasAccess, code) => {
+    set({ hasAccess, accessCode: code });
+    AsyncStorage.setItem('hasAccess', hasAccess ? 'true' : 'false');
+    AsyncStorage.setItem('accessCode', code);
+  },
+
+  logout: async () => {
+    await AsyncStorage.multiRemove([
+      'userName',
+      'userEmail',
+      'enrollmentDate',
+      'onboardingComplete',
+      'hasAccess',
+      'accessCode',
+      'completedLessons',
+      'moduleProgress',
+      'notes',
+      'practiceTime',
+      'darkMode',
+    ]);
+    set({
+      name: '',
+      email: '',
+      enrollmentDate: '',
+      isOnboarded: false,
+      hasAccess: false,
+      accessCode: '',
+      completedLessons: [],
+      moduleProgress: {},
+      notes: {},
+      practiceTime: 0,
+      darkMode: false,
+    });
   },
 
   markLessonComplete: (moduleId, lessonIndex) => {
@@ -86,6 +148,8 @@ export const useUserStore = create<UserState>((set, get) => ({
         email,
         enrollmentDate,
         onboardingComplete,
+        hasAccess,
+        accessCode,
         completedLessons,
         moduleProgress,
         notes,
@@ -96,6 +160,8 @@ export const useUserStore = create<UserState>((set, get) => ({
         AsyncStorage.getItem('userEmail'),
         AsyncStorage.getItem('enrollmentDate'),
         AsyncStorage.getItem('onboardingComplete'),
+        AsyncStorage.getItem('hasAccess'),
+        AsyncStorage.getItem('accessCode'),
         AsyncStorage.getItem('completedLessons'),
         AsyncStorage.getItem('moduleProgress'),
         AsyncStorage.getItem('notes'),
@@ -108,6 +174,8 @@ export const useUserStore = create<UserState>((set, get) => ({
         email: email || '',
         enrollmentDate: enrollmentDate || '',
         isOnboarded: onboardingComplete === 'true',
+        hasAccess: hasAccess === 'true',
+        accessCode: accessCode || '',
         completedLessons: completedLessons ? JSON.parse(completedLessons) : [],
         moduleProgress: moduleProgress ? JSON.parse(moduleProgress) : {},
         notes: notes ? JSON.parse(notes) : {},

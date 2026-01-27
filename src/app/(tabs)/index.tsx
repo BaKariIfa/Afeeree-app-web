@@ -28,6 +28,7 @@ export default function HomeScreen() {
 
   const userName = useUserStore(s => s.name);
   const isOnboarded = useUserStore(s => s.isOnboarded);
+  const hasAccess = useUserStore(s => s.hasAccess);
   const loadUserData = useUserStore(s => s.loadUserData);
 
   useEffect(() => {
@@ -39,10 +40,16 @@ export default function HomeScreen() {
   }, [loadUserData]);
 
   useEffect(() => {
-    if (!isLoading && !isOnboarded) {
-      router.replace('/onboarding');
+    if (!isLoading) {
+      if (!hasAccess) {
+        // No access code - go to access code screen
+        router.replace('/access-code');
+      } else if (!isOnboarded) {
+        // Has access but not onboarded - go to onboarding
+        router.replace('/onboarding');
+      }
     }
-  }, [isLoading, isOnboarded, router]);
+  }, [isLoading, hasAccess, isOnboarded, router]);
 
   const onRefresh = useCallback(() => {
     triggerHaptic();
