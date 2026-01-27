@@ -26,9 +26,11 @@ export default function AccessCodeScreen() {
   const setAccess = useUserStore(s => s.setAccess);
   const isCodeValid = useAccessCodeStore(s => s.isCodeValid);
   const markCodeUsed = useAccessCodeStore(s => s.markCodeUsed);
+  const loadCodes = useAccessCodeStore(s => s.loadCodes);
 
-  // Check Square config on load
+  // Load codes and check Square config on mount
   useEffect(() => {
+    loadCodes();
     logSquareConfig();
   }, []);
 
