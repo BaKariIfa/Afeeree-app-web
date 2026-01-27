@@ -383,13 +383,7 @@ export default function HomeScreen() {
                   style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.primary[500], fontStyle: 'italic', lineHeight: 24 }}
                   className="text-base text-center"
                 >
-                  A-Feeree – The Physical Language
-                </Text>
-                <Text
-                  style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600], lineHeight: 20 }}
-                  className="text-xs text-center mt-2"
-                >
-                  His master's thesis led to the development of A-Feeree – The Physical Language, an innovative training method that underpins his approach to Africanist movement aesthetics.
+                  "A-Feeree – The Physical Language: His master's thesis led to the development of an innovative training method that underpins his approach to Africanist movement aesthetics."
                 </Text>
               </View>
 
