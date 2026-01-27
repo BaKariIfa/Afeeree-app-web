@@ -186,29 +186,45 @@ This app supports web deployment with Square payment integration for self-manage
 
 ### Deploying to Your IONOS Domain
 
+Since you're using Vibecode, you can deploy the web version using the **Share** button in the Vibecode app:
+
+1. Click **Share** (top right corner of Vibecode app)
+2. Select **Deploy to Web**
+3. Follow the instructions to connect your IONOS domain
+
+**Manual Deployment (Alternative):**
+
+If you prefer to manually deploy:
+
 **Step 1: Export for Web**
 ```bash
 npx expo export --platform web
 ```
 
 **Step 2: Upload to IONOS**
-1. Log in to your IONOS account
-2. Go to Hosting > File Manager (or use FTP)
+1. Log in to your IONOS account at https://my.ionos.com
+2. Go to **Hosting** > **Webspace** > **File Manager** (or connect via FTP/SFTP)
 3. Navigate to your website's root directory (usually `htdocs` or `public_html`)
-4. Upload the entire contents of the `dist` folder
+4. Delete any existing files (backup first if needed)
+5. Upload the entire contents of the `dist` folder
 
-**Step 3: Configure routing (important!)**
-Create a `.htaccess` file in your website root with:
-```apache
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
-</IfModule>
-```
+**Step 3: Upload .htaccess file**
+The `.htaccess` file is already created in `public/.htaccess`. Upload it to your website root directory. This file:
+- Enables SPA (Single Page Application) routing
+- Allows Square payment integration
+- Enables compression for faster loading
+- Sets up caching for static assets
+
+**Step 4: Configure Square in IONOS**
+Add these environment variables to your IONOS hosting (if supported) or hardcode them in production:
+- Replace sandbox URLs with production URLs in `purchase.web.tsx`
+- Change `https://sandbox.web.squarecdn.com/v1/square.js` to `https://web.squarecdn.com/v1/square.js`
+
+**IONOS FTP Settings (if needed):**
+- Server: Your domain or ftp.your-domain.com
+- Username: Your IONOS username
+- Password: Your IONOS password
+- Port: 21 (FTP) or 22 (SFTP)
 
 ### Payment Flow
 1. Visitor lands on your website (landing page)
