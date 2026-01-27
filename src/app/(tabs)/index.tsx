@@ -192,7 +192,7 @@ export default function HomeScreen() {
 
             <Pressable
               className="items-center py-2 px-3"
-              onPress={() => navigateWithHaptic('/(tabs)/two')}
+              onPress={() => navigateWithHaptic('/(tabs)/resources')}
             >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
                 <Library size={20} color={colors.neutral[500]} />
