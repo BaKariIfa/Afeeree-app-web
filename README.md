@@ -7,22 +7,29 @@ A mobile app for dancers and teachers participating in the AFeeree Dance Certifi
 This app uses an **access code system** instead of app store payments. Users must enter a valid access code to use the app.
 
 ### How it works:
-1. Participants receive an access code from the program administrator
-2. They enter the code on the access screen when first opening the app
-3. Once verified, they can complete onboarding and use all app features
+1. You (the admin) generate unique access codes in the app
+2. You share a code with each participant when they pay/register
+3. They enter the code on the access screen when first opening the app
+4. Once verified, they can complete onboarding and use all app features
 
-### Managing Access Codes:
-Access codes are defined in `src/lib/userStore.ts` in the `VALID_ACCESS_CODES` object:
-- Set expiration to `null` for codes that never expire
-- Set a date string like `'2025-12-31'` for codes that expire
+### Admin Panel:
+Access the Admin Panel from the **Profile** screen to:
+- **Generate new codes** - One tap creates a unique code (format: AF-XXXXXX)
+- **Copy codes** - Instantly copy to clipboard
+- **Share codes** - Share directly via text/email
+- **Track usage** - See which codes are used and which are available
+- **Delete unused codes** - Remove codes you no longer need
 
-**Current valid codes:**
-- `AFEEREE2024`
-- `PROGRAM2024`
-- `CERTIFICATION`
-- `BAKARI2024`
+**Admin Password:** `BAKARI2024` (you can change this in `src/lib/accessCodeStore.ts`)
 
-To add new codes, edit the `VALID_ACCESS_CODES` object in `src/lib/userStore.ts`.
+### Workflow:
+1. Go to Profile > Admin Panel
+2. Enter the admin password
+3. Tap "Generate New Code" for each new participant
+4. Share the code with them (copy/paste or share button)
+5. They enter the code in the app to register
+
+Each code can only be used once.
 
 ## Features
 

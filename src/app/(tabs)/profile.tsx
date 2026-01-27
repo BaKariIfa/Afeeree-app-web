@@ -25,7 +25,8 @@ import {
   Camera,
   Timer,
   Moon,
-  Sun
+  Sun,
+  ShieldCheck
 } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
@@ -39,6 +40,7 @@ import { mockModules, mockAssignments } from '@/lib/mockData';
 import { useUserStore } from '@/lib/userStore';
 import { hasEntitlement } from '@/lib/revenuecatClient';
 import { Paywall } from '@/components/Paywall';
+import { AdminPanel } from '@/components/AdminPanel';
 
 const PROFILE_IMAGE_KEY = 'user_profile_image';
 
@@ -51,6 +53,7 @@ export default function ProfileScreen() {
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
@@ -225,6 +228,16 @@ export default function ProfileScreen() {
   const earnedCount = achievements.filter(a => a.earned).length;
 
   const menuItems = [
+    {
+      icon: <ShieldCheck size={22} color={colors.gold[600]} />,
+      label: 'Admin Panel',
+      sublabel: 'Manage access codes',
+      onPress: () => {
+        triggerHaptic();
+        setShowAdminPanel(true);
+      },
+      isAdmin: true
+    },
     {
       icon: darkMode ? <Sun size={22} color={colors.gold[500]} /> : <Moon size={22} color={colors.neutral[600]} />,
       label: darkMode ? 'Light Mode' : 'Dark Mode',
@@ -613,6 +626,12 @@ export default function ProfileScreen() {
         visible={showPaywall}
         onClose={() => setShowPaywall(false)}
         onPurchaseSuccess={checkPremiumStatus}
+      />
+
+      {/* Admin Panel Modal */}
+      <AdminPanel
+        visible={showAdminPanel}
+        onClose={() => setShowAdminPanel(false)}
       />
     </View>
   );

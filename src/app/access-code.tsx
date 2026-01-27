@@ -11,7 +11,8 @@ import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-g
 import * as Haptics from 'expo-haptics';
 
 import { colors } from '@/lib/theme';
-import { useUserStore, isValidAccessCode } from '@/lib/userStore';
+import { useUserStore } from '@/lib/userStore';
+import { useAccessCodeStore } from '@/lib/accessCodeStore';
 
 export default function AccessCodeScreen() {
   const insets = useSafeAreaInsets();
@@ -22,6 +23,8 @@ export default function AccessCodeScreen() {
   const inputRef = useRef<TextInput>(null);
 
   const setAccess = useUserStore(s => s.setAccess);
+  const isCodeValid = useAccessCodeStore(s => s.isCodeValid);
+  const markCodeUsed = useAccessCodeStore(s => s.markCodeUsed);
 
   const shakeX = useSharedValue(0);
 
@@ -64,8 +67,10 @@ export default function AccessCodeScreen() {
     // Simulate a brief verification delay
     await new Promise(resolve => setTimeout(resolve, 800));
 
-    if (isValidAccessCode(code)) {
+    const valid = await isCodeValid(code);
+    if (valid) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await markCodeUsed(code.toUpperCase().trim(), ''); // Will be updated with email during onboarding
       setAccess(true, code.toUpperCase().trim());
       router.replace('/onboarding');
     } else {

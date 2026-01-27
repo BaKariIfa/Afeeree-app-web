@@ -1,27 +1,6 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Valid access codes - you can add/remove codes here
-// Format: CODE -> expiration date (null = never expires)
-const VALID_ACCESS_CODES: Record<string, string | null> = {
-  'AFEEREE2024': null, // Never expires
-  'PROGRAM2024': null,
-  'CERTIFICATION': null,
-  'BAKARI2024': null,
-  // Add more codes as needed
-};
-
-export const isValidAccessCode = (code: string): boolean => {
-  const upperCode = code.toUpperCase().trim();
-  const expiration = VALID_ACCESS_CODES[upperCode];
-
-  if (expiration === undefined) return false;
-  if (expiration === null) return true;
-
-  // Check if not expired
-  return new Date() < new Date(expiration);
-};
-
 interface UserState {
   name: string;
   email: string;
