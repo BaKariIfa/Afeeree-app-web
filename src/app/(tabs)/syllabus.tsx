@@ -1,9 +1,9 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, ScrollView, Pressable, Linking, RefreshControl } from 'react-native';
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { BookOpen, Clock, Lock, ChevronRight, Play, FileText, ArrowLeft, Video, Timer, BookOpenText, Crown } from 'lucide-react-native';
+import { BookOpen, Clock, ChevronRight, Play, FileText, ArrowLeft, Video, Timer, BookOpenText } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
@@ -12,14 +12,9 @@ import * as Haptics from 'expo-haptics';
 import { colors } from '@/lib/theme';
 import { mockModules, resourceLinks, videoLinks } from '@/lib/mockData';
 import { useUserStore } from '@/lib/userStore';
-import { hasEntitlement } from '@/lib/revenuecatClient';
 import type { Module } from '@/lib/types';
 import PracticeTimer from '@/components/PracticeTimer';
 import MandinkaTerms from '@/components/MandinkaTerms';
-import { Paywall } from '@/components/Paywall';
-
-// Free users can access first 3 modules only
-const FREE_MODULE_LIMIT = 3;
 
 const triggerHaptic = () => {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -34,26 +29,12 @@ export default function SyllabusScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
-  const [showPaywall, setShowPaywall] = useState(false);
-  const [isPremium, setIsPremium] = useState(false);
 
   const completedLessons = useUserStore(s => s.completedLessons);
-
-  useEffect(() => {
-    checkPremiumStatus();
-  }, []);
-
-  const checkPremiumStatus = async () => {
-    const result = await hasEntitlement('premium');
-    if (result.ok) {
-      setIsPremium(result.data);
-    }
-  };
 
   const onRefresh = useCallback(() => {
     triggerHaptic();
     setRefreshing(true);
-    checkPremiumStatus();
     setTimeout(() => setRefreshing(false), 1500);
   }, []);
 
@@ -83,26 +64,13 @@ export default function SyllabusScreen() {
     return Math.round((completed / module.lessons) * 100);
   };
 
-  const getCompletedLessons = (module: Module) => {
-    return completedLessons.filter(l => l.startsWith(`${module.id}-`)).length;
-  };
-
   const openSyllabusPDF = () => {
     triggerHaptic();
-    if (!isPremium) {
-      setShowPaywall(true);
-      return;
-    }
     Linking.openURL(resourceLinks.syllabus);
   };
 
-  const handleModulePress = (module: Module, moduleIndex: number) => {
+  const handleModulePress = (module: Module) => {
     triggerHaptic();
-    // Check if module is locked for free users
-    if (!isPremium && moduleIndex >= FREE_MODULE_LIMIT) {
-      setShowPaywall(true);
-      return;
-    }
     router.push(`/module/${module.id}` as any);
   };
 
@@ -113,16 +81,7 @@ export default function SyllabusScreen() {
 
   const openVideo = (url: string) => {
     triggerHaptic();
-    if (!isPremium) {
-      setShowPaywall(true);
-      return;
-    }
     Linking.openURL(url);
-  };
-
-  // Check if a module is locked for free users
-  const isModuleLocked = (moduleIndex: number) => {
-    return !isPremium && moduleIndex >= FREE_MODULE_LIMIT;
   };
 
   return (
@@ -190,22 +149,12 @@ export default function SyllabusScreen() {
           >
             <FileText size={24} color="white" />
             <View className="flex-1 ml-3">
-              <View className="flex-row items-center">
-                <Text
-                  style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
-                  className="text-base"
-                >
-                  View Full Syllabus PDF
-                </Text>
-                {!isPremium && (
-                  <View className="flex-row items-center ml-2 px-2 py-0.5 rounded-full" style={{ backgroundColor: colors.gold[500] }}>
-                    <Crown size={10} color="white" />
-                    <Text style={{ fontFamily: 'DMSans_500Medium', color: 'white' }} className="text-xs ml-1">
-                      Premium
-                    </Text>
-                  </View>
-                )}
-              </View>
+              <Text
+                style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
+                className="text-base"
+              >
+                View Full Syllabus PDF
+              </Text>
               <Text
                 style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[300] }}
                 className="text-sm"
@@ -213,37 +162,23 @@ export default function SyllabusScreen() {
                 Complete curriculum by BaKari Ifasegun Lindsay
               </Text>
             </View>
-            {!isPremium ? (
-              <Lock size={20} color="white" />
-            ) : (
-              <ChevronRight size={20} color="white" />
-            )}
+            <ChevronRight size={20} color="white" />
           </Pressable>
         </Animated.View>
 
         {/* Video Demonstrations Section */}
         <Animated.View entering={FadeInDown.duration(600).delay(75)} className="px-6 mb-4">
-          <View className="flex-row items-center mb-3">
-            <Text
-              style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
-              className="text-lg"
-            >
-              Video Demonstrations
-            </Text>
-            {!isPremium && (
-              <View className="flex-row items-center ml-2 px-2 py-0.5 rounded-full" style={{ backgroundColor: colors.gold[500] }}>
-                <Crown size={10} color="white" />
-                <Text style={{ fontFamily: 'DMSans_500Medium', color: 'white' }} className="text-xs ml-1">
-                  Premium
-                </Text>
-              </View>
-            )}
-          </View>
+          <Text
+            style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+            className="text-lg mb-3"
+          >
+            Video Demonstrations
+          </Text>
           <View className="flex-row gap-3">
             <Pressable
               onPress={() => openVideo(videoLinks.part1)}
               className="flex-1 flex-row items-center p-4 rounded-2xl"
-              style={{ backgroundColor: isPremium ? colors.gold[500] : colors.neutral[400] }}
+              style={{ backgroundColor: colors.gold[500] }}
             >
               <Video size={22} color="white" />
               <View className="flex-1 ml-3">
@@ -254,22 +189,18 @@ export default function SyllabusScreen() {
                   Part 1
                 </Text>
                 <Text
-                  style={{ fontFamily: 'DMSans_400Regular', color: isPremium ? colors.gold[100] : colors.neutral[200] }}
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[100] }}
                   className="text-xs"
                 >
                   Kata & Context
                 </Text>
               </View>
-              {isPremium ? (
-                <Play size={18} color="white" fill="white" />
-              ) : (
-                <Lock size={18} color="white" />
-              )}
+              <Play size={18} color="white" fill="white" />
             </Pressable>
             <Pressable
               onPress={() => openVideo(videoLinks.part2)}
               className="flex-1 flex-row items-center p-4 rounded-2xl"
-              style={{ backgroundColor: isPremium ? colors.gold[500] : colors.neutral[400] }}
+              style={{ backgroundColor: colors.gold[500] }}
             >
               <Video size={22} color="white" />
               <View className="flex-1 ml-3">
@@ -280,17 +211,13 @@ export default function SyllabusScreen() {
                   Part 2
                 </Text>
                 <Text
-                  style={{ fontFamily: 'DMSans_400Regular', color: isPremium ? colors.gold[100] : colors.neutral[200] }}
+                  style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[100] }}
                   className="text-xs"
                 >
                   Kata & Context
                 </Text>
               </View>
-              {isPremium ? (
-                <Play size={18} color="white" fill="white" />
-              ) : (
-                <Lock size={18} color="white" />
-              )}
+              <Play size={18} color="white" fill="white" />
             </Pressable>
           </View>
         </Animated.View>
@@ -338,7 +265,7 @@ export default function SyllabusScreen() {
             contentContainerStyle={{ paddingRight: 24 }}
             style={{ flexGrow: 0 }}
           >
-            {categories.map((category, index) => (
+            {categories.map((category) => (
               <Pressable
                 key={category}
                 onPress={() => handleCategoryPress(category)}
@@ -365,9 +292,7 @@ export default function SyllabusScreen() {
 
         {/* Modules List */}
         <View className="px-6 mt-6">
-          {filteredModules.map((module, index) => {
-            const locked = isModuleLocked(index);
-            return (
+          {filteredModules.map((module, index) => (
             <Animated.View
               key={module.id}
               entering={FadeInUp.duration(500).delay(200 + index * 100)}
@@ -381,9 +306,8 @@ export default function SyllabusScreen() {
                   shadowOpacity: 0.08,
                   shadowRadius: 12,
                   elevation: 3,
-                  opacity: locked ? 0.85 : 1,
                 }}
-                onPress={() => handleModulePress(module, index)}
+                onPress={() => handleModulePress(module)}
               >
                 <View className="flex-row">
                   {/* Module Image */}
@@ -393,22 +317,7 @@ export default function SyllabusScreen() {
                       style={{ width: 110, height: 160 }}
                       contentFit="cover"
                     />
-                    {locked ? (
-                      <View
-                        className="absolute inset-0 items-center justify-center"
-                        style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
-                      >
-                        <View className="items-center">
-                          <Lock size={24} color="white" />
-                          <View className="flex-row items-center mt-1 px-2 py-0.5 rounded-full" style={{ backgroundColor: colors.gold[500] }}>
-                            <Crown size={10} color="white" />
-                            <Text style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }} className="text-xs ml-1">
-                              Premium
-                            </Text>
-                          </View>
-                        </View>
-                      </View>
-                    ) : module.completedLessons > 0 && module.completedLessons < module.lessons ? (
+                    {module.completedLessons > 0 && module.completedLessons < module.lessons && (
                       <View
                         className="absolute inset-0 items-center justify-center"
                         style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}
@@ -420,7 +329,7 @@ export default function SyllabusScreen() {
                           <Play size={24} color="white" fill="white" />
                         </View>
                       </View>
-                    ) : null}
+                    )}
                   </View>
 
                   {/* Module Info */}
@@ -438,11 +347,6 @@ export default function SyllabusScreen() {
                             {module.category}
                           </Text>
                         </View>
-                        {locked && (
-                          <View className="flex-row items-center ml-2">
-                            <Crown size={12} color={colors.gold[500]} />
-                          </View>
-                        )}
                       </View>
                       <Text
                         style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
@@ -489,37 +393,34 @@ export default function SyllabusScreen() {
                       </View>
 
                       {/* Progress Bar */}
-                      {!locked && (
-                        <View className="mt-2 flex-row items-center">
-                          <View className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: colors.neutral[200] }}>
-                            <View
-                              className="h-full rounded-full"
-                              style={{
-                                backgroundColor: getProgressPercentage(module) === 100 ? colors.success : colors.primary[500],
-                                width: `${getProgressPercentage(module)}%`
-                              }}
-                            />
-                          </View>
-                          <Text
-                            style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[500] }}
-                            className="text-xs ml-2"
-                          >
-                            {getProgressPercentage(module)}%
-                          </Text>
+                      <View className="mt-2 flex-row items-center">
+                        <View className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: colors.neutral[200] }}>
+                          <View
+                            className="h-full rounded-full"
+                            style={{
+                              backgroundColor: getProgressPercentage(module) === 100 ? colors.success : colors.primary[500],
+                              width: `${getProgressPercentage(module)}%`
+                            }}
+                          />
                         </View>
-                      )}
+                        <Text
+                          style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[500] }}
+                          className="text-xs ml-2"
+                        >
+                          {getProgressPercentage(module)}%
+                        </Text>
+                      </View>
                     </View>
                   </View>
 
                   {/* Arrow */}
                   <View className="justify-center pr-2">
-                    <ChevronRight size={18} color={locked ? colors.neutral[300] : colors.neutral[400]} />
+                    <ChevronRight size={18} color={colors.neutral[400]} />
                   </View>
                 </View>
               </Pressable>
             </Animated.View>
-          );
-          })}
+          ))}
         </View>
 
         {/* Info Card */}
@@ -542,13 +443,6 @@ export default function SyllabusScreen() {
           </Text>
         </Animated.View>
       </ScrollView>
-
-      {/* Paywall Modal */}
-      <Paywall
-        visible={showPaywall}
-        onClose={() => setShowPaywall(false)}
-        onPurchaseSuccess={checkPremiumStatus}
-      />
     </View>
   );
 }

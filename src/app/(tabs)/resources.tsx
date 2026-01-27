@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, Pressable, Linking, RefreshControl } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -8,8 +8,6 @@ import {
   Video,
   FileText,
   Globe,
-  Lock,
-  Crown,
   Play,
   ChevronRight,
   Volume2
@@ -21,8 +19,6 @@ import * as Haptics from 'expo-haptics';
 
 import { colors } from '@/lib/theme';
 import { resourceLinks, videoLinks, mandinkaTerms, foundationalPrinciples } from '@/lib/mockData';
-import { hasEntitlement } from '@/lib/revenuecatClient';
-import { Paywall } from '@/components/Paywall';
 
 const triggerHaptic = () => {
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -32,8 +28,6 @@ export default function ResourcesScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
-  const [showPaywall, setShowPaywall] = useState(false);
-  const [isPremium, setIsPremium] = useState(false);
 
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
@@ -42,34 +36,14 @@ export default function ResourcesScreen() {
     DMSans_600SemiBold,
   });
 
-  useEffect(() => {
-    checkPremiumStatus();
-  }, []);
-
-  const checkPremiumStatus = async () => {
-    const result = await hasEntitlement('premium');
-    if (result.ok) {
-      setIsPremium(result.data);
-    }
-  };
-
   const onRefresh = () => {
     triggerHaptic();
     setRefreshing(true);
-    checkPremiumStatus();
     setTimeout(() => setRefreshing(false), 1500);
   };
 
-  const handlePremiumAction = (action: () => void) => {
-    triggerHaptic();
-    if (!isPremium) {
-      setShowPaywall(true);
-      return;
-    }
-    action();
-  };
-
   const openLink = (url: string) => {
+    triggerHaptic();
     Linking.openURL(url);
   };
 
@@ -118,52 +92,8 @@ export default function ResourcesScreen() {
                 Learning materials & references
               </Text>
             </View>
-            {!isPremium && (
-              <View className="flex-row items-center px-3 py-1.5 rounded-full" style={{ backgroundColor: colors.gold[500] }}>
-                <Crown size={14} color="white" />
-                <Text style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }} className="text-sm ml-1">
-                  Premium
-                </Text>
-              </View>
-            )}
           </Animated.View>
         </View>
-
-        {/* Premium Notice for Free Users */}
-        {!isPremium && (
-          <Animated.View entering={FadeInDown.duration(600).delay(50)} className="px-6 mb-6">
-            <Pressable
-              onPress={() => {
-                triggerHaptic();
-                setShowPaywall(true);
-              }}
-              className="p-4 rounded-2xl flex-row items-center"
-              style={{ backgroundColor: colors.gold[100], borderWidth: 1, borderColor: colors.gold[300] }}
-            >
-              <View
-                className="w-12 h-12 rounded-full items-center justify-center"
-                style={{ backgroundColor: colors.gold[500] }}
-              >
-                <Lock size={24} color="white" />
-              </View>
-              <View className="flex-1 ml-4">
-                <Text
-                  style={{ fontFamily: 'DMSans_600SemiBold', color: colors.gold[800] }}
-                  className="text-base"
-                >
-                  Unlock All Resources
-                </Text>
-                <Text
-                  style={{ fontFamily: 'DMSans_400Regular', color: colors.gold[700] }}
-                  className="text-sm"
-                >
-                  Subscribe to access all learning materials
-                </Text>
-              </View>
-              <ChevronRight size={20} color={colors.gold[600]} />
-            </Pressable>
-          </Animated.View>
-        )}
 
         {/* Cultural Research Section */}
         <Animated.View entering={FadeInUp.duration(500).delay(100)} className="px-6 mb-6">
@@ -174,24 +104,19 @@ export default function ResourcesScreen() {
             Cultural Research
           </Text>
           <Pressable
-            onPress={() => handlePremiumAction(() => openLink(resourceLinks.culturalResearch))}
+            onPress={() => openLink(resourceLinks.culturalResearch)}
             className="p-4 rounded-2xl flex-row items-center"
             style={{
-              backgroundColor: isPremium ? 'white' : colors.neutral[100],
+              backgroundColor: 'white',
               borderWidth: 1,
               borderColor: colors.neutral[200],
-              opacity: isPremium ? 1 : 0.7
             }}
           >
             <View
               className="w-12 h-12 rounded-full items-center justify-center"
-              style={{ backgroundColor: isPremium ? colors.primary[100] : colors.neutral[200] }}
+              style={{ backgroundColor: colors.primary[100] }}
             >
-              {isPremium ? (
-                <Globe size={24} color={colors.primary[500]} />
-              ) : (
-                <Lock size={24} color={colors.neutral[400]} />
-              )}
+              <Globe size={24} color={colors.primary[500]} />
             </View>
             <View className="flex-1 ml-4">
               <Text
@@ -207,13 +132,7 @@ export default function ResourcesScreen() {
                 Historical and cultural context of AFeeree
               </Text>
             </View>
-            {isPremium ? (
-              <ChevronRight size={20} color={colors.neutral[400]} />
-            ) : (
-              <View className="flex-row items-center px-2 py-1 rounded-full" style={{ backgroundColor: colors.gold[100] }}>
-                <Crown size={12} color={colors.gold[600]} />
-              </View>
-            )}
+            <ChevronRight size={20} color={colors.neutral[400]} />
           </Pressable>
         </Animated.View>
 
@@ -226,21 +145,17 @@ export default function ResourcesScreen() {
             Video: Key Principles
           </Text>
           <Pressable
-            onPress={() => handlePremiumAction(() => openLink(videoLinks.keyPrinciples))}
+            onPress={() => openLink(videoLinks.keyPrinciples)}
             className="p-4 rounded-2xl flex-row items-center"
             style={{
-              backgroundColor: isPremium ? colors.primary[500] : colors.neutral[400],
+              backgroundColor: colors.primary[500],
             }}
           >
             <View
               className="w-12 h-12 rounded-full items-center justify-center"
               style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
             >
-              {isPremium ? (
-                <Video size={24} color="white" />
-              ) : (
-                <Lock size={24} color="white" />
-              )}
+              <Video size={24} color="white" />
             </View>
             <View className="flex-1 ml-4">
               <Text
@@ -256,13 +171,7 @@ export default function ResourcesScreen() {
                 Video explanation of core movement principles
               </Text>
             </View>
-            {isPremium ? (
-              <Play size={24} color="white" fill="white" />
-            ) : (
-              <View className="flex-row items-center px-2 py-1 rounded-full" style={{ backgroundColor: colors.gold[500] }}>
-                <Crown size={12} color="white" />
-              </View>
-            )}
+            <Play size={24} color="white" fill="white" />
           </Pressable>
         </Animated.View>
 
@@ -277,21 +186,14 @@ export default function ResourcesScreen() {
           <View
             className="rounded-2xl overflow-hidden"
             style={{
-              backgroundColor: isPremium ? 'white' : colors.neutral[100],
+              backgroundColor: 'white',
               borderWidth: 1,
               borderColor: colors.neutral[200],
-              opacity: isPremium ? 1 : 0.7
             }}
           >
             {foundationalPrinciples.map((principle, index) => (
-              <Pressable
+              <View
                 key={principle.name}
-                onPress={() => {
-                  if (!isPremium) {
-                    triggerHaptic();
-                    setShowPaywall(true);
-                  }
-                }}
                 className="p-4 flex-row items-center"
                 style={{
                   borderBottomWidth: index < foundationalPrinciples.length - 1 ? 1 : 0,
@@ -300,10 +202,10 @@ export default function ResourcesScreen() {
               >
                 <View
                   className="w-8 h-8 rounded-full items-center justify-center"
-                  style={{ backgroundColor: isPremium ? colors.gold[100] : colors.neutral[200] }}
+                  style={{ backgroundColor: colors.gold[100] }}
                 >
                   <Text
-                    style={{ fontFamily: 'DMSans_600SemiBold', color: isPremium ? colors.gold[600] : colors.neutral[400] }}
+                    style={{ fontFamily: 'DMSans_600SemiBold', color: colors.gold[600] }}
                     className="text-sm"
                   >
                     {index + 1}
@@ -316,66 +218,37 @@ export default function ResourcesScreen() {
                   >
                     {principle.name}
                   </Text>
-                  {isPremium ? (
-                    <Text
-                      style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
-                      className="text-sm mt-0.5"
-                    >
-                      {principle.description}
-                    </Text>
-                  ) : (
-                    <Text
-                      style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[400] }}
-                      className="text-sm mt-0.5"
-                    >
-                      Subscribe to view description
-                    </Text>
-                  )}
+                  <Text
+                    style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                    className="text-sm mt-0.5"
+                  >
+                    {principle.description}
+                  </Text>
                 </View>
-                {!isPremium && (
-                  <Lock size={16} color={colors.neutral[400]} />
-                )}
-              </Pressable>
+              </View>
             ))}
           </View>
         </Animated.View>
 
         {/* Mandinka Terminology Section */}
         <Animated.View entering={FadeInUp.duration(500).delay(250)} className="px-6 mb-6">
-          <View className="flex-row items-center justify-between mb-3">
-            <Text
-              style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
-              className="text-lg"
-            >
-              Mandinka Terminology
-            </Text>
-            {!isPremium && (
-              <View className="flex-row items-center px-2 py-1 rounded-full" style={{ backgroundColor: colors.gold[100] }}>
-                <Crown size={12} color={colors.gold[600]} />
-                <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.gold[600] }} className="text-xs ml-1">
-                  Premium
-                </Text>
-              </View>
-            )}
-          </View>
+          <Text
+            style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+            className="text-lg mb-3"
+          >
+            Mandinka Terminology
+          </Text>
           <View
             className="rounded-2xl overflow-hidden"
             style={{
-              backgroundColor: isPremium ? 'white' : colors.neutral[100],
+              backgroundColor: 'white',
               borderWidth: 1,
               borderColor: colors.neutral[200],
-              opacity: isPremium ? 1 : 0.7
             }}
           >
             {mandinkaTerms.map((item, index) => (
-              <Pressable
+              <View
                 key={item.term}
-                onPress={() => {
-                  if (!isPremium) {
-                    triggerHaptic();
-                    setShowPaywall(true);
-                  }
-                }}
                 className="p-4 flex-row items-center"
                 style={{
                   borderBottomWidth: index < mandinkaTerms.length - 1 ? 1 : 0,
@@ -384,38 +257,25 @@ export default function ResourcesScreen() {
               >
                 <View
                   className="w-10 h-10 rounded-full items-center justify-center"
-                  style={{ backgroundColor: isPremium ? colors.primary[100] : colors.neutral[200] }}
+                  style={{ backgroundColor: colors.primary[100] }}
                 >
-                  {isPremium ? (
-                    <Volume2 size={20} color={colors.primary[500]} />
-                  ) : (
-                    <Lock size={18} color={colors.neutral[400]} />
-                  )}
+                  <Volume2 size={20} color={colors.primary[500]} />
                 </View>
                 <View className="flex-1 ml-3">
                   <Text
-                    style={{ fontFamily: 'DMSans_600SemiBold', color: isPremium ? colors.primary[600] : colors.neutral[500] }}
+                    style={{ fontFamily: 'DMSans_600SemiBold', color: colors.primary[600] }}
                     className="text-base"
                   >
                     {item.term}
                   </Text>
-                  {isPremium ? (
-                    <Text
-                      style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600] }}
-                      className="text-sm"
-                    >
-                      {item.meaning}
-                    </Text>
-                  ) : (
-                    <Text
-                      style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[400] }}
-                      className="text-sm"
-                    >
-                      ••••••••
-                    </Text>
-                  )}
+                  <Text
+                    style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[600] }}
+                    className="text-sm"
+                  >
+                    {item.meaning}
+                  </Text>
                 </View>
-              </Pressable>
+              </View>
             ))}
           </View>
         </Animated.View>
@@ -430,24 +290,19 @@ export default function ResourcesScreen() {
           </Text>
 
           <Pressable
-            onPress={() => handlePremiumAction(() => openLink(resourceLinks.notationImages))}
+            onPress={() => openLink(resourceLinks.notationImages)}
             className="p-4 rounded-2xl flex-row items-center mb-3"
             style={{
-              backgroundColor: isPremium ? 'white' : colors.neutral[100],
+              backgroundColor: 'white',
               borderWidth: 1,
               borderColor: colors.neutral[200],
-              opacity: isPremium ? 1 : 0.7
             }}
           >
             <View
               className="w-12 h-12 rounded-full items-center justify-center"
-              style={{ backgroundColor: isPremium ? colors.gold[100] : colors.neutral[200] }}
+              style={{ backgroundColor: colors.gold[100] }}
             >
-              {isPremium ? (
-                <FileText size={24} color={colors.gold[600]} />
-              ) : (
-                <Lock size={24} color={colors.neutral[400]} />
-              )}
+              <FileText size={24} color={colors.gold[600]} />
             </View>
             <View className="flex-1 ml-4">
               <Text
@@ -463,34 +318,23 @@ export default function ResourcesScreen() {
                 Visual notation reference guide
               </Text>
             </View>
-            {isPremium ? (
-              <ChevronRight size={20} color={colors.neutral[400]} />
-            ) : (
-              <View className="flex-row items-center px-2 py-1 rounded-full" style={{ backgroundColor: colors.gold[100] }}>
-                <Crown size={12} color={colors.gold[600]} />
-              </View>
-            )}
+            <ChevronRight size={20} color={colors.neutral[400]} />
           </Pressable>
 
           <Pressable
-            onPress={() => handlePremiumAction(() => openLink(resourceLinks.syllabus))}
+            onPress={() => openLink(resourceLinks.syllabus)}
             className="p-4 rounded-2xl flex-row items-center"
             style={{
-              backgroundColor: isPremium ? 'white' : colors.neutral[100],
+              backgroundColor: 'white',
               borderWidth: 1,
               borderColor: colors.neutral[200],
-              opacity: isPremium ? 1 : 0.7
             }}
           >
             <View
               className="w-12 h-12 rounded-full items-center justify-center"
-              style={{ backgroundColor: isPremium ? colors.primary[100] : colors.neutral[200] }}
+              style={{ backgroundColor: colors.primary[100] }}
             >
-              {isPremium ? (
-                <BookOpen size={24} color={colors.primary[500]} />
-              ) : (
-                <Lock size={24} color={colors.neutral[400]} />
-              )}
+              <BookOpen size={24} color={colors.primary[500]} />
             </View>
             <View className="flex-1 ml-4">
               <Text
@@ -506,23 +350,10 @@ export default function ResourcesScreen() {
                 Complete curriculum document
               </Text>
             </View>
-            {isPremium ? (
-              <ChevronRight size={20} color={colors.neutral[400]} />
-            ) : (
-              <View className="flex-row items-center px-2 py-1 rounded-full" style={{ backgroundColor: colors.gold[100] }}>
-                <Crown size={12} color={colors.gold[600]} />
-              </View>
-            )}
+            <ChevronRight size={20} color={colors.neutral[400]} />
           </Pressable>
         </Animated.View>
       </ScrollView>
-
-      {/* Paywall Modal */}
-      <Paywall
-        visible={showPaywall}
-        onClose={() => setShowPaywall(false)}
-        onPurchaseSuccess={checkPremiumStatus}
-      />
     </View>
   );
 }
