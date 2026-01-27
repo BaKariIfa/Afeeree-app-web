@@ -11,6 +11,28 @@ export interface User {
   role: 'student' | 'instructor' | 'admin';
 }
 
+export interface FeedbackMessage {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderRole: 'student' | 'instructor' | 'admin';
+  recipientId: string;
+  recipientName: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+}
+
+export interface Participant {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  certificationLevel: 'Foundation' | 'Intermediate' | 'Advanced' | 'Master';
+  progress: number;
+  lastActive: string;
+}
+
 export interface Module {
   id: string;
   title: string;

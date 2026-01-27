@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { BookOpen, Trophy, Clock, ChevronRight, Bell, Home, FileText, User, Library } from 'lucide-react-native';
+import { BookOpen, Trophy, Clock, ChevronRight, Bell, Home, FileText, User, Library, MessageCircle } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
 import { useFonts, PlayfairDisplay_700Bold } from '@expo-google-fonts/playfair-display';
 import { DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold } from '@expo-google-fonts/dm-sans';
@@ -141,7 +141,7 @@ export default function HomeScreen() {
         >
           <View className="flex-row justify-around items-center">
             <Pressable
-              className="items-center py-2 px-4"
+              className="items-center py-2 px-3"
               onPress={() => navigateWithHaptic('/(tabs)/')}
             >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.primary[100] }}>
@@ -151,7 +151,7 @@ export default function HomeScreen() {
             </Pressable>
 
             <Pressable
-              className="items-center py-2 px-4"
+              className="items-center py-2 px-3"
               onPress={() => navigateWithHaptic('/(tabs)/syllabus')}
             >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
@@ -161,17 +161,17 @@ export default function HomeScreen() {
             </Pressable>
 
             <Pressable
-              className="items-center py-2 px-4"
-              onPress={() => navigateWithHaptic('/(tabs)/assignments')}
+              className="items-center py-2 px-3"
+              onPress={() => navigateWithHaptic('/(tabs)/feedback')}
             >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
-                <FileText size={20} color={colors.neutral[500]} />
+                <MessageCircle size={20} color={colors.neutral[500]} />
               </View>
-              <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[500] }} className="text-xs mt-1">Tasks</Text>
+              <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[500] }} className="text-xs mt-1">Feedback</Text>
             </Pressable>
 
             <Pressable
-              className="items-center py-2 px-4"
+              className="items-center py-2 px-3"
               onPress={() => navigateWithHaptic('/(tabs)/two')}
             >
               <View className="w-10 h-10 rounded-full items-center justify-center" style={{ backgroundColor: colors.neutral[100] }}>
@@ -463,7 +463,7 @@ export default function HomeScreen() {
       >
         <Pressable
           onPress={() => triggerHaptic()}
-          className="items-center py-2 px-4"
+          className="items-center py-2 px-3"
         >
           <Home size={24} color={colors.primary[500]} />
           <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.primary[500] }} className="text-xs mt-1">
@@ -473,7 +473,7 @@ export default function HomeScreen() {
 
         <Pressable
           onPress={() => navigateWithHaptic('/(tabs)/syllabus')}
-          className="items-center py-2 px-4"
+          className="items-center py-2 px-3"
         >
           <Library size={24} color={colors.neutral[400]} />
           <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[400] }} className="text-xs mt-1">
@@ -482,18 +482,18 @@ export default function HomeScreen() {
         </Pressable>
 
         <Pressable
-          onPress={() => navigateWithHaptic('/(tabs)/assignments')}
-          className="items-center py-2 px-4"
+          onPress={() => navigateWithHaptic('/(tabs)/feedback')}
+          className="items-center py-2 px-3"
         >
-          <FileText size={24} color={colors.neutral[400]} />
+          <MessageCircle size={24} color={colors.neutral[400]} />
           <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[400] }} className="text-xs mt-1">
-            Tasks
+            Feedback
           </Text>
         </Pressable>
 
         <Pressable
           onPress={() => navigateWithHaptic('/(tabs)/profile')}
-          className="items-center py-2 px-4"
+          className="items-center py-2 px-3"
         >
           <User size={24} color={colors.neutral[400]} />
           <Text style={{ fontFamily: 'DMSans_500Medium', color: colors.neutral[400] }} className="text-xs mt-1">

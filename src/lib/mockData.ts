@@ -1,7 +1,7 @@
 // AFeeree Certification Program - Real Course Data
 // Based on "A-Feeree: The Physical Language" by BaKari Ifasegun Lindsay
 
-import type { User, Module, Assignment, Notification } from './types';
+import type { User, Module, Assignment, Notification, Participant, FeedbackMessage } from './types';
 
 // Google Drive Resource Links
 export const resourceLinks = {
@@ -205,5 +205,59 @@ export const mockNotifications: Notification[] = [
     date: '2024-02-18',
     read: false,
     type: 'announcement',
+  },
+];
+
+// Mock participants for feedback
+export const mockParticipants: Participant[] = [
+  {
+    id: '2',
+    name: 'Sarah Johnson',
+    email: 'sarah.j@example.com',
+    certificationLevel: 'Foundation',
+    progress: 45,
+    lastActive: '2024-02-25',
+  },
+  {
+    id: '3',
+    name: 'Marcus Williams',
+    email: 'marcus.w@example.com',
+    certificationLevel: 'Foundation',
+    progress: 30,
+    lastActive: '2024-02-24',
+  },
+  {
+    id: '4',
+    name: 'Amara Okonkwo',
+    email: 'amara.o@example.com',
+    certificationLevel: 'Foundation',
+    progress: 60,
+    lastActive: '2024-02-25',
+  },
+];
+
+// Mock feedback messages
+export const mockFeedbackMessages: FeedbackMessage[] = [
+  {
+    id: '1',
+    senderId: 'admin',
+    senderName: 'BaKari Lindsay',
+    senderRole: 'admin',
+    recipientId: '2',
+    recipientName: 'Sarah Johnson',
+    message: 'Great progress on the Kunindi module! Your torso isolations are improving. Focus on maintaining grounded feet during the next session.',
+    timestamp: '2024-02-24T14:30:00Z',
+    read: true,
+  },
+  {
+    id: '2',
+    senderId: '2',
+    senderName: 'Sarah Johnson',
+    senderRole: 'student',
+    recipientId: 'admin',
+    recipientName: 'BaKari Lindsay',
+    message: 'Thank you for the feedback! I have been practicing daily. Should I focus more on the polyrhythmic aspects?',
+    timestamp: '2024-02-24T15:45:00Z',
+    read: true,
   },
 ];

@@ -14,6 +14,7 @@ export default function TabLayout() {
       <Tabs.Screen name="assignments" />
       <Tabs.Screen name="profile" />
       <Tabs.Screen name="two" />
+      <Tabs.Screen name="feedback" />
     </Tabs>
   );
 }

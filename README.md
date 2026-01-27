@@ -44,6 +44,14 @@ A mobile app for dancers and teachers participating in the AFeeree Dance Certifi
   - Certification Ready - Complete all requirements
 - Pull-to-refresh and haptic feedback
 
+### Feedback
+- Two-way messaging between instructor and participants
+- View all participants with their progress
+- Send personalized feedback to each participant
+- Participants can respond to feedback
+- Message history with timestamps
+- Real-time conversation view
+
 ## UX Enhancements
 
 - **Haptic Feedback**: Light vibrations on all button taps for native feel
@@ -79,7 +87,8 @@ src/
 │   │   ├── index.tsx        # Home dashboard
 │   │   ├── syllabus.tsx     # Curriculum modules
 │   │   ├── assignments.tsx  # Assignment management
-│   │   └── profile.tsx      # User profile
+│   │   ├── profile.tsx      # User profile
+│   │   └── feedback.tsx     # Two-way feedback messaging
 │   └── _layout.tsx          # Root layout
 ├── components/
 │   ├── HapticButton.tsx     # Reusable button with haptics & animations
@@ -97,7 +106,6 @@ src/
 - Backend integration for real data
 - Video recording and upload functionality
 - Push notifications for due dates
-- In-app messaging with instructors
 - Offline content caching
 - Certificate generation upon completion
 - Daily practice reminders
