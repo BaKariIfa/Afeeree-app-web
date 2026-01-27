@@ -305,88 +305,114 @@ export default function FeedbackScreen() {
             Participants
           </Text>
 
-          {mockParticipants.map((participant, index) => {
-            const lastMessage = getLastMessage(participant.id);
-
-            return (
-              <Animated.View
-                key={participant.id}
-                entering={FadeInUp.duration(500).delay(100 + index * 100)}
+          {mockParticipants.length === 0 ? (
+            <Animated.View
+              entering={FadeInUp.duration(500)}
+              className="items-center justify-center py-16"
+            >
+              <View
+                className="w-20 h-20 rounded-full items-center justify-center mb-4"
+                style={{ backgroundColor: colors.neutral[100] }}
               >
-                <Pressable
-                  onPress={() => handleSelectParticipant(participant)}
-                  className="mb-3 p-4 rounded-2xl flex-row items-center"
-                  style={{
-                    backgroundColor: 'white',
-                    shadowColor: '#000',
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.05,
-                    shadowRadius: 8,
-                    elevation: 2,
-                  }}
-                >
-                  <View
-                    className="w-12 h-12 rounded-full items-center justify-center"
-                    style={{ backgroundColor: colors.primary[100] }}
-                  >
-                    <User size={24} color={colors.primary[500]} />
-                  </View>
+                <User size={40} color={colors.neutral[300]} />
+              </View>
+              <Text
+                style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[600] }}
+                className="text-lg text-center"
+              >
+                No participants yet
+              </Text>
+              <Text
+                style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[400] }}
+                className="text-sm text-center mt-2 px-8"
+              >
+                Participants will appear here once they join the program
+              </Text>
+            </Animated.View>
+          ) : (
+            mockParticipants.map((participant, index) => {
+              const lastMessage = getLastMessage(participant.id);
 
-                  <View className="flex-1 ml-4">
-                    <View className="flex-row items-center justify-between">
-                      <Text
-                        style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
-                        className="text-base"
-                      >
-                        {participant.name}
-                      </Text>
-                      {lastMessage && (
+              return (
+                <Animated.View
+                  key={participant.id}
+                  entering={FadeInUp.duration(500).delay(100 + index * 100)}
+                >
+                  <Pressable
+                    onPress={() => handleSelectParticipant(participant)}
+                    className="mb-3 p-4 rounded-2xl flex-row items-center"
+                    style={{
+                      backgroundColor: 'white',
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.05,
+                      shadowRadius: 8,
+                      elevation: 2,
+                    }}
+                  >
+                    <View
+                      className="w-12 h-12 rounded-full items-center justify-center"
+                      style={{ backgroundColor: colors.primary[100] }}
+                    >
+                      <User size={24} color={colors.primary[500]} />
+                    </View>
+
+                    <View className="flex-1 ml-4">
+                      <View className="flex-row items-center justify-between">
                         <Text
-                          style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[400] }}
+                          style={{ fontFamily: 'DMSans_600SemiBold', color: colors.neutral[800] }}
+                          className="text-base"
+                        >
+                          {participant.name}
+                        </Text>
+                        {lastMessage && (
+                          <Text
+                            style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[400] }}
+                            className="text-xs"
+                          >
+                            {formatDate(lastMessage.timestamp)}
+                          </Text>
+                        )}
+                      </View>
+
+                      <View className="flex-row items-center mt-1">
+                        <View
+                          className="px-2 py-0.5 rounded-full mr-2"
+                          style={{ backgroundColor: colors.gold[100] }}
+                        >
+                          <Text
+                            style={{ fontFamily: 'DMSans_500Medium', color: colors.gold[700] }}
+                            className="text-xs"
+                          >
+                            {participant.certificationLevel}
+                          </Text>
+                        </View>
+                        <Text
+                          style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
                           className="text-xs"
                         >
-                          {formatDate(lastMessage.timestamp)}
+                          {participant.progress}% complete
+                        </Text>
+                      </View>
+
+                      {lastMessage && (
+                        <Text
+                          style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
+                          className="text-sm mt-2"
+                          numberOfLines={1}
+                        >
+                          {lastMessage.senderRole === 'admin' || lastMessage.senderId === mockUser.id ? 'You: ' : ''}
+                          {lastMessage.message}
                         </Text>
                       )}
                     </View>
 
-                    <View className="flex-row items-center mt-1">
-                      <View
-                        className="px-2 py-0.5 rounded-full mr-2"
-                        style={{ backgroundColor: colors.gold[100] }}
-                      >
-                        <Text
-                          style={{ fontFamily: 'DMSans_500Medium', color: colors.gold[700] }}
-                          className="text-xs"
-                        >
-                          {participant.certificationLevel}
-                        </Text>
-                      </View>
-                      <Text
-                        style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
-                        className="text-xs"
-                      >
-                        {participant.progress}% complete
-                      </Text>
-                    </View>
-
-                    {lastMessage && (
-                      <Text
-                        style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
-                        className="text-sm mt-2"
-                        numberOfLines={1}
-                      >
-                        {lastMessage.senderRole === 'admin' || lastMessage.senderId === mockUser.id ? 'You: ' : ''}
-                        {lastMessage.message}
-                      </Text>
-                    )}
-                  </View>
-
-                  <ChevronRight size={20} color={colors.neutral[400]} />
-                </Pressable>
-              </Animated.View>
-            );
-          })}
+                    <ChevronRight size={20} color={colors.neutral[400]} />
+                  </Pressable>
+                </Animated.View>
+              );
+            })
+          )}
         </View>
       </ScrollView>
     </View>
