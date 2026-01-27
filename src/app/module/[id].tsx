@@ -115,6 +115,10 @@ export default function ModuleDetailScreen() {
 
   const handleOpenPDF = () => {
     triggerHaptic();
+    if (!isPremium) {
+      setShowPaywall(true);
+      return;
+    }
     if (module.pdfLink) {
       Linking.openURL(module.pdfLink);
     }
@@ -266,15 +270,24 @@ export default function ModuleDetailScreen() {
             <Pressable
               onPress={handleOpenPDF}
               className="flex-1 flex-row items-center justify-center py-4 rounded-xl mr-2"
-              style={{ backgroundColor: colors.primary[500] }}
+              style={{ backgroundColor: isPremium ? colors.primary[500] : colors.neutral[400] }}
             >
-              <FileText size={20} color="white" />
+              {isPremium ? (
+                <FileText size={20} color="white" />
+              ) : (
+                <Lock size={20} color="white" />
+              )}
               <Text
                 style={{ fontFamily: 'DMSans_600SemiBold', color: 'white' }}
                 className="text-base ml-2"
               >
                 View PDF
               </Text>
+              {!isPremium && (
+                <View className="flex-row items-center ml-2 px-2 py-0.5 rounded-full" style={{ backgroundColor: colors.gold[500] }}>
+                  <Crown size={10} color="white" />
+                </View>
+              )}
             </Pressable>
 
             <Pressable
