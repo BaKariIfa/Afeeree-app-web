@@ -126,7 +126,7 @@ export default function AccessCodeScreen() {
                 style={{ fontFamily: 'DMSans_400Regular', color: 'rgba(255,255,255,0.8)' }}
                 className="text-base mt-2 text-center"
               >
-                Course Access
+                The Physical Language
               </Text>
             </Animated.View>
 
@@ -266,7 +266,7 @@ export default function AccessCodeScreen() {
                 style={{ fontFamily: 'DMSans_400Regular', color: colors.neutral[500] }}
                 className="text-xs text-center"
               >
-                This app is exclusively for{'\n'}AFeeree Certification Program participants
+                This app is exclusively for{'\n'}AFeeree Introduction to The Physical Language participants
               </Text>
             </Animated.View>
           </View>

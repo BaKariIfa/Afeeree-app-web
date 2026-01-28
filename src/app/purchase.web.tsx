@@ -38,9 +38,9 @@ export default function PurchaseScreen() {
   }
 
   const features = [
-    { icon: BookOpen, text: 'Introductory course access' },
-    { icon: Users, text: 'In-person training sessions' },
-    { icon: Award, text: 'Path to full certification' },
+    { icon: BookOpen, text: 'Experience the physical language' },
+    { icon: Users, text: 'Understand the research foundation' },
+    { icon: Award, text: 'Prepare for advanced study & certification' },
   ];
 
   return (
@@ -116,7 +116,7 @@ export default function PurchaseScreen() {
                 marginBottom: 24,
               }}
             >
-              Begin your journey into Africanist movement aesthetics
+              Experience the physicality and understand the research
             </Text>
 
             {/* Features */}
@@ -279,7 +279,7 @@ export default function PurchaseScreen() {
               }}
             >
               After payment, you'll receive an access code via email{'\n'}
-              to unlock the introductory course in the app.
+              to begin your introduction to the physical language.
             </Text>
           </View>
         </LinearGradient>

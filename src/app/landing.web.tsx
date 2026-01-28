@@ -36,28 +36,28 @@ export default function LandingPage() {
   const features = [
     {
       icon: BookOpen,
-      title: 'Foundational Curriculum',
-      description: 'Begin your journey into Africanist movement aesthetics through introductory modules covering technique, theory, and teaching fundamentals.',
+      title: 'Experience the Physical Language',
+      description: 'Immerse yourself in the physicality of Africanist movement through hands-on exploration of technique and embodied practice.',
     },
     {
       icon: Users,
-      title: 'Expert Instruction',
-      description: 'Learn directly from BaKari IfaSegun Lindsay, with over 30 years of experience in African and Caribbean dance traditions.',
+      title: 'Understand the Research',
+      description: 'Gain insight into the scholarly research and cultural foundations behind AFeeree methodology, preparing you for deeper study.',
     },
     {
       icon: Award,
-      title: 'Path to Certification',
-      description: 'Complete this introductory course as the first step toward full AFeeree certification.',
+      title: 'Prepare for Certification',
+      description: 'This introduction prepares you for more in-depth study and potential teaching certification in the AFeeree methodology.',
     },
   ];
 
   const modules = [
     'Introduction to AFeeree Movement Principles',
-    'Mandinka Dance Vocabulary & Terminology',
+    'Experiencing the Physical Language',
     'Polyrhythmic Body Isolations',
-    'Teaching Methodology & Classroom Management',
+    'Understanding the Research Foundation',
     'Cultural Context & Historical Framework',
-    'Performance Practice & Presentation',
+    'Preparation for Advanced Study',
   ];
 
   return (
@@ -129,7 +129,7 @@ export default function LandingPage() {
               maxWidth: 500,
             }}
           >
-            The Physical Language — Begin Your Journey into Africanist Movement Aesthetics
+            Experience the physicality of Africanist movement and explore the research behind it
           </Text>
 
           <View style={{ flexDirection: 'row', gap: 16, marginTop: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -197,7 +197,7 @@ export default function LandingPage() {
                 marginBottom: 16,
               }}
             >
-              Your First Step into African Dance Education
+              An Introduction to The Physical Language
             </Text>
             <Text
               style={{
@@ -207,7 +207,7 @@ export default function LandingPage() {
                 lineHeight: 26,
               }}
             >
-              A-Feeree – The Physical Language is an innovative training methodology developed from over three decades of research and practice in African and Caribbean dance traditions. This introductory course provides the foundation for dancers and teachers to begin understanding and embodying Africanist movement aesthetics.
+              A-Feeree – The Physical Language is an innovative training methodology developed from over three decades of research and practice in African and Caribbean dance traditions. In this introductory course, you will experience the physicality of the movement firsthand while gaining an understanding of the research that informs the practice — preparing you for more in-depth study and possible teaching certification.
             </Text>
           </View>
           <View style={{ flex: 1, minWidth: 280, maxWidth: 350, alignSelf: 'center' }}>
@@ -336,7 +336,7 @@ export default function LandingPage() {
             alignSelf: 'center',
           }}
         >
-          An introduction to the fundamentals of AFeeree methodology
+          Experience the physicality and explore the research behind AFeeree methodology
         </Text>
         <View style={{ maxWidth: 600, alignSelf: 'center', width: '100%' }}>
           {modules.map((module, index) => (
@@ -412,7 +412,7 @@ export default function LandingPage() {
             maxWidth: 500,
           }}
         >
-          Join dancers and educators taking the first step into the transformative world of AFeeree methodology.
+          Experience the physical language and understand the research in preparation for more in-depth study and possible teaching certification.
         </Text>
         <Pressable
           onPress={() => router.push('/purchase')}
