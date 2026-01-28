@@ -160,20 +160,6 @@ export default function PurchaseScreen() {
     }
   };
 
-  // Demo mode - for testing without Square backend
-  const handleDemoPayment = async () => {
-    setIsProcessing(true);
-    setError('');
-
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    const code = generateAccessCode();
-    setAccessCode(code);
-    setStep('success');
-    setIsProcessing(false);
-  };
-
   const copyCode = async () => {
     try {
       await navigator.clipboard.writeText(accessCode);
@@ -568,12 +554,11 @@ export default function PurchaseScreen() {
                   </Text>
                 ) : null}
 
-                {/* Demo Payment Button - Remove in production */}
                 <Pressable
-                  onPress={handleDemoPayment}
-                  disabled={isProcessing}
+                  onPress={handlePayment}
+                  disabled={isProcessing || !card}
                   style={{
-                    backgroundColor: isProcessing ? colors.primary[300] : colors.primary[500],
+                    backgroundColor: isProcessing || !card ? colors.primary[300] : colors.primary[500],
                     borderRadius: 12,
                     paddingVertical: 16,
                     flexDirection: 'row',
