@@ -44,14 +44,20 @@ export default function HomeScreen() {
       // On web, check if user is trying to access admin or purchase directly
       if (typeof window !== 'undefined') {
         const path = window.location.pathname;
-        if (path.includes('admin') || path.includes('purchase')) {
+        if (path.includes('admin') || path.includes('purchase') || path.includes('access-code')) {
           // Don't redirect, let them access these pages
+          return;
+        }
+
+        // On web, show landing page first if user doesn't have access
+        if (!hasAccess) {
+          router.replace('/landing');
           return;
         }
       }
 
       if (!hasAccess) {
-        // No access code - go to access code screen
+        // No access code - go to access code screen (mobile)
         router.replace('/access-code');
       } else if (!isOnboarded) {
         // Has access but not onboarded - go to onboarding
