@@ -460,6 +460,22 @@ export default function LandingPage() {
         >
           © {new Date().getFullYear()} AFeeree. All rights reserved.
         </Text>
+
+        {/* Admin Link */}
+        <Pressable
+          onPress={() => router.push('/admin')}
+          style={{ marginTop: 20, alignItems: 'center' }}
+        >
+          <Text
+            style={{
+              fontFamily: 'DMSans_400Regular',
+              color: colors.neutral[600],
+              fontSize: 12,
+            }}
+          >
+            Admin
+          </Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
