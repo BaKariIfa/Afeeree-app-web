@@ -207,7 +207,7 @@ export default function LandingPage() {
                 lineHeight: 26,
               }}
             >
-              A-Feeree – The Physical Language is an innovative training methodology developed from over three decades of research and practice in African and Caribbean dance traditions. In this introductory course, you will experience the physicality of the movement firsthand while gaining an understanding of the research that informs the practice — preparing you for more in-depth study and possible teaching certification.
+              This is an introduction to AFeeree — The Physical Language. In this course, you will experience the physicality of Africanist movement and gain insight into the research that supports the methodology. This introduction prepares you for more in-depth study and possible teaching certification.
             </Text>
           </View>
           <View style={{ flex: 1, minWidth: 280, maxWidth: 350, alignSelf: 'center' }}>
