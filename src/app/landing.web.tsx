@@ -210,7 +210,7 @@ export default function LandingPage() {
               A-Feeree – The Physical Language is an innovative training methodology developed from over three decades of research and practice in African and Caribbean dance traditions. This certification program equips dancers and teachers with the tools to understand, embody, and transmit Africanist movement aesthetics with authenticity and excellence.
             </Text>
           </View>
-          <View style={{ flex: 1, minWidth: 280 }}>
+          <View style={{ flex: 1, minWidth: 280, maxWidth: 350, alignSelf: 'center' }}>
             <View
               style={{
                 backgroundColor: colors.primary[500],
@@ -220,9 +220,9 @@ export default function LandingPage() {
             >
               <Image
                 source={{ uri: 'https://images.composerapi.com/019bf7ad-8916-75b9-9874-b6c49473f082/assets/images/image_1769406156_1769406156713_019bf8d3-4fa9-7153-80c2-ff455157e01f.jpg' }}
-                style={{ width: '100%', height: 400 }}
+                style={{ width: '100%', aspectRatio: 3/4, minHeight: 450 }}
                 contentFit="cover"
-                contentPosition="center"
+                contentPosition="top center"
               />
               <LinearGradient
                 colors={['transparent', colors.primary[600]]}
