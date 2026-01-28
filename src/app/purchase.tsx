@@ -46,14 +46,31 @@ export default function PurchaseScreen() {
   };
 
   const handlePurchase = async () => {
-    // Redirect to Square Checkout Link
-    // TODO: Replace with your actual Square Checkout Link
-    const SQUARE_CHECKOUT_URL = 'https://square.link/u/YOUR_CHECKOUT_LINK';
+    // Validate inputs
+    if (!name.trim()) {
+      setError('Please enter your full name');
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
+    if (!email.trim() || !email.includes('@')) {
+      setError('Please enter a valid email address');
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
-    // For now, show a message that payments are handled externally
-    setError('Please contact the administrator to enroll in the program. Payments are processed through Square.');
+    // Open Square Checkout Link
+    const SQUARE_CHECKOUT_URL = 'https://square.link/u/v0CpuVqO';
+
+    // On web, open in same window. On mobile, open in browser
+    if (typeof window !== 'undefined') {
+      window.open(SQUARE_CHECKOUT_URL, '_blank');
+    } else {
+      // For React Native, use Linking
+      const { Linking } = require('react-native');
+      Linking.openURL(SQUARE_CHECKOUT_URL);
+    }
   };
 
   const copyCode = async () => {
