@@ -207,7 +207,7 @@ export default function LandingPage() {
                 lineHeight: 26,
               }}
             >
-              This is an introduction to AFeeree — The Physical Language. Through this course, you will immerse yourself in the physicality of Africanist movement, exploring how the body communicates through rhythm, isolation, and dynamic expression. You will also gain meaningful insights into the research methodology that underpins AFeeree, understanding the scholarly foundations and cultural context that inform every movement principle. This introduction serves as your gateway to more in-depth study and opens the path toward possible certification for those called to teach and share this practice.
+              This is an introduction to AFeeree — The Physical Language. Through this course, you will immerse yourself in the physicality of Africanist movement, exploring how the body communicates through rhythm, isolation, and dynamic expression. You will also gain meaningful insights into the research methodology that underpins AFeeree, understanding the scholarly foundations and cultural context that inform every movement principle. This course provides a foundation for dancers and teachers to begin understanding and embodying Africanist movement aesthetics. It serves as your gateway to more in-depth study and opens the path toward possible certification for those called to teach and share this practice.
             </Text>
           </View>
           <View style={{ flex: 1, minWidth: 280, maxWidth: 350, alignSelf: 'center' }}>
