@@ -207,7 +207,7 @@ export default function LandingPage() {
                 lineHeight: 26,
               }}
             >
-              This is an introduction to AFeeree — The Physical Language. In this course, you will experience the physicality of Africanist movement and gain insight into the research that supports the methodology. This introduction prepares you for more in-depth study and possible teaching certification.
+              This is an introduction to AFeeree — The Physical Language. In this course, you will experience the physicality and gain insights into the research methodology. This introduction prepares you for more in-depth study and possible certification.
             </Text>
           </View>
           <View style={{ flex: 1, minWidth: 280, maxWidth: 350, alignSelf: 'center' }}>
