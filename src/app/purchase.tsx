@@ -46,35 +46,14 @@ export default function PurchaseScreen() {
   };
 
   const handlePurchase = async () => {
-    if (!name.trim()) {
-      setError('Please enter your name');
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      return;
-    }
-    if (!email.trim() || !email.includes('@')) {
-      setError('Please enter a valid email');
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      return;
-    }
+    // Redirect to Square Checkout Link
+    // TODO: Replace with your actual Square Checkout Link
+    const SQUARE_CHECKOUT_URL = 'https://square.link/u/YOUR_CHECKOUT_LINK';
 
-    setError('');
-    setStep('processing');
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
-    // Log Square config status
-    const config = logSquareConfig();
-    console.log('Starting payment process...');
-    console.log('Customer:', name, email);
-
-    // Simulate payment processing (in production, this would call Square API)
-    await new Promise(resolve => setTimeout(resolve, 2500));
-
-    // Generate access code and save it to the store
-    const code = await generateCode();
-    setAccessCode(code);
-    console.log('Payment successful! Access code generated and saved:', code);
-
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setStep('success');
+    // For now, show a message that payments are handled externally
+    setError('Please contact the administrator to enroll in the program. Payments are processed through Square.');
   };
 
   const copyCode = async () => {

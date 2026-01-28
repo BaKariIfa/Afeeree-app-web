@@ -41,6 +41,12 @@ export default function HomeScreen() {
 
   useEffect(() => {
     if (!isLoading) {
+      // On web, check if user is trying to access admin directly
+      if (typeof window !== 'undefined' && window.location.pathname === '/admin') {
+        // Don't redirect, let them access admin
+        return;
+      }
+
       if (!hasAccess) {
         // No access code - go to access code screen
         router.replace('/access-code');
