@@ -41,10 +41,13 @@ export default function HomeScreen() {
 
   useEffect(() => {
     if (!isLoading) {
-      // On web, check if user is trying to access admin directly
-      if (typeof window !== 'undefined' && window.location.pathname === '/admin') {
-        // Don't redirect, let them access admin
-        return;
+      // On web, check if user is trying to access admin or purchase directly
+      if (typeof window !== 'undefined') {
+        const path = window.location.pathname;
+        if (path.includes('admin') || path.includes('purchase')) {
+          // Don't redirect, let them access these pages
+          return;
+        }
       }
 
       if (!hasAccess) {
