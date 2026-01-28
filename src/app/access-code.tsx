@@ -120,13 +120,13 @@ export default function AccessCodeScreen() {
                 style={{ fontFamily: 'PlayfairDisplay_700Bold', color: colors.gold[300] }}
                 className="text-2xl mt-4 text-center"
               >
-                AFeeree Certification
+                AFeeree Introduction
               </Text>
               <Text
                 style={{ fontFamily: 'DMSans_400Regular', color: 'rgba(255,255,255,0.8)' }}
                 className="text-base mt-2 text-center"
               >
-                Program Access
+                Course Access
               </Text>
             </Animated.View>
 

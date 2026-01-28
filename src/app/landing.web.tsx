@@ -36,8 +36,8 @@ export default function LandingPage() {
   const features = [
     {
       icon: BookOpen,
-      title: 'Comprehensive Curriculum',
-      description: 'Master Africanist movement aesthetics through structured modules covering technique, theory, and teaching practice.',
+      title: 'Foundational Curriculum',
+      description: 'Begin your journey into Africanist movement aesthetics through introductory modules covering technique, theory, and teaching fundamentals.',
     },
     {
       icon: Users,
@@ -46,8 +46,8 @@ export default function LandingPage() {
     },
     {
       icon: Award,
-      title: 'Professional Certification',
-      description: 'Earn a recognized certification that validates your expertise in AFeeree methodology.',
+      title: 'Path to Certification',
+      description: 'Complete this introductory course as the first step toward full AFeeree certification.',
     },
   ];
 
@@ -117,7 +117,7 @@ export default function LandingPage() {
               lineHeight: 44,
             }}
           >
-            AFeeree Certification Program
+            AFeeree Introduction to Certification
           </Text>
           <Text
             style={{
@@ -129,7 +129,7 @@ export default function LandingPage() {
               maxWidth: 500,
             }}
           >
-            The Physical Language — Master Africanist Movement Aesthetics
+            The Physical Language — Begin Your Journey into Africanist Movement Aesthetics
           </Text>
 
           <View style={{ flexDirection: 'row', gap: 16, marginTop: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -186,7 +186,7 @@ export default function LandingPage() {
                 marginBottom: 8,
               }}
             >
-              About the Program
+              About the Course
             </Text>
             <Text
               style={{
@@ -197,7 +197,7 @@ export default function LandingPage() {
                 marginBottom: 16,
               }}
             >
-              A Revolutionary Approach to African Dance Education
+              Your First Step into African Dance Education
             </Text>
             <Text
               style={{
@@ -207,7 +207,7 @@ export default function LandingPage() {
                 lineHeight: 26,
               }}
             >
-              A-Feeree – The Physical Language is an innovative training methodology developed from over three decades of research and practice in African and Caribbean dance traditions. This certification program equips dancers and teachers with the tools to understand, embody, and transmit Africanist movement aesthetics with authenticity and excellence.
+              A-Feeree – The Physical Language is an innovative training methodology developed from over three decades of research and practice in African and Caribbean dance traditions. This introductory course provides the foundation for dancers and teachers to begin understanding and embodying Africanist movement aesthetics.
             </Text>
           </View>
           <View style={{ flex: 1, minWidth: 280, maxWidth: 350, alignSelf: 'center' }}>
@@ -323,7 +323,7 @@ export default function LandingPage() {
             marginBottom: 12,
           }}
         >
-          Curriculum Overview
+          Course Overview
         </Text>
         <Text
           style={{
@@ -336,7 +336,7 @@ export default function LandingPage() {
             alignSelf: 'center',
           }}
         >
-          A structured journey through the fundamentals and advanced concepts of AFeeree methodology
+          An introduction to the fundamentals of AFeeree methodology
         </Text>
         <View style={{ maxWidth: 600, alignSelf: 'center', width: '100%' }}>
           {modules.map((module, index) => (
@@ -412,7 +412,7 @@ export default function LandingPage() {
             maxWidth: 500,
           }}
         >
-          Join dancers and educators from around the world who are discovering the transformative power of AFeeree methodology.
+          Join dancers and educators taking the first step into the transformative world of AFeeree methodology.
         </Text>
         <Pressable
           onPress={() => router.push('/purchase')}
@@ -448,7 +448,7 @@ export default function LandingPage() {
               marginLeft: 10,
             }}
           >
-            AFeeree Certification Program
+            AFeeree Introduction to Certification
           </Text>
         </View>
         <Text

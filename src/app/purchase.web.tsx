@@ -19,7 +19,7 @@ export default function PurchaseScreen() {
 
   // Program price
   const PROGRAM_PRICE = 600;
-  const PROGRAM_NAME = 'AFeeree Certification Program';
+  const PROGRAM_NAME = 'AFeeree Introduction to Certification';
 
   const [fontsLoaded] = useFonts({
     PlayfairDisplay_700Bold,
@@ -38,9 +38,9 @@ export default function PurchaseScreen() {
   }
 
   const features = [
-    { icon: BookOpen, text: 'Complete curriculum access' },
+    { icon: BookOpen, text: 'Introductory course access' },
     { icon: Users, text: 'In-person training sessions' },
-    { icon: Award, text: 'Professional certification' },
+    { icon: Award, text: 'Path to full certification' },
   ];
 
   return (
@@ -116,7 +116,7 @@ export default function PurchaseScreen() {
                 marginBottom: 24,
               }}
             >
-              Join the certification program and master Africanist movement aesthetics
+              Begin your journey into Africanist movement aesthetics
             </Text>
 
             {/* Features */}
@@ -197,7 +197,7 @@ export default function PurchaseScreen() {
                   marginTop: 4,
                 }}
               >
-                One-time payment • Lifetime access
+                One-time payment • Course access
               </Text>
             </View>
 
@@ -279,7 +279,7 @@ export default function PurchaseScreen() {
               }}
             >
               After payment, you'll receive an access code via email{'\n'}
-              to unlock the full program in the app.
+              to unlock the introductory course in the app.
             </Text>
           </View>
         </LinearGradient>
