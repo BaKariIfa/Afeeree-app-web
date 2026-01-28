@@ -220,8 +220,9 @@ export default function LandingPage() {
             >
               <Image
                 source={{ uri: 'https://images.composerapi.com/019bf7ad-8916-75b9-9874-b6c49473f082/assets/images/image_1769406156_1769406156713_019bf8d3-4fa9-7153-80c2-ff455157e01f.jpg' }}
-                style={{ width: '100%', height: 300 }}
+                style={{ width: '100%', height: 350 }}
                 contentFit="cover"
+                contentPosition="top"
               />
               <LinearGradient
                 colors={['transparent', colors.primary[600]]}
